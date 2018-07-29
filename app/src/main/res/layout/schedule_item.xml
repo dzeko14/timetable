@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/ll_root"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="15dp"
+    android:layout_marginRight="15dp"
+    android:layout_marginTop="20dp"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/tv_week"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:paddingBottom="15dp"
+        android:textSize="20sp"
+        tools:text="Перший тиждень" />
+
+    <include layout="@layout/schedule_item_head"
+        android:id="@+id/head_cardview" />
+
+    <include layout="@layout/schedule_item_body"
+        android:id="@+id/body_cardview_1" />
+
+    <include layout="@layout/schedule_item_body"
+        android:id="@+id/body_cardview_2"/>
+
+    <include layout="@layout/schedule_item_body"
+        android:id="@+id/body_cardview_3"/>
+
+    <include layout="@layout/schedule_item_body"
+        android:id="@+id/body_cardview_4"/>
+
+    <include layout="@layout/schedule_item_body"
+        android:id="@+id/body_cardview_5"/>
+
+</LinearLayout>
