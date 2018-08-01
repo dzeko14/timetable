@@ -2,6 +2,7 @@ package my.dzeko.timetable.adapters;
 
 import android.content.Context;
 import android.content.res.Resources;
+import android.os.Parcel;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -14,6 +15,7 @@ import android.widget.TextView;
 import java.util.Calendar;
 import java.util.List;
 
+import my.dzeko.timetable.MainActivity;
 import my.dzeko.timetable.R;
 import my.dzeko.timetable.models.Day;
 import my.dzeko.timetable.models.Subject;

@@ -25,6 +25,7 @@ import my.dzeko.timetable.presenters.SchedulePresenter;
 public class ScheduleFragment extends Fragment implements ScheduleContract.IScheduleView {
     ScheduleContract.ISchedulePresenter mPresenter;
     ScheduleAdapter mAdapter;
+    RecyclerView mRecyclerView;
 
     public ScheduleFragment() {
         // Required empty public constructor
@@ -45,10 +46,10 @@ public class ScheduleFragment extends Fragment implements ScheduleContract.ISche
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootFragmentView = inflater.inflate(R.layout.fragment_schedule, container, false);
-        RecyclerView recyclerView = rootFragmentView.findViewById(R.id.schedule_recycler_view);
+        mRecyclerView = rootFragmentView.findViewById(R.id.schedule_recycler_view);
         LinearLayoutManager manager = new LinearLayoutManager(this.getContext());
-        recyclerView.setLayoutManager(manager);
-        recyclerView.setAdapter(mAdapter);
+        mRecyclerView.setLayoutManager(manager);
+        mRecyclerView.setAdapter(mAdapter);
         return rootFragmentView;
     }
 

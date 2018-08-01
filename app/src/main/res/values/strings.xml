@@ -7,5 +7,9 @@
     <string name="editing_bottom_navigation">Редагування</string>
 
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="hello_blank_fragment">Coming soon!</string>
+
+    <!--Navigation View Menu-->
+    <string name="settings_navigation">Налаштування</string>
+    <string name="add_schedule_navigation">Додати розклад</string>
 </resources>

@@ -4,6 +4,7 @@ import java.util.List;
 
 import my.dzeko.timetable.interfaces.IModel;
 import my.dzeko.timetable.contracts.ScheduleContract;
+import my.dzeko.timetable.interfaces.IView;
 import my.dzeko.timetable.models.Day;
 import my.dzeko.timetable.models.Model;
 
@@ -11,7 +12,7 @@ public class SchedulePresenter implements ScheduleContract.ISchedulePresenter {
     private ScheduleContract.IScheduleView mView;
     private IModel mModel;
 
-    public SchedulePresenter(ScheduleContract.IScheduleView view) {
+    public SchedulePresenter(IView view) {
         registerView(view);
         registerModel(Model.getInstance());
     }
@@ -27,8 +28,10 @@ public class SchedulePresenter implements ScheduleContract.ISchedulePresenter {
     }
 
     @Override
-    public void registerView(ScheduleContract.IScheduleView view) {
-        mView = view;
+    public void registerView(IView view) {
+        if(view instanceof ScheduleContract.IScheduleView) {
+            mView = (ScheduleContract.IScheduleView)view;
+        }
     }
 
     @Override
@@ -41,5 +44,10 @@ public class SchedulePresenter implements ScheduleContract.ISchedulePresenter {
     public void onDestroy() {
         mView = null;
         mModel = null;
+    }
+
+    @Override
+    public void onUserClick() {
+
     }
 }

@@ -14,4 +14,7 @@
     <color name="colorSubjectName">#000000</color>
     <color name="colorNotCurrentDay">#aaaaaa</color>
     <color name="colorCurrentDay">#283593</color>
+
+    <!--Main Toolbar-->
+    <color name="colorTextToolbar">#ffffff</color>
 </resources>
