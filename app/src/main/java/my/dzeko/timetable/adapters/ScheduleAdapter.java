@@ -2,7 +2,6 @@ package my.dzeko.timetable.adapters;
 
 import android.content.Context;
 import android.content.res.Resources;
-import android.os.Parcel;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -15,9 +14,9 @@ import android.widget.TextView;
 import java.util.Calendar;
 import java.util.List;
 
-import my.dzeko.timetable.MainActivity;
 import my.dzeko.timetable.R;
 import my.dzeko.timetable.models.Day;
+import my.dzeko.timetable.models.Schedule;
 import my.dzeko.timetable.models.Subject;
 
 public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.DayViewHolder> {
@@ -26,19 +25,17 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.DayVie
 
     private int mCurrentDayViewHolderPosition = -1;
 
-    public ScheduleAdapter(final List<Day> schedule) {
+    public ScheduleAdapter(Schedule schedule) {
         CURRENT_DATE = Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
-        mSchedule = schedule;
+        mSchedule = schedule.getSchedule();
 
         int position = 0;
-        if(schedule != null) {
-            for (Day day : schedule) {
-                if (day.getDayOfMonth() == CURRENT_DATE) {
-                    mCurrentDayViewHolderPosition = position;
-                    break;
-                }
-                position++;
+        for (Day day : mSchedule) {
+            if (day.getDayOfMonth() == CURRENT_DATE) {
+                mCurrentDayViewHolderPosition = position;
+                break;
             }
+            position++;
         }
     }
 
@@ -68,9 +65,9 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.DayVie
         return mCurrentDayViewHolderPosition != -1 ? mCurrentDayViewHolderPosition : 0;
     }
 
-    public void updateSchedule(List<Day> schedule) {
+    public void updateSchedule(Schedule schedule) {
         if(schedule == null) return;
-        mSchedule = schedule;
+        mSchedule = schedule.getSchedule();
         notifyDataSetChanged();
     }
 

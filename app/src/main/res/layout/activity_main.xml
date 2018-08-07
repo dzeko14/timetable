@@ -9,7 +9,7 @@
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context="my.dzeko.timetable.MainActivity">
+        tools:context="my.dzeko.timetable.activities.MainActivity">
 
         <android.support.v7.widget.Toolbar
             android:id="@+id/main_toolbar"
@@ -46,6 +46,6 @@
         android:id="@+id/navigation_view"
         android:layout_gravity="start"
         android:fitsSystemWindows="true"
-        app:menu="@menu/navigation_view"/>
+        app:menu="@menu/navigation_view" />
 
 </android.support.v4.widget.DrawerLayout>

@@ -1,53 +1,39 @@
 package my.dzeko.timetable.presenters;
 
-import java.util.List;
-
-import my.dzeko.timetable.interfaces.IModel;
 import my.dzeko.timetable.contracts.ScheduleContract;
-import my.dzeko.timetable.interfaces.IView;
-import my.dzeko.timetable.models.Day;
+import my.dzeko.timetable.interfaces.IModel;
 import my.dzeko.timetable.models.Model;
+import my.dzeko.timetable.models.Schedule;
+import my.dzeko.timetable.observers.ScheduleObservable;
 
-public class SchedulePresenter implements ScheduleContract.ISchedulePresenter {
-    private ScheduleContract.IScheduleView mView;
+public class SchedulePresenter implements ScheduleContract.Presenter {
+    private ScheduleContract.View mView;
     private IModel mModel;
 
-    public SchedulePresenter(IView view) {
-        registerView(view);
-        registerModel(Model.getInstance());
+    public SchedulePresenter(ScheduleContract.View view) {
+        this.mView = view;
+        mModel = Model.getInstance();
+        ScheduleObservable.getInstance().registerObserver(this);
     }
 
     @Override
-    public void onScheduleReceived(List<Day> schedule) {
-        mView.updateSchedule(schedule);
+    public boolean onUserClick(int itemId) {
+        return false;
+    }
+
+    @Override
+    public void destroy() {
+        mView = null;
+        ScheduleObservable.getInstance().unregisterObserver(this);
     }
 
     @Override
     public void onScheduleRequest() {
-        mModel.getCurrentSchedule(this);
+        mView.updateSchedule(mModel.getSelectedSchedule());
     }
 
     @Override
-    public void registerView(IView view) {
-        if(view instanceof ScheduleContract.IScheduleView) {
-            mView = (ScheduleContract.IScheduleView)view;
-        }
-    }
-
-    @Override
-    public void registerModel(IModel model) {
-        mModel = model;
-    }
-
-
-    @Override
-    public void onDestroy() {
-        mView = null;
-        mModel = null;
-    }
-
-    @Override
-    public void onUserClick() {
-
+    public void onSelectedScheduleChanged(Schedule schedule) {
+        mView.updateSchedule(schedule);
     }
 }

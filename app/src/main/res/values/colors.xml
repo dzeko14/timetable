@@ -8,7 +8,6 @@
     <color name="inactive_item_bottom_navigation_main">#9e9e9e</color>
     <color name="active_item_bottom_navigation_main">#ffffff</color>
     <color name="item_background_bottom_navigation_main">#3F51B5</color>
-    <color name="background_bottom_navigation_main">#ffffff</color>
 
     <!--Schedule item colors-->
     <color name="colorSubjectName">#000000</color>

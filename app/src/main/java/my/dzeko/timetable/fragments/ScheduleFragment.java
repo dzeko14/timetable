@@ -11,19 +11,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import java.util.List;
-
 import my.dzeko.timetable.R;
 import my.dzeko.timetable.adapters.ScheduleAdapter;
 import my.dzeko.timetable.contracts.ScheduleContract;
-import my.dzeko.timetable.models.Day;
+import my.dzeko.timetable.models.Schedule;
 import my.dzeko.timetable.presenters.SchedulePresenter;
 
 /**
  * Fragment is used as View in MVP pattern
  */
-public class ScheduleFragment extends Fragment implements ScheduleContract.IScheduleView {
-    ScheduleContract.ISchedulePresenter mPresenter;
+public class ScheduleFragment extends Fragment implements ScheduleContract.View {
+    ScheduleContract.Presenter mPresenter;
     ScheduleAdapter mAdapter;
     RecyclerView mRecyclerView;
 
@@ -38,6 +36,10 @@ public class ScheduleFragment extends Fragment implements ScheduleContract.ISche
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        initializePresenter();
+    }
+
+    private void initializePresenter() {
         mPresenter = new SchedulePresenter(this);
         mPresenter.onScheduleRequest();
     }
@@ -46,25 +48,30 @@ public class ScheduleFragment extends Fragment implements ScheduleContract.ISche
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootFragmentView = inflater.inflate(R.layout.fragment_schedule, container, false);
+        initializeRecyclerView(rootFragmentView);
+        return rootFragmentView;
+    }
+
+    private void initializeRecyclerView(View rootFragmentView) {
         mRecyclerView = rootFragmentView.findViewById(R.id.schedule_recycler_view);
         LinearLayoutManager manager = new LinearLayoutManager(this.getContext());
         mRecyclerView.setLayoutManager(manager);
         mRecyclerView.setAdapter(mAdapter);
-        return rootFragmentView;
+    }
+
+
+    @Override
+    public void onDestroy() {
+        mPresenter.destroy();
+        super.onDestroy();
     }
 
     @Override
-    public void updateSchedule(List<Day> schedule) {
+    public void updateSchedule(Schedule schedule) {
         if(mAdapter == null) {
             mAdapter = new ScheduleAdapter(schedule);
             return;
         }
         mAdapter.updateSchedule(schedule);
-    }
-
-    @Override
-    public void onDestroy() {
-        mPresenter.onDestroy();
-        super.onDestroy();
     }
 }
