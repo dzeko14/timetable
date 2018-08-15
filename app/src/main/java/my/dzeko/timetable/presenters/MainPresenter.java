@@ -6,12 +6,17 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import io.reactivex.Completable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.functions.Action;
+import io.reactivex.schedulers.Schedulers;
 import my.dzeko.timetable.R;
 import my.dzeko.timetable.contracts.MainContract;
 import my.dzeko.timetable.fragments.CalendarFragment;
 import my.dzeko.timetable.fragments.ScheduleFragment;
 import my.dzeko.timetable.interfaces.IModel;
-import my.dzeko.timetable.models.Model;
+import my.dzeko.timetable.models.MockModel;
 import my.dzeko.timetable.observers.GroupObservable;
 
 public class MainPresenter implements MainContract.Presenter {
@@ -24,9 +29,11 @@ public class MainPresenter implements MainContract.Presenter {
     private Map<String, Integer> mGroupIds = new HashMap<>();
     private int mGroupIdCounter = 0;
 
+    private CompositeDisposable mCompositeDisposable = new CompositeDisposable();
+
     public MainPresenter(MainContract.View view) {
         mView = view;
-        mModel = Model.getInstance();
+        mModel = MockModel.getInstance();
         GroupObservable.getInstance().registerObserver(this);
     }
 
@@ -87,10 +94,27 @@ public class MainPresenter implements MainContract.Presenter {
         return false;
     }
 
+    private void updateFragment(Fragment fragment) {
+        mView.updateFragment(fragment);
+    }
+
     @Override
     public boolean onNavigationItemSelected(int itemId, String itemName) {
         if(mGroupIds.containsKey(itemName)) {
-            mModel.selectSchedule(itemName);
+            mView.showLoading();
+
+            mCompositeDisposable.add(
+                    selectSchedule(itemName)
+                            .subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe(new Action() {
+                                @Override
+                                public void run() throws Exception {
+                                    mView.hideLoading();
+                                }
+                            })
+            );
+
             if(mPreviousGroupNameNavigationItemId != -1) {
                 mView.setCheckedGroupNameNavigationView(mPreviousGroupNameNavigationItemId, false);
             }
@@ -103,8 +127,13 @@ public class MainPresenter implements MainContract.Presenter {
         return false;
     }
 
-    private void updateFragment(Fragment fragment) {
-        mView.updateFragment(fragment);
+    private Completable selectSchedule(final String itemname) {
+        return Completable.fromAction(new Action() {
+            @Override
+            public void run() throws Exception {
+                mModel.selectSchedule(itemname);
+            }
+        });
     }
 
     @Override

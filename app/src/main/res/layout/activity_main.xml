@@ -27,6 +27,17 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/main_toolbar" />
 
+        <ProgressBar
+            android:id="@+id/progress_bar_main"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="?android:attr/progressBarStyle"
+            app:layout_constraintBottom_toTopOf="@+id/bottomNavigationView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/main_toolbar"
+            android:visibility="gone"/>
+
         <android.support.design.widget.BottomNavigationView
             android:id="@+id/bottomNavigationView"
             android:layout_width="match_parent"

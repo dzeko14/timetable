@@ -11,9 +11,9 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.SubMenu;
+import android.view.View;
 
 import my.dzeko.timetable.R;
 import my.dzeko.timetable.contracts.MainContract;
@@ -26,6 +26,9 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     private DrawerLayout mDrawerLayout;
     private SubMenu mGroupNamesSubMenu;
 
+    private View mProgressBar;
+    private View mFragmentLayout;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,6 +36,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
 
         mDrawerLayout = findViewById(R.id.main_drawer_layout);
 
+        findViews();
         initializePresenter();
         initializeBottomNavigationView();
         initializeToolBar();
@@ -40,6 +44,11 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         initializePresenter();
         initializeNavigationView();
         loadGroupNames();
+    }
+
+    private void findViews() {
+        mProgressBar = findViewById(R.id.progress_bar_main);
+        mFragmentLayout = findViewById(R.id.fragments_frame_layout_main_activity);
     }
 
     private void initializePresenter() {
@@ -142,5 +151,17 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     @Override
     public void setCheckedGroupNameNavigationView(int id, boolean isChecked) {
         mGroupNamesSubMenu.findItem(id).setChecked(isChecked);
+    }
+
+    @Override
+    public void showLoading() {
+        mFragmentLayout.setVisibility(View.GONE);
+        mProgressBar.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideLoading() {
+        mFragmentLayout.setVisibility(View.VISIBLE);
+        mProgressBar.setVisibility(View.GONE);
     }
 }

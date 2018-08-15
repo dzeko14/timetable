@@ -2,16 +2,18 @@ package my.dzeko.timetable.presenters;
 
 import android.annotation.SuppressLint;
 
+import io.reactivex.Completable;
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.functions.Action;
 import io.reactivex.functions.Function;
 import io.reactivex.observers.DisposableSingleObserver;
 import io.reactivex.schedulers.Schedulers;
 
 import my.dzeko.timetable.contracts.ScheduleContract;
 import my.dzeko.timetable.interfaces.IModel;
-import my.dzeko.timetable.models.Model;
+import my.dzeko.timetable.models.MockModel;
 import my.dzeko.timetable.models.Schedule;
 import my.dzeko.timetable.observers.ScheduleObservable;
 
@@ -23,7 +25,7 @@ public class SchedulePresenter implements ScheduleContract.Presenter {
 
     public SchedulePresenter(ScheduleContract.View view) {
         this.mView = view;
-        mModel = Model.getInstance();
+        mModel = MockModel.getInstance();
         ScheduleObservable.getInstance().registerObserver(this);
     }
 
@@ -45,12 +47,7 @@ public class SchedulePresenter implements ScheduleContract.Presenter {
         mView.showLoading();
 
         mCompositeDisposable.add(
-                Single.just(mModel).map(new Function<IModel, Schedule>() {
-                    @Override
-                    public Schedule apply(IModel model) throws Exception {
-                        return model.getSelectedSchedule();
-                    }
-                })
+                requestScheduleCompletable()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeWith(new DisposableSingleObserver<Schedule>() {
@@ -68,8 +65,30 @@ public class SchedulePresenter implements ScheduleContract.Presenter {
         );
     }
 
+    private Single<Schedule> requestScheduleCompletable() {
+        return Single.just(mModel).map(new Function<IModel, Schedule>() {
+            @Override
+            public Schedule apply(IModel model) throws Exception {
+                return model.getSelectedSchedule();
+            }
+        });
+    }
+
+    @SuppressLint("CheckResult")
     @Override
-    public void onSelectedScheduleChanged(Schedule schedule) {
-        mView.updateSchedule(schedule);
+    public void onSelectedScheduleChanged(final Schedule schedule) {
+        mView.showLoading();
+
+        updateScheduleCompletable(schedule).subscribeOn(AndroidSchedulers.mainThread()).subscribe();
+    }
+
+    private Completable updateScheduleCompletable(final Schedule schedule) {
+        return Completable.fromAction(new Action() {
+            @Override
+            public void run() throws Exception {
+                mView.updateSchedule(schedule);
+                mView.hideLoading();
+            }
+        });
     }
 }

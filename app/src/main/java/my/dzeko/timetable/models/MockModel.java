@@ -2,17 +2,19 @@ package my.dzeko.timetable.models;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import my.dzeko.timetable.interfaces.IModel;
+import my.dzeko.timetable.observers.ScheduleObservable;
 
 // A mock model
-public class Model implements IModel{
+public class MockModel implements IModel{
 //  --------------------------------------------------------
-    private static Model mInstance;
-    private Model() { }
-    public static Model getInstance() {
+    private static MockModel mInstance;
+    private MockModel() { }
+    public static MockModel getInstance() {
         if(mInstance == null) {
-            mInstance = new Model();
+            mInstance = new MockModel();
         }
         return mInstance;
     }
@@ -91,10 +93,14 @@ public class Model implements IModel{
         return genereteFakeData();
     }
 
-
     @Override
     public void selectSchedule(String groupName) {
-
+        try {
+            TimeUnit.SECONDS.sleep(2);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        ScheduleObservable.getInstance().notifySelectedScheduleChanged(genereteFakeData());
     }
 
     @Override

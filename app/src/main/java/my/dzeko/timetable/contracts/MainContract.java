@@ -23,5 +23,8 @@ public class MainContract {
         void addGroupNameNavigationDrawer(String groupName, int id);
         void removeGroupNameNavigationDrawer(int removeItemId);
         void setCheckedGroupNameNavigationView(int id, boolean isChecked);
+
+        void showLoading();
+        void hideLoading();
     }
 }
