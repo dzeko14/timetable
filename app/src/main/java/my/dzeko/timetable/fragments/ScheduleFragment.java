@@ -25,6 +25,8 @@ public class ScheduleFragment extends Fragment implements ScheduleContract.View 
     ScheduleAdapter mAdapter;
     RecyclerView mRecyclerView;
 
+    View mProgressBar;
+
     public ScheduleFragment() {
         // Required empty public constructor
     }
@@ -41,7 +43,6 @@ public class ScheduleFragment extends Fragment implements ScheduleContract.View 
 
     private void initializePresenter() {
         mPresenter = new SchedulePresenter(this);
-        mPresenter.onScheduleRequest();
     }
 
     @Override
@@ -49,16 +50,26 @@ public class ScheduleFragment extends Fragment implements ScheduleContract.View 
                              Bundle savedInstanceState) {
         View rootFragmentView = inflater.inflate(R.layout.fragment_schedule, container, false);
         initializeRecyclerView(rootFragmentView);
+        initializeProgressBar(rootFragmentView);
+        loadSchedule();
         return rootFragmentView;
+    }
+
+    private void loadSchedule() {
+        mPresenter.onScheduleRequest();
+    }
+
+    private void initializeProgressBar(View rootFragmentView) {
+        mProgressBar = rootFragmentView.findViewById(R.id.load_progress_bar_schedule);
     }
 
     private void initializeRecyclerView(View rootFragmentView) {
         mRecyclerView = rootFragmentView.findViewById(R.id.schedule_recycler_view);
         LinearLayoutManager manager = new LinearLayoutManager(this.getContext());
         mRecyclerView.setLayoutManager(manager);
+        mAdapter = new ScheduleAdapter(Schedule.getEmptySchedule());
         mRecyclerView.setAdapter(mAdapter);
     }
-
 
     @Override
     public void onDestroy() {
@@ -68,10 +79,18 @@ public class ScheduleFragment extends Fragment implements ScheduleContract.View 
 
     @Override
     public void updateSchedule(Schedule schedule) {
-        if(mAdapter == null) {
-            mAdapter = new ScheduleAdapter(schedule);
-            return;
-        }
         mAdapter.updateSchedule(schedule);
+    }
+
+    @Override
+    public void showLoading() {
+        mProgressBar.setVisibility(View.VISIBLE);
+        mRecyclerView.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void hideLoading() {
+        mProgressBar.setVisibility(View.GONE);
+        mRecyclerView.setVisibility(View.VISIBLE);
     }
 }

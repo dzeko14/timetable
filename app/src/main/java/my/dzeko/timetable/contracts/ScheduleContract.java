@@ -8,6 +8,8 @@ import my.dzeko.timetable.observers.interfaces.IScheduleObserver;
 public class ScheduleContract {
     public interface View extends IView{
         void updateSchedule(Schedule schedule);
+        void showLoading();
+        void hideLoading();
     }
 
     public interface Presenter extends IPresenter, IScheduleObserver {
