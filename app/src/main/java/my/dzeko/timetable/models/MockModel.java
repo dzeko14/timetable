@@ -108,5 +108,10 @@ public class MockModel implements IModel{
         return "It";
     }
 
+    @Override
+    public void parseSchedule(String groupName) {
+
+    }
+
 
 }

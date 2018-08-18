@@ -6,7 +6,7 @@ import android.os.Parcelable;
 import android.support.v7.widget.RecyclerView;
 
 // TODO: Create save RecyclerView's state mechanism
-public class AdapterUtils {
+public abstract class AdapterUtils {
     private static final String ADAPTER_STATE = "adapter_state";
 
     public static void saveState(RecyclerView rv) {

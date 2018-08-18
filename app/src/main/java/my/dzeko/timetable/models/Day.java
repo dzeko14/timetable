@@ -79,58 +79,8 @@ public class Day implements Comparable<Day> {
         this.mIsSelected = mIsSelected;
     }
 
-/*    public static ArrayList<Day> createScheduleTemplate() {
-        DateUtils dateUtils = DateUtils.getInstance();
-        ArrayList<Day> days = new ArrayList<>(12);
-        for (int i = 0; i < 6; i++) {
-            days.add(new Day(i,
-                    0,
-                    dateUtils.DAYS_NAMES[i],
-                    dateUtils.getDate(i,
-                            0),
-                    dateUtils.WEEKS_NAMES[0],
-                    i == 0)
-            );
-        }
-
-        for (int i = 0; i < 6; i++) {
-            days.add(new Day(i,
-                    1,
-                    dateUtils.DAYS_NAMES[i],
-                    dateUtils.getDate(i, 1),
-                    dateUtils.WEEKS_NAMES[1],
-                    i == 0)
-            );
-        }
-
-        return days;
-    } */
-
-    public static void removeEmptyDaysFromSchedule(ArrayList<Day> schedule) {
-        for (int i = 0; i < schedule.size(); i++) {
-            Day day = schedule.get(i);
-            if (day.getSubjectAmount() == 0) {
-                if(day.isFirstDayInTheWeek()){
-                    try {
-                        schedule.get(i + 1).setIsFirstDayInTheWeek(true);
-                    } catch (IndexOutOfBoundsException e) {
-                        Log.d("MyLog", "Empty week");
-                    }
-                }
-
-                schedule.remove(day);
-                i--;
-            }
-        }
-    }
-
-
-    public void sortSubjects(){
-        Collections.sort(mSubjects);
-    }
-
-    public void removeAllSubjects(){
-        mSubjects.clear();
+    public int getSubjectsAmount() {
+        return mSubjects.size();
     }
 
     @Override

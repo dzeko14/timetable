@@ -1,5 +1,6 @@
 package my.dzeko.timetable.contracts;
 
+import android.content.Context;
 import android.support.v4.app.Fragment;
 
 import my.dzeko.timetable.interfaces.IPresenter;
@@ -24,7 +25,6 @@ public class MainContract {
         void removeGroupNameNavigationDrawer(int removeItemId);
         void setCheckedGroupNameNavigationView(int id, boolean isChecked);
 
-        void showLoading();
-        void hideLoading();
+        void startActivity(Class c);
     }
 }

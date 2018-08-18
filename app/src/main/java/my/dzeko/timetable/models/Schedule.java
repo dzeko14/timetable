@@ -1,12 +1,9 @@
 package my.dzeko.timetable.models;
 
-import android.support.annotation.NonNull;
-
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
-public class Schedule implements Iterable<Day> {
+public class Schedule {
     private String mGroupName;
     private List<Day> mSchedule;
 
@@ -29,13 +26,6 @@ public class Schedule implements Iterable<Day> {
 
     public void setSchedule(List<Day> schedule) {
         this.mSchedule = schedule;
-    }
-
-    @NonNull
-    @Override
-    public Iterator<Day> iterator() {
-        //TODO: Implement Iterable interface
-        return null;
     }
 
 }

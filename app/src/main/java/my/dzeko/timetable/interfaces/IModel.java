@@ -9,4 +9,5 @@ public interface IModel {
     Schedule getSelectedSchedule();
     void selectSchedule(String groupName);
     String getSelectedScheduleGroupName();
+    void parseSchedule(String groupName);
 }

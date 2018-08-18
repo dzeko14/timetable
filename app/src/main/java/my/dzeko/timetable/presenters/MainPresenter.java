@@ -1,5 +1,6 @@
 package my.dzeko.timetable.presenters;
 
+import android.content.Intent;
 import android.support.v4.app.Fragment;
 
 import java.util.HashMap;
@@ -12,6 +13,7 @@ import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.functions.Action;
 import io.reactivex.schedulers.Schedulers;
 import my.dzeko.timetable.R;
+import my.dzeko.timetable.activities.AddScheduleActivity;
 import my.dzeko.timetable.contracts.MainContract;
 import my.dzeko.timetable.fragments.CalendarFragment;
 import my.dzeko.timetable.fragments.ScheduleFragment;
@@ -120,9 +122,15 @@ public class MainPresenter implements MainContract.Presenter {
             }
             mView.setCheckedGroupNameNavigationView(itemId, true);
             mPreviousGroupNameNavigationItemId = itemId;
+            mView.closeDrawer();
             return true;
         } else {
-            //TODO: Implement non-groups menuItem clicks
+            switch (itemId) {
+                case R.id.add_schedule_navigation:
+                    mView.startActivity(AddScheduleActivity.class);
+                    mView.closeDrawer();
+                    break;
+            }
         }
         return false;
     }

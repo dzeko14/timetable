@@ -1,16 +1,23 @@
 <resources>
     <string name="app_name">Timetable</string>
 
+    <!--Main Activity-->
     <!--Bottom Navigation View Menu-->
     <string name="schedule_bottom_navigation">Розклад</string>
     <string name="calendar_bottom_navigation">Календар</string>
     <string name="editing_bottom_navigation">Редагування</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Coming soon!</string>
-
     <!--Navigation View Menu-->
     <string name="settings_navigation">Налаштування</string>
     <string name="add_schedule_navigation">Додати розклад</string>
     <string name="schedule_item_navigation">Групи</string>
+
+    <!--Calendar Fragment-->
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Coming soon!</string>
+
+    <!--Add Schedule Activity-->
+    <string name="confirmGroupName_button_text_addGroupActivity">Ок</string>
+    <string name="createGroup_button_text_addGroupActivity">Створити</string>
+    <string name="groupName_editText_hint_addScheduleActivity">Введіть назву групи</string>
 </resources>
