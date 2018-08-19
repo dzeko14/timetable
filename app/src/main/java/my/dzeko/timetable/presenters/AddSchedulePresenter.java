@@ -1,15 +1,14 @@
 package my.dzeko.timetable.presenters;
 
-import android.annotation.SuppressLint;
 import android.text.TextUtils;
 
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.observers.DisposableObserver;
 import my.dzeko.timetable.R;
-import my.dzeko.timetable.api.ApiBuilder;
 import my.dzeko.timetable.contracts.AddScheduleContract;
 import my.dzeko.timetable.interfaces.IModel;
 import my.dzeko.timetable.models.MockModel;
+import my.dzeko.timetable.models.Schedule;
+import my.dzeko.timetable.observers.ScheduleObservable;
+import my.dzeko.timetable.services.ParseScheduleService;
 
 public class AddSchedulePresenter implements AddScheduleContract.Presenter {
     private AddScheduleContract.View mView;
@@ -18,6 +17,7 @@ public class AddSchedulePresenter implements AddScheduleContract.Presenter {
     public AddSchedulePresenter(AddScheduleContract.View view) {
         this.mView = view;
         mModel = MockModel.getInstance();
+        ScheduleObservable.getInstance().registerObserver(this);
     }
 
     @Override
@@ -30,53 +30,33 @@ public class AddSchedulePresenter implements AddScheduleContract.Presenter {
                 createGroupSchedule();
                 return true;
         }
-
         return false;
     }
 
-    @SuppressLint("CheckResult")
     private void parseGroupSchedule() {
-        String groupName = mView.getGroupName();
+        String groupName = mView.getGroupName().toUpperCase();
         if(TextUtils.isEmpty(groupName)) {
             mView.showEmptyGroupName();
             return;
         }
-
         mView.showLoading();
-        String mGroupName = groupName.toUpperCase();
-
-        //TODO: Вынести парсинг в модель
-        mModel.parseSchedule(mGroupName);
-
-        ApiBuilder.buildScheduleServiceCompletable(mGroupName)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeWith(new DisposableObserver<Object>() {
-            @Override
-            public void onNext(Object o) {
-
-            }
-
-            @Override
-            public void onError(Throwable e) {
-
-            }
-
-            @Override
-            public void onComplete() {
-                mView.hideLoading();
-                mView.close();
-            }
-        });
+        mView.startService(groupName, ParseScheduleService.class);
     }
 
 
 
     private void createGroupSchedule() {
-
+        //TODO: Implement schedule creating manually
     }
 
     @Override
     public void destroy() {
         mView = null;
+        ScheduleObservable.getInstance().unregisterObserver(this);
+    }
+
+    @Override
+    public void onSelectedScheduleChanged(Schedule schedule) {
+        mView.close();
     }
 }

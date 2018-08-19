@@ -1,5 +1,6 @@
 package my.dzeko.timetable.activities;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -9,6 +10,7 @@ import android.widget.Toast;
 import my.dzeko.timetable.R;
 import my.dzeko.timetable.contracts.AddScheduleContract;
 import my.dzeko.timetable.presenters.AddSchedulePresenter;
+import my.dzeko.timetable.services.ParseScheduleService;
 
 public class AddScheduleActivity extends AppCompatActivity implements AddScheduleContract.View {
     private AddScheduleContract.Presenter mPresenter;
@@ -77,5 +79,13 @@ public class AddScheduleActivity extends AppCompatActivity implements AddSchedul
     @Override
     public void close() {
         onBackPressed();
+    }
+
+    @Override
+    public void startService(String groupName, Class c) {
+        Intent intent = new Intent(this, c);
+        intent.putExtra(ParseScheduleService.PARSING_GROUP_NAME, groupName);
+
+        startService(intent);
     }
 }

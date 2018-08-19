@@ -1,11 +1,21 @@
 package my.dzeko.timetable.models;
 
+import android.content.Context;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import io.reactivex.Single;
+import io.reactivex.SingleObserver;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Function;
+import io.reactivex.schedulers.Schedulers;
+import my.dzeko.timetable.api.ApiBuilder;
 import my.dzeko.timetable.interfaces.IModel;
 import my.dzeko.timetable.observers.ScheduleObservable;
+import my.dzeko.timetable.utils.ScheduleUtils;
 
 // A mock model
 public class MockModel implements IModel{
@@ -109,9 +119,47 @@ public class MockModel implements IModel{
     }
 
     @Override
-    public void parseSchedule(String groupName) {
+    public void parseSchedule(final String groupName) {
+        Single<ApiRespond> schedule = ApiBuilder.buildScheduleServiceObservable(groupName);
 
+        schedule.subscribeOn(Schedulers.io())
+                .observeOn(Schedulers.computation())
+                .map(new Function<ApiRespond, Schedule>() {
+                    @Override
+                    public Schedule apply(ApiRespond apiRespond) throws Exception {
+                        return ScheduleUtils.fetchSchedule(apiRespond, groupName);
+                    }
+                })
+                .observeOn(Schedulers.io())
+                .map(new Function<Schedule, Schedule>() {
+                    @Override
+                    public Schedule apply(Schedule schedule) throws Exception {
+                        //Writing to DataBase
+                        TimeUnit.SECONDS.sleep(3);
+                        //TODO: Create DataBase
+                        return schedule;
+                    }
+                })
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new SingleObserver<Schedule>() {
+                    private Disposable mDisposable;
+
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                        mDisposable = d;
+                    }
+
+                    @Override
+                    public void onSuccess(Schedule schedule) {
+                        ScheduleObservable.getInstance().notifySelectedScheduleChanged(schedule);
+                        mDisposable.dispose();
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        //TODO Implement on error
+                    }
+                });
     }
-
 
 }
