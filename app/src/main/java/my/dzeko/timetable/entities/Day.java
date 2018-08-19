@@ -1,10 +1,8 @@
-package my.dzeko.timetable.models;
+package my.dzeko.timetable.entities;
 
 import android.support.annotation.NonNull;
-import android.util.Log;
 
 import java.util.ArrayList;
-import java.util.Collections;
 
 public class Day implements Comparable<Day> {
     private int mId;

@@ -1,4 +1,4 @@
-package my.dzeko.timetable.models;
+package my.dzeko.timetable.entities;
 
 import java.util.ArrayList;
 import java.util.List;

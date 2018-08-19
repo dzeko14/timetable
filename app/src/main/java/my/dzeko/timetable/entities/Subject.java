@@ -1,4 +1,4 @@
-package my.dzeko.timetable.models;
+package my.dzeko.timetable.entities;
 
 import android.support.annotation.NonNull;
 

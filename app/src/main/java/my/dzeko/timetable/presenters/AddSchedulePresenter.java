@@ -6,7 +6,7 @@ import my.dzeko.timetable.R;
 import my.dzeko.timetable.contracts.AddScheduleContract;
 import my.dzeko.timetable.interfaces.IModel;
 import my.dzeko.timetable.models.MockModel;
-import my.dzeko.timetable.models.Schedule;
+import my.dzeko.timetable.entities.Schedule;
 import my.dzeko.timetable.observers.ScheduleObservable;
 import my.dzeko.timetable.services.ParseScheduleService;
 

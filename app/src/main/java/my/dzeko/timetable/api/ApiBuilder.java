@@ -3,7 +3,7 @@ package my.dzeko.timetable.api;
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 
 import io.reactivex.Single;
-import my.dzeko.timetable.models.ApiRespond;
+import my.dzeko.timetable.entities.ApiRespond;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 

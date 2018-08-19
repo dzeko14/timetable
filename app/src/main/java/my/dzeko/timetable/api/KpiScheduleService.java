@@ -1,7 +1,7 @@
 package my.dzeko.timetable.api;
 
 import io.reactivex.Single;
-import my.dzeko.timetable.models.ApiRespond;
+import my.dzeko.timetable.entities.ApiRespond;
 import retrofit2.http.GET;
 import retrofit2.http.Path;
 

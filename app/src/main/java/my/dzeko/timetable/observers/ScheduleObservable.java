@@ -2,7 +2,7 @@ package my.dzeko.timetable.observers;
 
 import java.util.List;
 
-import my.dzeko.timetable.models.Schedule;
+import my.dzeko.timetable.entities.Schedule;
 import my.dzeko.timetable.observers.interfaces.IScheduleObserver;
 import my.dzeko.timetable.observers.interfaces.Observable;
 

@@ -14,7 +14,7 @@ import io.reactivex.schedulers.Schedulers;
 import my.dzeko.timetable.contracts.ScheduleContract;
 import my.dzeko.timetable.interfaces.IModel;
 import my.dzeko.timetable.models.MockModel;
-import my.dzeko.timetable.models.Schedule;
+import my.dzeko.timetable.entities.Schedule;
 import my.dzeko.timetable.observers.ScheduleObservable;
 
 public class SchedulePresenter implements ScheduleContract.Presenter {

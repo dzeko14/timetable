@@ -1,7 +1,5 @@
 package my.dzeko.timetable.models;
 
-import android.content.Context;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -13,6 +11,10 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 import my.dzeko.timetable.api.ApiBuilder;
+import my.dzeko.timetable.entities.ApiRespond;
+import my.dzeko.timetable.entities.Day;
+import my.dzeko.timetable.entities.Schedule;
+import my.dzeko.timetable.entities.Subject;
 import my.dzeko.timetable.interfaces.IModel;
 import my.dzeko.timetable.observers.ScheduleObservable;
 import my.dzeko.timetable.utils.ScheduleUtils;
@@ -61,35 +63,6 @@ public class MockModel implements IModel{
         groups.add("It");
         groups.add("Ip");
         groups.add("Iq");
-//        groups.add("Iw");
-//        groups.add("Ie");
-//        groups.add("Ir");
-//        groups.add("Iy");
-//        groups.add("Iu");
-//        groups.add("Ii");
-//        groups.add("Io");
-//        groups.add("I[");
-//        groups.add("Ia");
-//        groups.add("Is");
-//        groups.add("Id");
-//        groups.add("If");
-//        groups.add("Ig");
-//        groups.add("Ih");
-//        groups.add("Ij");
-//        groups.add("Ik");
-//        groups.add("Il");
-//        groups.add("I;");
-//        groups.add("I'");
-//        groups.add("Iz");
-//        groups.add("Ix");
-//        groups.add("Ic");
-//        groups.add("Iv");
-//        groups.add("Ib");
-//        groups.add("In");
-//        groups.add("Im");
-//        groups.add("I,");
-//        groups.add("I.");
-//        groups.add("I/");
         return groups;
     }
 

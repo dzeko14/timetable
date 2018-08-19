@@ -2,7 +2,7 @@ package my.dzeko.timetable.contracts;
 
 import my.dzeko.timetable.interfaces.IPresenter;
 import my.dzeko.timetable.interfaces.IView;
-import my.dzeko.timetable.models.Schedule;
+import my.dzeko.timetable.entities.Schedule;
 import my.dzeko.timetable.observers.interfaces.IScheduleObserver;
 
 public class ScheduleContract {

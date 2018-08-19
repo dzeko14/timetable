@@ -3,10 +3,10 @@ package my.dzeko.timetable.utils;
 import java.util.ArrayList;
 import java.util.List;
 
-import my.dzeko.timetable.models.ApiRespond;
-import my.dzeko.timetable.models.Day;
-import my.dzeko.timetable.models.Schedule;
-import my.dzeko.timetable.models.Subject;
+import my.dzeko.timetable.entities.ApiRespond;
+import my.dzeko.timetable.entities.Day;
+import my.dzeko.timetable.entities.Schedule;
+import my.dzeko.timetable.entities.Subject;
 
 public abstract class ScheduleUtils {
     public static Schedule fetchSchedule(ApiRespond apiRespond, String groupName) {

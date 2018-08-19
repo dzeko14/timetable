@@ -14,7 +14,7 @@ import android.view.ViewGroup;
 import my.dzeko.timetable.R;
 import my.dzeko.timetable.adapters.ScheduleAdapter;
 import my.dzeko.timetable.contracts.ScheduleContract;
-import my.dzeko.timetable.models.Schedule;
+import my.dzeko.timetable.entities.Schedule;
 import my.dzeko.timetable.presenters.SchedulePresenter;
 
 /**
