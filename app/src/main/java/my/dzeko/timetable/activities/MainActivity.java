@@ -43,7 +43,6 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         initializeBottomNavigationView();
         initializeToolBar();
         initializeFragmentLayout();
-        initializePresenter();
         initializeNavigationView();
         loadGroupNames();
     }
@@ -172,5 +171,10 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     public void hideLoading() {
         mFragmentLayout.setVisibility(View.VISIBLE);
         mProgressBar.setVisibility(View.GONE);
+    }
+
+    @Override
+    public Context getContext() {
+        return getApplicationContext();
     }
 }

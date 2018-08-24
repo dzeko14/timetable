@@ -6,7 +6,7 @@ import android.os.IBinder;
 import android.support.annotation.Nullable;
 
 import my.dzeko.timetable.interfaces.IModel;
-import my.dzeko.timetable.models.MockModel;
+import my.dzeko.timetable.models.Model;
 
 public class ParseScheduleService extends Service {
     public static final String PARSING_GROUP_NAME = "group_name";
@@ -17,7 +17,7 @@ public class ParseScheduleService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         String groupName = intent.getStringExtra(PARSING_GROUP_NAME);
-        IModel model = MockModel.getInstance();
+        IModel model = Model.getInstance();
 
         model.parseSchedule(groupName);
 

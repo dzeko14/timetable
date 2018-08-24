@@ -1,12 +1,22 @@
 package my.dzeko.timetable.entities;
 
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.ForeignKey;
+import android.arch.persistence.room.Ignore;
+import android.arch.persistence.room.PrimaryKey;
 import android.support.annotation.NonNull;
 
 import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
 
+import static android.arch.persistence.room.ForeignKey.CASCADE;
+
+@Entity
 public class Subject implements Comparable<Subject> {
+    @PrimaryKey(autoGenerate = true)
+    private long mId;
+
     @SerializedName("day_number")
     private int mDayId;
 
@@ -33,6 +43,7 @@ public class Subject implements Comparable<Subject> {
 
     private String mGroup;
 
+    @Ignore
     public Subject() {
         //Constructor for use in serialization
     }
@@ -132,6 +143,18 @@ public class Subject implements Comparable<Subject> {
         }
 
         day.attachSubject(this);
+    }
+
+    public long getId() {
+        return mId;
+    }
+
+    public void setId(long mId) {
+        this.mId = mId;
+    }
+
+    public void setType(String mType) {
+        this.mType = mType;
     }
 
     @Override

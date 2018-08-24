@@ -9,13 +9,11 @@ import my.dzeko.timetable.entities.Schedule;
 import my.dzeko.timetable.entities.Subject;
 
 public abstract class ScheduleUtils {
-    public static Schedule fetchSchedule(ApiRespond apiRespond, String groupName) {
-        List<Subject> subjects = apiRespond.getData();
+    public static Schedule fetchScheduleFromList(List<Subject> subjects, String groupName) {
         List<Day> days = createDaysList();
 
         for (Subject s : subjects) {
             //Set name to the subject, cause parsed list of subjects hadn't it
-            s.setGroup(groupName);
             for (Day d: days) {
                 if(d.getId() == s.getDayId() && d.getWeekId() == s.getWeekId())
                     d.attachSubject(s);

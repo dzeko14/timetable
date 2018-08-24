@@ -1,5 +1,6 @@
 package my.dzeko.timetable.activities;
 
+import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -67,6 +68,11 @@ public class AddScheduleActivity extends AppCompatActivity implements AddSchedul
     }
 
     @Override
+    public Context getContext() {
+        return getApplicationContext();
+    }
+
+    @Override
     public String getGroupName() {
         return mGroupNameEditText.getText().toString();
     }
@@ -78,7 +84,7 @@ public class AddScheduleActivity extends AppCompatActivity implements AddSchedul
 
     @Override
     public void close() {
-        onBackPressed();
+        finish();
     }
 
     @Override

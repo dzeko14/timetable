@@ -13,8 +13,8 @@ import io.reactivex.schedulers.Schedulers;
 
 import my.dzeko.timetable.contracts.ScheduleContract;
 import my.dzeko.timetable.interfaces.IModel;
-import my.dzeko.timetable.models.MockModel;
 import my.dzeko.timetable.entities.Schedule;
+import my.dzeko.timetable.models.Model;
 import my.dzeko.timetable.observers.ScheduleObservable;
 
 public class SchedulePresenter implements ScheduleContract.Presenter {
@@ -25,7 +25,7 @@ public class SchedulePresenter implements ScheduleContract.Presenter {
 
     public SchedulePresenter(ScheduleContract.View view) {
         this.mView = view;
-        mModel = MockModel.getInstance();
+        mModel = Model.getInstance();
         ScheduleObservable.getInstance().registerObserver(this);
     }
 
