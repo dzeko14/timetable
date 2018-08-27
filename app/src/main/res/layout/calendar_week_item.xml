@@ -1,12 +1,84 @@
 <?xml version="1.0" encoding="utf-8"?>
-<merge xmlns:android="http://schemas.android.com/apk/res/android">
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
 
-    <Button
-        android:layout_width="@dimen/calendar_week_item_size"
-        android:layout_height="@dimen/calendar_week_item_size"
-        android:layout_margin="0.5dp"
-        android:background="@drawable/item_week_calendar_background_selector"
-        android:textColor="@drawable/item_week_calendar_text_color_selector"
-        android:textSize="@dimen/calendar_week_item_text_size"
-        android:enabled="false"/>
-</merge>
+    <my.dzeko.timetable.ui.views.CalendarDayButton
+        android:id="@+id/calendar_day_button_1"
+        style="@style/CalendarWeekDayItem"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toStartOf="@+id/calendar_day_button_2"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="14" />
+
+    <my.dzeko.timetable.ui.views.CalendarDayButton
+        android:id="@+id/calendar_day_button_2"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        style="@style/CalendarWeekDayItem"
+        app:layout_constraintEnd_toStartOf="@+id/calendar_day_button_3"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/calendar_day_button_1"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="14" />
+
+    <my.dzeko.timetable.ui.views.CalendarDayButton
+        android:id="@+id/calendar_day_button_3"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        style="@style/CalendarWeekDayItem"
+        app:layout_constraintEnd_toStartOf="@+id/calendar_day_button_4"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/calendar_day_button_2"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="14" />
+
+    <my.dzeko.timetable.ui.views.CalendarDayButton
+        android:id="@+id/calendar_day_button_4"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        style="@style/CalendarWeekDayItem"
+        app:layout_constraintEnd_toStartOf="@+id/calendar_day_button_5"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/calendar_day_button_3"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="14" />
+
+    <my.dzeko.timetable.ui.views.CalendarDayButton
+        android:id="@+id/calendar_day_button_5"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        style="@style/CalendarWeekDayItem"
+        app:layout_constraintEnd_toStartOf="@+id/calendar_day_button_6"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/calendar_day_button_4"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="14" />
+
+    <my.dzeko.timetable.ui.views.CalendarDayButton
+        android:id="@+id/calendar_day_button_6"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        style="@style/CalendarWeekDayItem"
+        app:layout_constraintEnd_toStartOf="@+id/calendar_day_button_7"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/calendar_day_button_5"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="14" />
+
+    <my.dzeko.timetable.ui.views.CalendarDayButton
+        android:id="@+id/calendar_day_button_7"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        style="@style/CalendarWeekDayItem"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/calendar_day_button_6"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="14" />
+</android.support.constraint.ConstraintLayout>

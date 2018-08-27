@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <my.dzeko.timetable.ui.views.CalendarDayTextView
+        android:id="@+id/calendar_day_text_view_1"
+        style="@style/CalendarWeekDayHeader"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toStartOf="@+id/calendar_day_text_view_2"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:text="@string/item_week_calendar_monday" />
+
+    <my.dzeko.timetable.ui.views.CalendarDayTextView
+        android:id="@+id/calendar_day_text_view_2"
+        style="@style/CalendarWeekDayHeader"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toStartOf="@+id/calendar_day_text_view_3"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/calendar_day_text_view_1"
+        app:layout_constraintTop_toTopOf="parent"
+        android:text="@string/item_week_calendar_tuesday" />
+
+    <my.dzeko.timetable.ui.views.CalendarDayTextView
+        android:id="@+id/calendar_day_text_view_3"
+        style="@style/CalendarWeekDayHeader"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toStartOf="@+id/calendar_day_text_view_4"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/calendar_day_text_view_2"
+        app:layout_constraintTop_toTopOf="parent"
+        android:text="@string/item_week_calendar_wednesday" />
+
+    <my.dzeko.timetable.ui.views.CalendarDayTextView
+        android:id="@+id/calendar_day_text_view_4"
+        style="@style/CalendarWeekDayHeader"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toStartOf="@+id/calendar_day_text_view_5"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/calendar_day_text_view_3"
+        app:layout_constraintTop_toTopOf="parent"
+        android:text="@string/item_week_calendar_thursday"/>
+
+    <my.dzeko.timetable.ui.views.CalendarDayTextView
+        android:id="@+id/calendar_day_text_view_5"
+        style="@style/CalendarWeekDayHeader"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toStartOf="@+id/calendar_day_text_view_6"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/calendar_day_text_view_4"
+        app:layout_constraintTop_toTopOf="parent"
+        android:text="@string/item_week_calendar_friday" />
+
+    <my.dzeko.timetable.ui.views.CalendarDayTextView
+        android:id="@+id/calendar_day_text_view_6"
+        style="@style/CalendarWeekDayHeader"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toStartOf="@+id/calendar_day_text_view_7"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/calendar_day_text_view_5"
+        app:layout_constraintTop_toTopOf="parent"
+        android:text="@string/item_week_calendar_saturday"/>
+
+    <my.dzeko.timetable.ui.views.CalendarDayTextView
+        android:id="@+id/calendar_day_text_view_7"
+        style="@style/CalendarWeekDayHeader"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/calendar_day_text_view_6"
+        app:layout_constraintTop_toTopOf="parent"
+        android:text="@string/item_week_calendar_sunday"/>
+</android.support.constraint.ConstraintLayout>

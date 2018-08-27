@@ -20,148 +20,105 @@
         tools:text="Text view"
         android:textSize="24sp"/>
 
-    <TableLayout
-        android:id="@+id/calendar_fragment_calendar_unit"
+    <include
+        android:id="@+id/calendar_day_header"
+        layout="@layout/calendar_week_header_item"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="4dp"
+        android:layout_marginLeft="4dp"
+        android:layout_marginRight="4dp"
+        android:layout_marginStart="4dp"
         android:layout_marginTop="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/month_fragment_calendar_unit">
+        app:layout_constraintTop_toBottomOf="@+id/month_fragment_calendar_unit" />
 
-        <TableRow>
+    <include
+        android:id="@+id/calendar_day_numbers_1"
+        layout="@layout/calendar_week_item"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="4dp"
+        android:layout_marginLeft="4dp"
+        android:layout_marginRight="4dp"
+        android:layout_marginStart="4dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/calendar_day_header" />
 
-            <TextView
-                style="@style/CalendarWeekDaysName"
-                android:text="@string/item_week_calendar_monday" />
+    <include
+        android:id="@+id/calendar_day_numbers_2"
+        layout="@layout/calendar_week_item"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="4dp"
+        android:layout_marginLeft="4dp"
+        android:layout_marginRight="4dp"
+        android:layout_marginStart="4dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/calendar_day_numbers_1" />
 
-            <TextView
-                style="@style/CalendarWeekDaysName"
-                android:text="@string/item_week_calendar_tuesday" />
+    <include
+        android:id="@+id/calendar_day_numbers_3"
+        layout="@layout/calendar_week_item"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="4dp"
+        android:layout_marginLeft="4dp"
+        android:layout_marginRight="4dp"
+        android:layout_marginStart="4dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/calendar_day_numbers_2" />
 
-            <TextView
-                style="@style/CalendarWeekDaysName"
-                android:text="@string/item_week_calendar_wednesday" />
+    <include
+        android:id="@+id/calendar_day_numbers_4"
+        layout="@layout/calendar_week_item"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="4dp"
+        android:layout_marginLeft="4dp"
+        android:layout_marginRight="4dp"
+        android:layout_marginStart="4dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/calendar_day_numbers_3" />
 
-            <TextView
-                style="@style/CalendarWeekDaysName"
-                android:text="@string/item_week_calendar_thursday" />
+    <include
+        android:id="@+id/calendar_day_numbers_5"
+        layout="@layout/calendar_week_item"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="4dp"
+        android:layout_marginLeft="4dp"
+        android:layout_marginRight="4dp"
+        android:layout_marginStart="4dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/calendar_day_numbers_4" />
 
-            <TextView
-                style="@style/CalendarWeekDaysName"
-                android:text="@string/item_week_calendar_friday" />
+    <include
+        android:id="@+id/calendar_day_numbers_6"
+        layout="@layout/calendar_week_item"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="4dp"
+        android:layout_marginLeft="4dp"
+        android:layout_marginRight="4dp"
+        android:layout_marginStart="4dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/calendar_day_numbers_5" />
 
-            <TextView
-                style="@style/CalendarWeekDaysName"
-                android:text="@string/item_week_calendar_saturday" />
 
-            <TextView
-                style="@style/CalendarWeekDaysName"
-                android:text="@string/item_week_calendar_sunday" />
-        </TableRow>
-
-        <TableRow>
-
-            <include layout="@layout/calendar_week_item" />
-
-            <include layout="@layout/calendar_week_item" />
-
-            <include layout="@layout/calendar_week_item" />
-
-            <include layout="@layout/calendar_week_item" />
-
-            <include layout="@layout/calendar_week_item" />
-
-            <include layout="@layout/calendar_week_item" />
-
-            <include layout="@layout/calendar_week_item" />
-        </TableRow>
-
-        <TableRow>
-
-            <include layout="@layout/calendar_week_item" />
-
-            <include layout="@layout/calendar_week_item" />
-
-            <include layout="@layout/calendar_week_item" />
-
-            <include layout="@layout/calendar_week_item" />
-
-            <include layout="@layout/calendar_week_item" />
-
-            <include layout="@layout/calendar_week_item" />
-
-            <include layout="@layout/calendar_week_item" />
-        </TableRow>
-
-        <TableRow>
-
-            <include layout="@layout/calendar_week_item" />
-
-            <include layout="@layout/calendar_week_item" />
-
-            <include layout="@layout/calendar_week_item" />
-
-            <include layout="@layout/calendar_week_item" />
-
-            <include layout="@layout/calendar_week_item" />
-
-            <include layout="@layout/calendar_week_item" />
-
-            <include layout="@layout/calendar_week_item" />
-        </TableRow>
-
-        <TableRow>
-
-            <include layout="@layout/calendar_week_item" />
-
-            <include layout="@layout/calendar_week_item" />
-
-            <include layout="@layout/calendar_week_item" />
-
-            <include layout="@layout/calendar_week_item" />
-
-            <include layout="@layout/calendar_week_item" />
-
-            <include layout="@layout/calendar_week_item" />
-
-            <include layout="@layout/calendar_week_item" />
-        </TableRow>
-
-        <TableRow>
-
-            <include layout="@layout/calendar_week_item" />
-
-            <include layout="@layout/calendar_week_item" />
-
-            <include layout="@layout/calendar_week_item" />
-
-            <include layout="@layout/calendar_week_item" />
-
-            <include layout="@layout/calendar_week_item" />
-
-            <include layout="@layout/calendar_week_item" />
-
-            <include layout="@layout/calendar_week_item" />
-        </TableRow>
-
-        <TableRow>
-
-            <include layout="@layout/calendar_week_item" />
-
-            <include layout="@layout/calendar_week_item" />
-
-            <include layout="@layout/calendar_week_item" />
-
-            <include layout="@layout/calendar_week_item" />
-
-            <include layout="@layout/calendar_week_item" />
-
-            <include layout="@layout/calendar_week_item" />
-
-            <include layout="@layout/calendar_week_item" />
-        </TableRow>
-    </TableLayout>
 
 </android.support.constraint.ConstraintLayout>
 

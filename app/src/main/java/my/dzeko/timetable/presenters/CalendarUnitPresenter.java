@@ -20,7 +20,7 @@ public class CalendarUnitPresenter implements CalendarUnitContract.Presenter {
         int daysAmount = DateUtils.getDaysAmountInMonth(MONTH);
         int firstDayInWeek = DateUtils.getFirstDayInWeekNumber(MONTH);
         int dayCount = 1;
-        int weekCount = 1;
+        int weekCount = 0;
 
         for (int i = firstDayInWeek; i < 7; i++) {
             mView.setDayNumber(i, weekCount, dayCount++);
@@ -30,14 +30,14 @@ public class CalendarUnitPresenter implements CalendarUnitContract.Presenter {
             weekCount++;
             for (int i = 0; i < 7; i++){
                 if(dayCount > daysAmount) {
-                    weekCount++;
                     break;
                 }
                 mView.setDayNumber(i, weekCount, dayCount++);
             }
         }
 
-        while (weekCount < 7) {
+        weekCount++;
+        while (weekCount < 6) {
             mView.hideWeekRow(weekCount++);
         }
 
