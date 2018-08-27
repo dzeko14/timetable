@@ -1,15 +1,16 @@
 package my.dzeko.timetable.utils;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
-import my.dzeko.timetable.entities.ApiRespond;
 import my.dzeko.timetable.entities.Day;
 import my.dzeko.timetable.entities.Schedule;
 import my.dzeko.timetable.entities.Subject;
+import my.dzeko.timetable.wrappers.SharedPreferencesWrapper;
 
 public abstract class ScheduleUtils {
-    public static Schedule fetchScheduleFromList(List<Subject> subjects, String groupName) {
+    public static Schedule fetchScheduleFromList(List<Subject> subjects, String groupName) throws ParseException {
         List<Day> days = createDaysList();
 
         for (Subject s : subjects) {
@@ -39,11 +40,18 @@ public abstract class ScheduleUtils {
         return new Schedule(groupName, resultDays);
     }
 
-    private static List<Day> createDaysList() {
+    private static List<Day> createDaysList() throws ParseException {
         final String[] DAY_OF_WEEKS_NAME = {
                 "",
                 "Понеділок", "Вівторок", "Середа", "Четвер", "П'ятниця", "Субота"
         };
+
+        boolean isCurrentFirstWeek = DateUtils.isCurrentWeekFirst(
+                SharedPreferencesWrapper.getInstance().getKeyDate()
+        );
+
+        List<String> firstWeekDates = DateUtils.getFirstWeekDates(isCurrentFirstWeek);
+        List<String> secondWeekDates = DateUtils.getSecondWeekDates(isCurrentFirstWeek);
 
         List<Day> days = new ArrayList<>(12);
         for (int i = 1; i < 7; i++) {
@@ -51,7 +59,7 @@ public abstract class ScheduleUtils {
                     i,
                     1 ,
                     DAY_OF_WEEKS_NAME[i],
-                    "12.01",
+                    firstWeekDates.get(i-1),
                     "Перший тиждень",
                     false
             ));
@@ -62,7 +70,7 @@ public abstract class ScheduleUtils {
                     i,
                     2 ,
                     DAY_OF_WEEKS_NAME[i],
-                    "12.01",
+                    secondWeekDates.get(i-1),
                     "Другий тиждень",
                     false
             ));

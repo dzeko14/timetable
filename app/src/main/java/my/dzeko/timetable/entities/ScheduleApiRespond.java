@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
-public class ApiRespond {
+public class ScheduleApiRespond {
     @SerializedName("data")
     private List<Subject> data;
 

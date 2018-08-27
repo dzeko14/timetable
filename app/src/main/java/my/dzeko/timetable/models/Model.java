@@ -1,5 +1,6 @@
 package my.dzeko.timetable.models;
 
+import java.text.ParseException;
 import java.util.List;
 
 import io.reactivex.SingleObserver;
@@ -11,6 +12,7 @@ import my.dzeko.timetable.entities.Schedule;
 import my.dzeko.timetable.interfaces.IModel;
 import my.dzeko.timetable.observers.ScheduleObservable;
 import my.dzeko.timetable.utils.ApiUtils;
+import my.dzeko.timetable.utils.DateUtils;
 import my.dzeko.timetable.utils.ScheduleUtils;
 import my.dzeko.timetable.wrappers.DatabaseWrapper;
 import my.dzeko.timetable.wrappers.SharedPreferencesWrapper;
@@ -43,10 +45,15 @@ public class Model implements IModel{
         }
 
         //Else get selected schedule from DB
-        return ScheduleUtils.fetchScheduleFromList(
-                DatabaseWrapper.getDatabase().getSubjectDao().getSubjectsByGroupName(selectedSchedule),
-                selectedSchedule
-        );
+        try {
+            return ScheduleUtils.fetchScheduleFromList(
+                    DatabaseWrapper.getDatabase().getSubjectDao().getSubjectsByGroupName(selectedSchedule),
+                    selectedSchedule
+            );
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     @Override
@@ -54,7 +61,7 @@ public class Model implements IModel{
         SharedPreferencesWrapper.getInstance().setSelectedGroup(groupName);
         ScheduleObservable observable = ScheduleObservable.getInstance();
 
-        Schedule schedule;
+        Schedule schedule = null;
 
         if (mCacheData.isScheduleCached(groupName)) {
             //Get selected schedule from cache if its there
@@ -62,8 +69,12 @@ public class Model implements IModel{
         } else {
             //Else get selected schedule from DB
             SubjectDao subjectDao = DatabaseWrapper.getDatabase().getSubjectDao();
-            schedule = ScheduleUtils.fetchScheduleFromList(
-                    subjectDao.getSubjectsByGroupName(groupName), groupName);
+            try {
+                schedule = ScheduleUtils.fetchScheduleFromList(
+                        subjectDao.getSubjectsByGroupName(groupName), groupName);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
         }
 
         observable.notifySelectedScheduleChanged(schedule);
@@ -76,17 +87,20 @@ public class Model implements IModel{
 
     @Override
     public void parseSchedule(final String groupName) {
-        ApiUtils.parse(groupName)
-                .subscribe(new SingleObserver<Schedule>() {
+        //Parsing current week number
+        ApiUtils.parseCurrentWeek().subscribe(new SingleObserver<Integer>() {
             @Override
             public void onSubscribe(Disposable d) {
 
             }
 
             @Override
-            public void onSuccess(Schedule schedule) {
-                ScheduleObservable.getInstance().notifySelectedScheduleChanged(schedule);
-                mCacheData.setCachedSchedule(groupName, schedule);
+            public void onSuccess(Integer weekNumber) {
+                SharedPreferencesWrapper.getInstance().setKeyDate(
+                        DateUtils.createKeyDate(weekNumber == 1)
+                );
+                //Start parsing the schedule
+                startParsingSchedule(groupName);
             }
 
             @Override
@@ -95,6 +109,30 @@ public class Model implements IModel{
                 e.printStackTrace();
             }
         });
+
+
+    }
+
+    private void startParsingSchedule(final String groupName) {
+        ApiUtils.parseSchedule(groupName)
+                .subscribe(new SingleObserver<Schedule>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onSuccess(Schedule schedule) {
+                        ScheduleObservable.getInstance().notifySelectedScheduleChanged(schedule);
+                        mCacheData.setCachedSchedule(groupName, schedule);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        //TODO Implement on error handling
+                        e.printStackTrace();
+                    }
+                });
     }
 
 }

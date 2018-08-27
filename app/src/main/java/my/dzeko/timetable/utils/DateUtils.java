@@ -4,9 +4,11 @@ import android.annotation.SuppressLint;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
@@ -38,6 +40,48 @@ public abstract class DateUtils {
         long diff = TimeUnit.DAYS.convert(diffInMillies, TimeUnit.MILLISECONDS) / 7;
 
         return ((diff % 2) == 0);
+    }
+
+    public static List<String> getFirstWeekDates(boolean isCurrentWeekFirst) {
+        List<String> dates = new ArrayList<>(6);
+        Calendar calendar = new GregorianCalendar();
+
+        if(isCurrentWeekFirst) {
+            calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
+        } else {
+            calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
+            calendar.add(Calendar.WEEK_OF_MONTH, -1);
+        }
+
+        for (int i = 0; i < 6; i++) {
+            String date = String.format("%d.%02d",
+                    calendar.get(Calendar.DAY_OF_MONTH),
+                    calendar.get(Calendar.MONTH) + 1);
+            dates.add(date);
+            calendar.add(Calendar.DAY_OF_MONTH, 1);
+        }
+        return dates;
+    }
+
+    public static List<String> getSecondWeekDates(boolean isCurrentWeekFirst) {
+        List<String> dates = new ArrayList<>(6);
+        Calendar calendar = new GregorianCalendar();
+
+        if(isCurrentWeekFirst) {
+            calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
+            calendar.add(Calendar.WEEK_OF_MONTH, 1);
+        } else {
+            calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
+        }
+
+        for (int i = 0; i < 6; i++) {
+            String date = String.format("%d.%02d",
+                    calendar.get(Calendar.DAY_OF_MONTH),
+                    calendar.get(Calendar.MONTH) + 1);
+            dates.add(date);
+            calendar.add(Calendar.DAY_OF_MONTH, 1);
+        }
+        return dates;
     }
 
     public static String getMonthName(int month) {

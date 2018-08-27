@@ -1,11 +1,16 @@
 package my.dzeko.timetable.api;
 
 import io.reactivex.Observable;
-import my.dzeko.timetable.entities.ApiRespond;
+import io.reactivex.Single;
+import my.dzeko.timetable.entities.ScheduleApiRespond;
+import my.dzeko.timetable.entities.WeekApiRespond;
 import retrofit2.http.GET;
 import retrofit2.http.Path;
 
 public interface KpiScheduleService {
-    @GET("{group_name}/lessons")
-    Observable<ApiRespond> getGroupSchedule(@Path("group_name") String groupName);
+    @GET("groups/{group_name}/lessons")
+    Observable<ScheduleApiRespond> getGroupSchedule(@Path("group_name") String groupName);
+
+    @GET("weeks")
+    Single<WeekApiRespond> getCurrentWeek();
 }

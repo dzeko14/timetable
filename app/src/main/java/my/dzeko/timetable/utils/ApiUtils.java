@@ -10,25 +10,26 @@ import my.dzeko.timetable.api.ApiBuilder;
 import my.dzeko.timetable.db.AppDatabase;
 import my.dzeko.timetable.db.GroupDao;
 import my.dzeko.timetable.db.SubjectDao;
-import my.dzeko.timetable.entities.ApiRespond;
+import my.dzeko.timetable.entities.ScheduleApiRespond;
 import my.dzeko.timetable.entities.Group;
 import my.dzeko.timetable.entities.Schedule;
 import my.dzeko.timetable.entities.Subject;
+import my.dzeko.timetable.entities.WeekApiRespond;
 import my.dzeko.timetable.observers.GroupObservable;
 import my.dzeko.timetable.wrappers.DatabaseWrapper;
 import my.dzeko.timetable.wrappers.SharedPreferencesWrapper;
 
 public abstract class ApiUtils {
-    public static Single<Schedule> parse(final String groupName) {
-        Observable<ApiRespond> schedule = ApiBuilder.buildScheduleServiceObservable(groupName);
+    public static Single<Schedule> parseSchedule(final String groupName) {
+        Observable<ScheduleApiRespond> schedule = ApiBuilder.buildGetGroupScheduleServiceObservable(groupName);
         final AppDatabase database = DatabaseWrapper.getDatabase();
         final SubjectDao subjectDao = database.getSubjectDao();
 
 
         return schedule.subscribeOn(Schedulers.io())
-                .map(new Function<ApiRespond, ApiRespond>() {
+                .map(new Function<ScheduleApiRespond, ScheduleApiRespond>() {
                     @Override
-                    public ApiRespond apply(ApiRespond apiRespond) throws Exception {
+                    public ScheduleApiRespond apply(ScheduleApiRespond apiRespond) throws Exception {
                         //Saving group name to db and preferences
                         final GroupDao groupDao = database.getGroupDao();
                         groupDao.saveGroup(new Group(groupName));
@@ -42,9 +43,9 @@ public abstract class ApiUtils {
                         return apiRespond;
                     }
                 })
-                .flatMap(new Function<ApiRespond, Observable<Subject>>() {
+                .flatMap(new Function<ScheduleApiRespond, Observable<Subject>>() {
                     @Override
-                    public Observable<Subject> apply(ApiRespond apiRespond) throws Exception {
+                    public Observable<Subject> apply(ScheduleApiRespond apiRespond) throws Exception {
                         return Observable.fromIterable(apiRespond.getData());
                     }
                 })
@@ -63,6 +64,18 @@ public abstract class ApiUtils {
                     @Override
                     public Schedule apply(List<Subject> subjects) throws Exception {
                         return ScheduleUtils.fetchScheduleFromList(subjects, groupName);
+                    }
+                });
+    }
+
+    public static Single<Integer> parseCurrentWeek(){
+        Single<WeekApiRespond> currentWeek = ApiBuilder.buildGetCurrentWeekServiceObservable();
+
+        return currentWeek.subscribeOn(Schedulers.io())
+                .map(new Function<WeekApiRespond, Integer>() {
+                    @Override
+                    public Integer apply(WeekApiRespond apiRespond) throws Exception {
+                        return apiRespond.getData();
                     }
                 });
     }

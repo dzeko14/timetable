@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 public class SharedPreferencesWrapper {
     private static final String PREFS_FILE_NAME = "preferences";
     private static final String SELECTED_GROUP = "selected_group";
+    private static final String KEY_DATE = "key_date";
 
     private static SharedPreferencesWrapper mInstance;
 
@@ -37,5 +38,15 @@ public class SharedPreferencesWrapper {
         SharedPreferences.Editor editor = mSharedPreferences.edit();
         editor.remove(SELECTED_GROUP);
         editor.apply();
+    }
+
+    public void setKeyDate(String keyDate) {
+        SharedPreferences.Editor editor = mSharedPreferences.edit();
+        editor.putString(KEY_DATE, keyDate);
+        editor.apply();
+    }
+
+    public String getKeyDate() {
+        return mSharedPreferences.getString(KEY_DATE, null);
     }
 }
