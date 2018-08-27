@@ -13,10 +13,19 @@
     <string name="schedule_item_navigation">Групи</string>
 
     <!--Calendar Fragment-->
-    <string name="hello_blank_fragment">Coming soon!</string>
+    <string name="hello_blank_fragment">Серпень</string>
 
     <!--Add Schedule Activity-->
     <string name="confirmGroupName_button_text_addGroupActivity">Ок</string>
     <string name="createGroup_button_text_addGroupActivity">Створити</string>
     <string name="groupName_editText_hint_addScheduleActivity">Введіть назву групи</string>
+
+    <!--Calendar Week-->
+    <string name="item_week_calendar_monday">Пн</string>
+    <string name="item_week_calendar_tuesday">Вт</string>
+    <string name="item_week_calendar_wednesday">Ср</string>
+    <string name="item_week_calendar_thursday">Чт</string>
+    <string name="item_week_calendar_friday">Пт</string>
+    <string name="item_week_calendar_saturday">Сб</string>
+    <string name="item_week_calendar_sunday">Нд</string>
 </resources>

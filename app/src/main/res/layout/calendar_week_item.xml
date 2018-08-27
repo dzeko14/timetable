@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <Button
+        android:layout_width="@dimen/calendar_week_item_size"
+        android:layout_height="@dimen/calendar_week_item_size"
+        android:layout_margin="0.5dp"
+        android:background="@drawable/item_week_calendar_background_selector"
+        android:textColor="@drawable/item_week_calendar_text_color_selector"
+        android:textSize="@dimen/calendar_week_item_text_size"
+        android:enabled="false"/>
+</merge>

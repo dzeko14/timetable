@@ -15,4 +15,13 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <!--Calendar Week day item-->
+    <style name="CalendarWeekDaysName" >
+        <item name="android:layout_height">@dimen/calendar_week_item_size</item>
+        <item name="android:layout_width">@dimen/calendar_week_item_size</item>
+        <item name="android:textSize">@dimen/calendar_week_item_text_size</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">@color/item_week_calendar_day_text_color</item>
+        <item name="android:background">@color/item_week_calendar_day_color</item>
+    </style>
 </resources>

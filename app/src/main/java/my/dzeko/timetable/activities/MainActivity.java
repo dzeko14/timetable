@@ -136,7 +136,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     public void updateFragment(Fragment fragment) {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.fragments_frame_layout_main_activity, fragment);
-        transaction.commit();
+        transaction.commitNow();
     }
 
     @Override

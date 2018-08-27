@@ -16,4 +16,14 @@
 
     <!--Main Toolbar-->
     <color name="colorTextToolbar">#ffffff</color>
+
+    <!--Calendar week item colors-->
+    <color name="item_week_calendar_solid">#ffffff</color>
+    <color name="item_week_calendar_solid_pressed">#3F51B5</color>
+    <color name="item_week_calendar_solid_selected">#00e676</color>
+    <color name="item_week_calendar_text_color">#000000</color>
+    <color name="item_week_calendar_selected_text_color">#ffffff</color>
+    <color name="item_week_calendar_pressed_text_color">#ffffff</color>
+    <color name="item_week_calendar_day_color">#3F51B5</color>
+    <color name="item_week_calendar_day_text_color">#ffffff</color>
 </resources>
