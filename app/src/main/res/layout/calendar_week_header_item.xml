@@ -9,75 +9,82 @@
         style="@style/CalendarWeekDayHeader"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:text="@string/item_week_calendar_monday"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/calendar_day_text_view_2"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:text="@string/item_week_calendar_monday" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <my.dzeko.timetable.ui.views.CalendarDayTextView
         android:id="@+id/calendar_day_text_view_2"
         style="@style/CalendarWeekDayHeader"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:text="@string/item_week_calendar_tuesday"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/calendar_day_text_view_3"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/calendar_day_text_view_1"
-        app:layout_constraintTop_toTopOf="parent"
-        android:text="@string/item_week_calendar_tuesday" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <my.dzeko.timetable.ui.views.CalendarDayTextView
         android:id="@+id/calendar_day_text_view_3"
         style="@style/CalendarWeekDayHeader"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:text="@string/item_week_calendar_wednesday"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/calendar_day_text_view_4"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/calendar_day_text_view_2"
-        app:layout_constraintTop_toTopOf="parent"
-        android:text="@string/item_week_calendar_wednesday" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <my.dzeko.timetable.ui.views.CalendarDayTextView
         android:id="@+id/calendar_day_text_view_4"
         style="@style/CalendarWeekDayHeader"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:text="@string/item_week_calendar_thursday"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/calendar_day_text_view_5"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/calendar_day_text_view_3"
-        app:layout_constraintTop_toTopOf="parent"
-        android:text="@string/item_week_calendar_thursday"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <my.dzeko.timetable.ui.views.CalendarDayTextView
         android:id="@+id/calendar_day_text_view_5"
         style="@style/CalendarWeekDayHeader"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:text="@string/item_week_calendar_friday"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/calendar_day_text_view_6"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/calendar_day_text_view_4"
-        app:layout_constraintTop_toTopOf="parent"
-        android:text="@string/item_week_calendar_friday" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <my.dzeko.timetable.ui.views.CalendarDayTextView
         android:id="@+id/calendar_day_text_view_6"
         style="@style/CalendarWeekDayHeader"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:text="@string/item_week_calendar_saturday"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/calendar_day_text_view_7"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/calendar_day_text_view_5"
-        app:layout_constraintTop_toTopOf="parent"
-        android:text="@string/item_week_calendar_saturday"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <my.dzeko.timetable.ui.views.CalendarDayTextView
         android:id="@+id/calendar_day_text_view_7"
         style="@style/CalendarWeekDayHeader"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:text="@string/item_week_calendar_sunday"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/calendar_day_text_view_6"
-        app:layout_constraintTop_toTopOf="parent"
-        android:text="@string/item_week_calendar_sunday"/>
+        app:layout_constraintTop_toTopOf="parent" />
 </android.support.constraint.ConstraintLayout>

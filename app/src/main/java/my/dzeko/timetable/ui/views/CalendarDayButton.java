@@ -2,9 +2,10 @@ package my.dzeko.timetable.ui.views;
 
 import android.content.Context;
 import android.support.v7.widget.AppCompatButton;
+import android.support.v7.widget.AppCompatTextView;
 import android.util.AttributeSet;
 
-public class CalendarDayButton extends AppCompatButton {
+public class CalendarDayButton extends AppCompatTextView{ // AppCompatButton {
     public CalendarDayButton(Context context) {
         super(context);
     }

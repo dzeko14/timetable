@@ -14,6 +14,7 @@ import android.widget.TextView;
 import my.dzeko.timetable.R;
 import my.dzeko.timetable.contracts.CalendarUnitContract;
 import my.dzeko.timetable.presenters.CalendarUnitPresenter;
+import my.dzeko.timetable.ui.views.CalendarDayButton;
 
 public class CalendarUnitFragment extends Fragment implements CalendarUnitContract.View {
     public static String MONTH_NUMBER;
@@ -58,11 +59,11 @@ public class CalendarUnitFragment extends Fragment implements CalendarUnitContra
     private void initializeHandlersForDays() {
         for (int i = 0; i < 6; i++) {
             for (int j = 0; j < 7; j++) {
-                Button day = (Button) mDaysNumberRows[i].getChildAt(j);
+                CalendarDayButton day = (CalendarDayButton) mDaysNumberRows[i].getChildAt(j);
                 day.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        int day = Integer.valueOf(((Button)v).getText().toString());
+                        int day = Integer.valueOf(((CalendarDayButton)v).getText().toString());
                         mPresenter.onCalendarUserClick(day);
                     }
                 });
@@ -89,7 +90,7 @@ public class CalendarUnitFragment extends Fragment implements CalendarUnitContra
 
     @Override
     public void setDayNumber(int dayPositionInWeek, int week, int number) {
-        Button day = (Button) mDaysNumberRows[week].getChildAt(dayPositionInWeek);
+        CalendarDayButton day = (CalendarDayButton) mDaysNumberRows[week].getChildAt(dayPositionInWeek);
         day.setText(String.valueOf(number));
         day.setEnabled(true);
     }
