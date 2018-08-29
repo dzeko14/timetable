@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <my.dzeko.timetable.ui.views.CalendarDayButton
+    <my.dzeko.timetable.ui.views.SquareTextView
         android:id="@+id/calendar_day_button_1"
         style="@style/CalendarWeekDayItem"
         android:layout_width="0dp"
@@ -16,7 +16,7 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:text="14" />
 
-    <my.dzeko.timetable.ui.views.CalendarDayButton
+    <my.dzeko.timetable.ui.views.SquareTextView
         android:id="@+id/calendar_day_button_2"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -27,7 +27,7 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:text="14" />
 
-    <my.dzeko.timetable.ui.views.CalendarDayButton
+    <my.dzeko.timetable.ui.views.SquareTextView
         android:id="@+id/calendar_day_button_3"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -38,7 +38,7 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:text="14" />
 
-    <my.dzeko.timetable.ui.views.CalendarDayButton
+    <my.dzeko.timetable.ui.views.SquareTextView
         android:id="@+id/calendar_day_button_4"
         style="@style/CalendarWeekDayItem"
         android:layout_width="0dp"
@@ -49,7 +49,7 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:text="14" />
 
-    <my.dzeko.timetable.ui.views.CalendarDayButton
+    <my.dzeko.timetable.ui.views.SquareTextView
         android:id="@+id/calendar_day_button_5"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -60,7 +60,7 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:text="14" />
 
-    <my.dzeko.timetable.ui.views.CalendarDayButton
+    <my.dzeko.timetable.ui.views.SquareTextView
         android:id="@+id/calendar_day_button_6"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -71,7 +71,7 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:text="14" />
 
-    <my.dzeko.timetable.ui.views.CalendarDayButton
+    <my.dzeko.timetable.ui.views.SquareTextView
         android:id="@+id/calendar_day_button_7"
         android:layout_width="0dp"
         android:layout_height="wrap_content"

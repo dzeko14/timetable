@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <my.dzeko.timetable.ui.views.CalendarDayTextView
+    <my.dzeko.timetable.ui.views.SquareTextView
         android:id="@+id/calendar_day_text_view_1"
         style="@style/CalendarWeekDayHeader"
         android:layout_width="0dp"
@@ -16,7 +16,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <my.dzeko.timetable.ui.views.CalendarDayTextView
+    <my.dzeko.timetable.ui.views.SquareTextView
         android:id="@+id/calendar_day_text_view_2"
         style="@style/CalendarWeekDayHeader"
         android:layout_width="0dp"
@@ -28,7 +28,7 @@
         app:layout_constraintStart_toEndOf="@+id/calendar_day_text_view_1"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <my.dzeko.timetable.ui.views.CalendarDayTextView
+    <my.dzeko.timetable.ui.views.SquareTextView
         android:id="@+id/calendar_day_text_view_3"
         style="@style/CalendarWeekDayHeader"
         android:layout_width="0dp"
@@ -40,7 +40,7 @@
         app:layout_constraintStart_toEndOf="@+id/calendar_day_text_view_2"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <my.dzeko.timetable.ui.views.CalendarDayTextView
+    <my.dzeko.timetable.ui.views.SquareTextView
         android:id="@+id/calendar_day_text_view_4"
         style="@style/CalendarWeekDayHeader"
         android:layout_width="0dp"
@@ -52,7 +52,7 @@
         app:layout_constraintStart_toEndOf="@+id/calendar_day_text_view_3"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <my.dzeko.timetable.ui.views.CalendarDayTextView
+    <my.dzeko.timetable.ui.views.SquareTextView
         android:id="@+id/calendar_day_text_view_5"
         style="@style/CalendarWeekDayHeader"
         android:layout_width="0dp"
@@ -64,7 +64,7 @@
         app:layout_constraintStart_toEndOf="@+id/calendar_day_text_view_4"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <my.dzeko.timetable.ui.views.CalendarDayTextView
+    <my.dzeko.timetable.ui.views.SquareTextView
         android:id="@+id/calendar_day_text_view_6"
         style="@style/CalendarWeekDayHeader"
         android:layout_width="0dp"
@@ -76,7 +76,7 @@
         app:layout_constraintStart_toEndOf="@+id/calendar_day_text_view_5"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <my.dzeko.timetable.ui.views.CalendarDayTextView
+    <my.dzeko.timetable.ui.views.SquareTextView
         android:id="@+id/calendar_day_text_view_7"
         style="@style/CalendarWeekDayHeader"
         android:layout_width="0dp"
