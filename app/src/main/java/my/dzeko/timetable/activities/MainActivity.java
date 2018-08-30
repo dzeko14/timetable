@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -19,6 +20,8 @@ import android.view.View;
 
 import my.dzeko.timetable.R;
 import my.dzeko.timetable.contracts.MainContract;
+import my.dzeko.timetable.fragments.CalendarFragment;
+import my.dzeko.timetable.fragments.EditingFragment;
 import my.dzeko.timetable.fragments.ScheduleFragment;
 import my.dzeko.timetable.presenters.MainPresenter;
 
@@ -31,6 +34,9 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     private View mProgressBar;
     private View mFragmentLayout;
 
+    private Fragment[] mFragments = new Fragment[3];
+    private Fragment mActiveFragment;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,7 +48,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         initializePresenter();
         initializeBottomNavigationView();
         initializeToolBar();
-        initializeFragmentLayout();
+        initializeFragments();
         initializeNavigationView();
         loadGroupNames();
     }
@@ -77,10 +83,41 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         });
     }
 
-    private void initializeFragmentLayout() {
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.add(R.id.fragments_frame_layout_main_activity, ScheduleFragment.getInstance());
-        transaction.commit();
+    private void initializeFragments() {
+        mFragments[SCHEDULE_FRAGMENT_ID] = ScheduleFragment.getInstance();
+        mFragments[CALENDAR_FRAGMENT_ID] = CalendarFragment.getInstance();
+        mFragments[EDITING_FRAGMENT_ID] = EditingFragment.getInstance();
+        mActiveFragment = mFragments[EDITING_FRAGMENT_ID];
+
+        FragmentManager fm = getSupportFragmentManager();
+
+        mActiveFragment = mFragments[SCHEDULE_FRAGMENT_ID];
+        fm.beginTransaction()
+                .add(R.id.fragments_frame_layout_main_activity,  mActiveFragment)
+                .commit();
+
+        fm.beginTransaction()
+                .hide(mActiveFragment)
+                .add(R.id.fragments_frame_layout_main_activity,  mFragments[CALENDAR_FRAGMENT_ID])
+                .hide(mFragments[CALENDAR_FRAGMENT_ID])
+                .commit();
+        mActiveFragment = mFragments[CALENDAR_FRAGMENT_ID];
+
+        fm.beginTransaction()
+                .hide(mActiveFragment)
+                .add(R.id.fragments_frame_layout_main_activity,  mFragments[EDITING_FRAGMENT_ID])
+                .commit();
+        mActiveFragment = mFragments[EDITING_FRAGMENT_ID];
+
+        fm.beginTransaction()
+                .hide(mActiveFragment)
+                .show(mFragments[SCHEDULE_FRAGMENT_ID])
+                .commit();
+        mActiveFragment = mFragments[SCHEDULE_FRAGMENT_ID];
+
+//        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+//        transaction.add(R.id.fragments_frame_layout_main_activity, ScheduleFragment.getInstance());
+//        transaction.commit();
     }
 
     private void initializeNavigationView() {
@@ -133,10 +170,14 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     }
 
     @Override
-    public void updateFragment(Fragment fragment) {
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.fragments_frame_layout_main_activity, fragment);
-        transaction.commitNow();
+    public void updateFragment(int fragmentId) {
+        Fragment newActiveFragment = mFragments[fragmentId];
+        getSupportFragmentManager()
+                .beginTransaction()
+                .hide(mActiveFragment)
+                .show(newActiveFragment)
+                .commit();
+        mActiveFragment = newActiveFragment;
     }
 
     @Override

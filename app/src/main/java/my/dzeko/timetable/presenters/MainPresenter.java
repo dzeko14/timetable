@@ -113,20 +113,20 @@ public class MainPresenter implements MainContract.Presenter {
 
         switch (itemId) {
             case R.id.schedule_bottom_navigation_main:
-                updateFragment(ScheduleFragment.getInstance());
+                updateFragment(MainContract.View.SCHEDULE_FRAGMENT_ID);
                 return true;
             case R.id.calendar_bottom_navigation_main:
-                updateFragment(CalendarFragment.getInstance());
+                updateFragment(MainContract.View.CALENDAR_FRAGMENT_ID);
                 return true;
             case R.id.settings_bottom_navigation_main:
-
+                updateFragment(MainContract.View.EDITING_FRAGMENT_ID);
                 return true;
         }
         return false;
     }
 
-    private void updateFragment(Fragment fragment) {
-        mView.updateFragment(fragment);
+    private void updateFragment(int fragmentId) {
+        mView.updateFragment(fragmentId);
     }
 
     @Override

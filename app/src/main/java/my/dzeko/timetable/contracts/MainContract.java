@@ -16,11 +16,15 @@ public class MainContract {
     }
 
     public interface View extends IView {
+        int SCHEDULE_FRAGMENT_ID = 0;
+        int CALENDAR_FRAGMENT_ID = 1;
+        int EDITING_FRAGMENT_ID = 2;
+
         void openDrawer();
         void closeDrawer();
         void lockDrawer();
         void unlockDrawer();
-        void updateFragment(Fragment fragment);
+        void updateFragment(int fragmentId);
         void addGroupNameNavigationDrawer(String groupName, int id);
         void removeGroupNameNavigationDrawer(int removeItemId);
         void setCheckedGroupNameNavigationView(int id, boolean isChecked);
