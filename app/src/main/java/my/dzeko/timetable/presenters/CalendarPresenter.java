@@ -24,5 +24,6 @@ public class CalendarPresenter implements CalendarContract.Presenter {
     @Override
     public void onViewInitialized() {
         mView.setMonth(DateUtils.getCurrentMonth());
+        mView.hideLoading();
     }
 }

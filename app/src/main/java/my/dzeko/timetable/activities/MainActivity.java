@@ -7,7 +7,6 @@ import android.support.v4.app.Fragment;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
@@ -84,40 +83,15 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     }
 
     private void initializeFragments() {
-        mFragments[SCHEDULE_FRAGMENT_ID] = ScheduleFragment.getInstance();
-        mFragments[CALENDAR_FRAGMENT_ID] = CalendarFragment.getInstance();
-        mFragments[EDITING_FRAGMENT_ID] = EditingFragment.getInstance();
-        mActiveFragment = mFragments[EDITING_FRAGMENT_ID];
+        mFragments[MainContract.SCHEDULE_FRAGMENT_ID] = ScheduleFragment.getInstance();
+        mActiveFragment = mFragments[MainContract.EDITING_FRAGMENT_ID];
 
         FragmentManager fm = getSupportFragmentManager();
 
-        mActiveFragment = mFragments[SCHEDULE_FRAGMENT_ID];
+        mActiveFragment = mFragments[MainContract.SCHEDULE_FRAGMENT_ID];
         fm.beginTransaction()
                 .add(R.id.fragments_frame_layout_main_activity,  mActiveFragment)
                 .commit();
-
-        fm.beginTransaction()
-                .hide(mActiveFragment)
-                .add(R.id.fragments_frame_layout_main_activity,  mFragments[CALENDAR_FRAGMENT_ID])
-                .hide(mFragments[CALENDAR_FRAGMENT_ID])
-                .commit();
-        mActiveFragment = mFragments[CALENDAR_FRAGMENT_ID];
-
-        fm.beginTransaction()
-                .hide(mActiveFragment)
-                .add(R.id.fragments_frame_layout_main_activity,  mFragments[EDITING_FRAGMENT_ID])
-                .commit();
-        mActiveFragment = mFragments[EDITING_FRAGMENT_ID];
-
-        fm.beginTransaction()
-                .hide(mActiveFragment)
-                .show(mFragments[SCHEDULE_FRAGMENT_ID])
-                .commit();
-        mActiveFragment = mFragments[SCHEDULE_FRAGMENT_ID];
-
-//        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-//        transaction.add(R.id.fragments_frame_layout_main_activity, ScheduleFragment.getInstance());
-//        transaction.commit();
     }
 
     private void initializeNavigationView() {
@@ -145,7 +119,6 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-
         return mPresenter.onUserClick(id) || super.onOptionsItemSelected(item);
     }
 
@@ -201,7 +174,6 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         startActivity(intent);
     }
 
-
     @Override
     public void showLoading() {
         mFragmentLayout.setVisibility(View.GONE);
@@ -217,5 +189,29 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     @Override
     public Context getContext() {
         return getApplicationContext();
+    }
+
+    @Override
+    public void createFragment(int fragmentId) {
+        mFragments[fragmentId] = getFragmentById(fragmentId);
+        getSupportFragmentManager()
+                .beginTransaction()
+                .hide(mActiveFragment)
+                .add(R.id.fragments_frame_layout_main_activity,  mFragments[fragmentId])
+                .commit();
+        mActiveFragment =  mFragments[fragmentId];
+    }
+
+    private Fragment getFragmentById(int fragmentId) {
+        switch (fragmentId) {
+            case MainContract.SCHEDULE_FRAGMENT_ID:
+                return ScheduleFragment.getInstance();
+            case MainContract.CALENDAR_FRAGMENT_ID:
+                return CalendarFragment.getInstance();
+            case MainContract.EDITING_FRAGMENT_ID:
+                return EditingFragment.getInstance();
+            default:
+                return null;
+        }
     }
 }

@@ -41,6 +41,8 @@ public class MainPresenter implements MainContract.Presenter {
 
     private CompositeDisposable mCompositeDisposable = new CompositeDisposable();
 
+    private boolean[] mIsCreatedFragment = {true, false, false};
+
     public MainPresenter(MainContract.View view) {
         mView = view;
         mModel = Model.getInstance();
@@ -113,20 +115,25 @@ public class MainPresenter implements MainContract.Presenter {
 
         switch (itemId) {
             case R.id.schedule_bottom_navigation_main:
-                updateFragment(MainContract.View.SCHEDULE_FRAGMENT_ID);
+                updateFragment(MainContract.SCHEDULE_FRAGMENT_ID);
                 return true;
             case R.id.calendar_bottom_navigation_main:
-                updateFragment(MainContract.View.CALENDAR_FRAGMENT_ID);
+                updateFragment(MainContract.CALENDAR_FRAGMENT_ID);
                 return true;
             case R.id.settings_bottom_navigation_main:
-                updateFragment(MainContract.View.EDITING_FRAGMENT_ID);
+                updateFragment(MainContract.EDITING_FRAGMENT_ID);
                 return true;
         }
         return false;
     }
 
     private void updateFragment(int fragmentId) {
-        mView.updateFragment(fragmentId);
+        if(mIsCreatedFragment[fragmentId]) {
+            mView.updateFragment(fragmentId);
+        } else {
+            mIsCreatedFragment[fragmentId] = true;
+            mView.createFragment(fragmentId);
+        }
     }
 
     @Override
