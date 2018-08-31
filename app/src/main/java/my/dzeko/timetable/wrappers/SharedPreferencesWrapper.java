@@ -7,6 +7,7 @@ public class SharedPreferencesWrapper {
     private static final String PREFS_FILE_NAME = "preferences";
     private static final String SELECTED_GROUP = "selected_group";
     private static final String KEY_DATE = "key_date";
+    private static final String SELECTED_BOTTOM_NAV_FRAGMENT = "selected_bottom_fragment";
 
     private static SharedPreferencesWrapper mInstance;
 
@@ -48,5 +49,15 @@ public class SharedPreferencesWrapper {
 
     public String getKeyDate() {
         return mSharedPreferences.getString(KEY_DATE, null);
+    }
+
+    public void setSelectedFragment(int fragmentId) {
+        SharedPreferences.Editor editor = mSharedPreferences.edit();
+        editor.putInt(SELECTED_BOTTOM_NAV_FRAGMENT, fragmentId);
+        editor.apply();
+    }
+
+    public int getSelectedFragmentId() {
+        return mSharedPreferences.getInt(SELECTED_BOTTOM_NAV_FRAGMENT, -1);
     }
 }

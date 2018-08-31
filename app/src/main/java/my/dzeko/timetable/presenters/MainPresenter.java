@@ -1,7 +1,6 @@
 package my.dzeko.timetable.presenters;
 
 import android.annotation.SuppressLint;
-import android.support.v4.app.Fragment;
 
 import java.util.HashMap;
 import java.util.List;
@@ -21,8 +20,6 @@ import my.dzeko.timetable.R;
 import my.dzeko.timetable.activities.AddScheduleActivity;
 import my.dzeko.timetable.contracts.MainContract;
 import my.dzeko.timetable.entities.Group;
-import my.dzeko.timetable.fragments.CalendarFragment;
-import my.dzeko.timetable.fragments.ScheduleFragment;
 import my.dzeko.timetable.interfaces.IModel;
 import my.dzeko.timetable.models.Model;
 import my.dzeko.timetable.observers.GroupObservable;
@@ -33,7 +30,7 @@ public class MainPresenter implements MainContract.Presenter {
     private MainContract.View mView;
     private IModel mModel;
 
-    private int mPreviousBottomNavigationItemId = R.id.schedule_bottom_navigation_main;
+    private int mPreviousBottomNavigationItemId = -1;
     private int mPreviousGroupNameNavigationItemId = -1;
 
     private Map<String, Integer> mGroupIds = new HashMap<>();
@@ -41,7 +38,8 @@ public class MainPresenter implements MainContract.Presenter {
 
     private CompositeDisposable mCompositeDisposable = new CompositeDisposable();
 
-    private boolean[] mIsCreatedFragment = {true, false, false};
+    private boolean[] mIsCreatedFragment = {false, false, false};
+    private int mActiveBottomNavigationFragmentId = -1;
 
     public MainPresenter(MainContract.View view) {
         mView = view;
@@ -116,23 +114,43 @@ public class MainPresenter implements MainContract.Presenter {
         switch (itemId) {
             case R.id.schedule_bottom_navigation_main:
                 updateFragment(MainContract.SCHEDULE_FRAGMENT_ID);
+                mActiveBottomNavigationFragmentId = MainContract.SCHEDULE_FRAGMENT_ID;
+                saveSelectedFragmentId();
                 return true;
             case R.id.calendar_bottom_navigation_main:
                 updateFragment(MainContract.CALENDAR_FRAGMENT_ID);
+                mActiveBottomNavigationFragmentId = MainContract.CALENDAR_FRAGMENT_ID;
+                saveSelectedFragmentId();
                 return true;
-            case R.id.settings_bottom_navigation_main:
+            case R.id.editing_bottom_navigation_main:
                 updateFragment(MainContract.EDITING_FRAGMENT_ID);
+                mActiveBottomNavigationFragmentId = MainContract.EDITING_FRAGMENT_ID;
+                saveSelectedFragmentId();
                 return true;
         }
         return false;
     }
 
+    @SuppressLint("CheckResult")
+    private void saveSelectedFragmentId() {
+        Completable.fromAction(new Action() {
+            @Override
+            public void run() throws Exception {
+                mModel.saveCurrentBottomNavigationFragment(mActiveBottomNavigationFragmentId);
+            }
+        }).subscribe();
+    }
+
     private void updateFragment(int fragmentId) {
         if(mIsCreatedFragment[fragmentId]) {
-            mView.updateFragment(fragmentId);
+            mView.updateFragment(fragmentId, mActiveBottomNavigationFragmentId);
         } else {
             mIsCreatedFragment[fragmentId] = true;
-            mView.createFragment(fragmentId);
+            if(mActiveBottomNavigationFragmentId == -1) {
+                mView.createFragment(fragmentId);
+            } else {
+                mView.createFragment(fragmentId, mActiveBottomNavigationFragmentId);
+            }
         }
     }
 
@@ -263,5 +281,51 @@ public class MainPresenter implements MainContract.Presenter {
                     }
                 })
         );
+    }
+
+    @SuppressLint("CheckResult")
+    @Override
+    public void onFragmentInitialization() {
+        mCompositeDisposable.add(
+            Single.just(mModel)
+                .map(new Function<IModel, Integer>() {
+                    @Override
+                    public Integer apply(IModel model) throws Exception {
+                        return model.getCurrentBottomNavigationFragment();
+                    }
+                })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(new DisposableSingleObserver<Integer>() {
+                    @Override
+                    public void onSuccess(Integer fragmentId) {
+                        if(fragmentId == -1) {
+                            fragmentId = MainContract.SCHEDULE_FRAGMENT_ID;
+                        }
+                        mView.createFragment(fragmentId);
+                        mPreviousBottomNavigationItemId = getBottomNavigationItemIdFromFragmentId(fragmentId);
+                        mView.setBottomNavigationItem(mPreviousBottomNavigationItemId);
+                        mIsCreatedFragment[fragmentId] = true;
+                        mActiveBottomNavigationFragmentId = fragmentId;
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        e.printStackTrace();
+                    }
+                })
+        );
+    }
+
+    private int getBottomNavigationItemIdFromFragmentId(Integer fragmentId) {
+        switch (fragmentId) {
+            case MainContract.SCHEDULE_FRAGMENT_ID:
+                return R.id.schedule_bottom_navigation_main;
+            case MainContract.CALENDAR_FRAGMENT_ID:
+                return R.id.calendar_bottom_navigation_main;
+            case MainContract.EDITING_FRAGMENT_ID:
+                return R.id.editing_bottom_navigation_main;
+        }
+        return 0;
     }
 }

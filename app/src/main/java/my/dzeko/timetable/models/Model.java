@@ -113,6 +113,16 @@ public class Model implements IModel{
 
     }
 
+    @Override
+    public void saveCurrentBottomNavigationFragment(int fragmentId) {
+        SharedPreferencesWrapper.getInstance().setSelectedFragment(fragmentId);
+    }
+
+    @Override
+    public int getCurrentBottomNavigationFragment() {
+        return SharedPreferencesWrapper.getInstance().getSelectedFragmentId();
+    }
+
     private void startParsingSchedule(final String groupName) {
         ApiUtils.parseSchedule(groupName)
                 .subscribe(new SingleObserver<Schedule>() {

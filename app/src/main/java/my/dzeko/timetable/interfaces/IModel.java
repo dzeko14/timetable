@@ -11,4 +11,6 @@ public interface IModel {
     void selectSchedule(String groupName);
     String getSelectedScheduleGroupName();
     void parseSchedule(String groupName);
+    void saveCurrentBottomNavigationFragment(int fragmentId);
+    int getCurrentBottomNavigationFragment();
 }

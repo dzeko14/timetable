@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Timetable</string>
+    <string name="app_name">Розклад</string>
 
     <!--Main Activity-->
     <!--Bottom Navigation View Menu-->

@@ -6,7 +6,6 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.NavigationView;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
@@ -32,16 +31,14 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
 
     private View mProgressBar;
     private View mFragmentLayout;
+    private BottomNavigationView mBottomNavigationView;
 
     private Fragment[] mFragments = new Fragment[3];
-    private Fragment mActiveFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        mDrawerLayout = findViewById(R.id.main_drawer_layout);
 
         findViews();
         initializePresenter();
@@ -53,6 +50,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     }
 
     private void findViews() {
+        mDrawerLayout = findViewById(R.id.main_drawer_layout);
         mProgressBar = findViewById(R.id.progress_bar_main);
         mFragmentLayout = findViewById(R.id.fragments_frame_layout_main_activity);
     }
@@ -73,8 +71,9 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     }
 
     private void initializeBottomNavigationView() {
-        BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
-        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+        mBottomNavigationView = findViewById(R.id.bottomNavigationView);
+
+        mBottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 return mPresenter.onBottomNavigationItemSelected(item.getItemId());
@@ -83,15 +82,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     }
 
     private void initializeFragments() {
-        mFragments[MainContract.SCHEDULE_FRAGMENT_ID] = ScheduleFragment.getInstance();
-        mActiveFragment = mFragments[MainContract.EDITING_FRAGMENT_ID];
-
-        FragmentManager fm = getSupportFragmentManager();
-
-        mActiveFragment = mFragments[MainContract.SCHEDULE_FRAGMENT_ID];
-        fm.beginTransaction()
-                .add(R.id.fragments_frame_layout_main_activity,  mActiveFragment)
-                .commit();
+        mPresenter.onFragmentInitialization();
     }
 
     private void initializeNavigationView() {
@@ -143,14 +134,14 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     }
 
     @Override
-    public void updateFragment(int fragmentId) {
+    public void updateFragment(int fragmentId, int activeFragmentId) {
+        Fragment activeFragment = mFragments[activeFragmentId];
         Fragment newActiveFragment = mFragments[fragmentId];
         getSupportFragmentManager()
                 .beginTransaction()
-                .hide(mActiveFragment)
+                .hide(activeFragment)
                 .show(newActiveFragment)
                 .commit();
-        mActiveFragment = newActiveFragment;
     }
 
     @Override
@@ -178,11 +169,13 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     public void showLoading() {
         mFragmentLayout.setVisibility(View.GONE);
         mProgressBar.setVisibility(View.VISIBLE);
+        mBottomNavigationView.setVisibility(View.GONE);
     }
 
     @Override
     public void hideLoading() {
         mFragmentLayout.setVisibility(View.VISIBLE);
+        mBottomNavigationView.setVisibility(View.VISIBLE);
         mProgressBar.setVisibility(View.GONE);
     }
 
@@ -192,14 +185,23 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     }
 
     @Override
+    public void createFragment(int fragmentId, int activeFragmentId) {
+        Fragment activeFragment = mFragments[activeFragmentId];
+        mFragments[fragmentId] = getFragmentById(fragmentId);
+        getSupportFragmentManager()
+                .beginTransaction()
+                .hide(activeFragment)
+                .add(R.id.fragments_frame_layout_main_activity,  mFragments[fragmentId])
+                .commit();
+    }
+
+    @Override
     public void createFragment(int fragmentId) {
         mFragments[fragmentId] = getFragmentById(fragmentId);
         getSupportFragmentManager()
                 .beginTransaction()
-                .hide(mActiveFragment)
                 .add(R.id.fragments_frame_layout_main_activity,  mFragments[fragmentId])
                 .commit();
-        mActiveFragment =  mFragments[fragmentId];
     }
 
     private Fragment getFragmentById(int fragmentId) {
@@ -213,5 +215,10 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
             default:
                 return null;
         }
+    }
+
+    @Override
+    public void setBottomNavigationItem(int itemId) {
+        mBottomNavigationView.getMenu().findItem(itemId).setChecked(true);
     }
 }
