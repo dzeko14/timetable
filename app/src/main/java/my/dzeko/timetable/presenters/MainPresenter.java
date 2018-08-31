@@ -138,7 +138,9 @@ public class MainPresenter implements MainContract.Presenter {
             public void run() throws Exception {
                 mModel.saveCurrentBottomNavigationFragment(mActiveBottomNavigationFragmentId);
             }
-        }).subscribe();
+        })
+        .subscribeOn(Schedulers.io())
+        .subscribe();
     }
 
     private void updateFragment(int fragmentId) {
