@@ -18,6 +18,7 @@ import my.dzeko.timetable.R;
 import my.dzeko.timetable.entities.Day;
 import my.dzeko.timetable.entities.Schedule;
 import my.dzeko.timetable.entities.Subject;
+import my.dzeko.timetable.utils.DateUtils;
 
 public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.DayViewHolder> {
     private final int CURRENT_DATE;
@@ -26,9 +27,13 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.DayVie
     private int mCurrentDayViewHolderPosition = -1;
 
     public ScheduleAdapter(Schedule schedule) {
-        CURRENT_DATE = Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
+        CURRENT_DATE = DateUtils.getCurrentDay();
         mSchedule = schedule.getSchedule();
 
+        findCurrentDayViewHolderPosition();
+    }
+
+    private void findCurrentDayViewHolderPosition() {
         int position = 0;
         for (Day day : mSchedule) {
             if (day.getDayOfMonth() == CURRENT_DATE) {
@@ -68,18 +73,17 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.DayVie
     public void updateSchedule(Schedule schedule) {
         if(schedule == null) return;
         mSchedule = schedule.getSchedule();
+        findCurrentDayViewHolderPosition();
         notifyDataSetChanged();
     }
-
 
     /**
      * A ViewHolder class for Schedule RecyclerView Adapter
      */
     class DayViewHolder extends RecyclerView.ViewHolder {
 
-        boolean mIsHeadCurrentDayColor;
+        boolean mIsHeadCurrentDayColor = false;
 
-        int mSelectedItemActionModeColor;
         int mNotCurrentDayColor;
         int mCurrentDayColor;
 
@@ -133,8 +137,6 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.DayVie
                 mTeacherTextViews[i] = mBodyCardViews[i].findViewById(R.id.tv_teacher);
             }
 
-            mIsHeadCurrentDayColor = false;
-
             Resources res = itemView.getResources();
             mNotCurrentDayColor = res.getColor(R.color.colorNotCurrentDay);
             mCurrentDayColor = res.getColor(R.color.colorCurrentDay);
@@ -170,6 +172,12 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.DayVie
             for (int i = subjectAmount; i < 5; i++) {
                 mBodyCardViews[i].setVisibility(View.GONE);
             }
+
+            if(CURRENT_DATE == getDate() && !mIsHeadCurrentDayColor) {
+                mHeadCardView.setCardBackgroundColor(mCurrentDayColor);
+            } else {
+                mHeadCardView.setCardBackgroundColor(mNotCurrentDayColor);
+            }
         }
 
         private int getDate() {
@@ -177,30 +185,6 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.DayVie
             if(dateString.length() < 2) return -1;
 
             return Integer.parseInt(dateString.substring(0,2));
-        }
-
-        private boolean isHeadInCurrentDayColor() {
-            return mIsHeadCurrentDayColor;
-        }
-
-        private void setHeadCurrentDayColor(boolean isCurrentDay) {
-            mIsHeadCurrentDayColor = isCurrentDay;
-            if(isCurrentDay){
-                mHeadCardView.setCardBackgroundColor(mCurrentDayColor);
-            } else {
-                mHeadCardView.setCardBackgroundColor(mNotCurrentDayColor);
-            }
-
-        }
-
-        private void setSelectedHeadActionModeColor(boolean isSelected) {
-            mIsHeadCurrentDayColor = false;
-
-            if(isSelected) {
-                mHeadCardView.setCardBackgroundColor(mSelectedItemActionModeColor);
-            } else {
-                mHeadCardView.setCardBackgroundColor(mNotCurrentDayColor);
-            }
         }
     }
 }

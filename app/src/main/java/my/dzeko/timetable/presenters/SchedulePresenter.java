@@ -55,6 +55,7 @@ public class SchedulePresenter implements ScheduleContract.Presenter {
                     public void onSuccess(Schedule schedule) {
                         mView.updateSchedule(schedule);
                         mView.hideLoading();
+                        mView.scrollToCurrentDay();
                     }
 
                     @Override

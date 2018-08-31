@@ -93,4 +93,9 @@ public class ScheduleFragment extends Fragment implements ScheduleContract.View 
         mProgressBar.setVisibility(View.GONE);
         mRecyclerView.setVisibility(View.VISIBLE);
     }
+
+    @Override
+    public void scrollToCurrentDay() {
+        mRecyclerView.scrollToPosition(mAdapter.getCurrentDayViewHolderPosition());
+    }
 }
