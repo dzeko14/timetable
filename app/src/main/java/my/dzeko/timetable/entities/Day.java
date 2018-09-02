@@ -3,6 +3,7 @@ package my.dzeko.timetable.entities;
 import android.support.annotation.NonNull;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 public class Day implements Comparable<Day> {
     private int mId;

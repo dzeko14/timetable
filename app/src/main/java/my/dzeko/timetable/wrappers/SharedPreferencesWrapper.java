@@ -41,14 +41,14 @@ public class SharedPreferencesWrapper {
         editor.apply();
     }
 
-    public void setKeyDate(String keyDate) {
+    public void setKeyDate(long keyDateLong) {
         SharedPreferences.Editor editor = mSharedPreferences.edit();
-        editor.putString(KEY_DATE, keyDate);
+        editor.putLong(KEY_DATE, keyDateLong);
         editor.apply();
     }
 
-    public String getKeyDate() {
-        return mSharedPreferences.getString(KEY_DATE, null);
+    public long getKeyDate() {
+        return mSharedPreferences.getLong(KEY_DATE, -1);
     }
 
     public void setSelectedFragment(int fragmentId) {

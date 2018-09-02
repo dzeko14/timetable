@@ -2,14 +2,11 @@ package my.dzeko.timetable.utils;
 
 import android.annotation.SuppressLint;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
-import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
 public abstract class DateUtils {
@@ -31,9 +28,8 @@ public abstract class DateUtils {
         return calendar.get(Calendar.MONTH);
     }
 
-    public static boolean isCurrentWeekFirst(String keyDateString) throws ParseException {
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/mm/yyyy", Locale.getDefault());
-        Date keyDate = sdf.parse(keyDateString);
+    public static boolean isCurrentWeekFirst(long keyDateLong) {
+        Date keyDate = new Date(keyDateLong);
         Date currentDate = new Date();
 
         long diffInMillies = Math.abs(currentDate.getTime() - keyDate.getTime());
@@ -54,7 +50,8 @@ public abstract class DateUtils {
         }
 
         for (int i = 0; i < 6; i++) {
-            String date = String.format("%d.%02d",
+            @SuppressLint("DefaultLocale")
+            String date = String.format("%02d.%02d",
                     calendar.get(Calendar.DAY_OF_MONTH),
                     calendar.get(Calendar.MONTH) + 1);
             dates.add(date);
@@ -75,7 +72,8 @@ public abstract class DateUtils {
         }
 
         for (int i = 0; i < 6; i++) {
-            String date = String.format("%d.%02d",
+            @SuppressLint("DefaultLocale")
+            String date = String.format("%02d.%02d",
                     calendar.get(Calendar.DAY_OF_MONTH),
                     calendar.get(Calendar.MONTH) + 1);
             dates.add(date);
@@ -116,7 +114,7 @@ public abstract class DateUtils {
     }
 
     @SuppressLint("DefaultLocale")
-    public static String createKeyDate(boolean isFirstWeek) {
+    public static long createKeyDate(boolean isFirstWeek) {
         Calendar calendar = new GregorianCalendar();
 
         if(isFirstWeek){
@@ -126,11 +124,7 @@ public abstract class DateUtils {
             calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
         }
 
-        int day = calendar.get(Calendar.DAY_OF_MONTH);
-        int month = calendar.get(Calendar.MONTH);
-        int year  = calendar.get(Calendar.YEAR);
-
-        return String.format("%d/%d/%d", day, month, year);
+        return calendar.getTimeInMillis();
     }
 
     public static int getDaysAmountInMonth(int month) {

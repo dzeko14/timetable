@@ -40,7 +40,7 @@ public abstract class ScheduleUtils {
         return new Schedule(groupName, resultDays);
     }
 
-    private static List<Day> createDaysList() throws ParseException {
+    private static List<Day> createDaysList() {
         final String[] DAY_OF_WEEKS_NAME = {
                 "",
                 "Понеділок", "Вівторок", "Середа", "Четвер", "П'ятниця", "Субота"

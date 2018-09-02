@@ -106,7 +106,7 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.DayVie
         //Teacher Text Views
         TextView[] mTeacherTextViews;
 
-        public DayViewHolder(View itemView) {
+        DayViewHolder(View itemView) {
 
             super(itemView);
 
@@ -142,7 +142,7 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.DayVie
             mCurrentDayColor = res.getColor(R.color.colorCurrentDay);
         }
 
-        public void update(final int position) {
+         void update(final int position) {
             final Day day = mSchedule.get(position);
 
             if(day == null) return;
@@ -163,7 +163,7 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.DayVie
 
             for (int i = 0; i < subjectAmount; i++) {
                 mBodyCardViews[i].setVisibility(View.VISIBLE);
-                mNumberTextViews[i].setText(String.valueOf(subjects.get(i).getPosition() + 1));
+                mNumberTextViews[i].setText(String.valueOf(subjects.get(i).getPosition()));
                 mSubjectTextViews[i].setText(subjects.get(i).getSubjectName());
                 mCabinetTextViews[i].setText(subjects.get(i).getCabinet());
                 mTeacherTextViews[i].setText(subjects.get(i).getTeacher());
