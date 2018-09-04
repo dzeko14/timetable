@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ProgressBar
+        android:id="@+id/progress_bar_calendar_detail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/Widget.AppCompat.ProgressBar"
+        android:layout_gravity="center"/>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:id="@+id/day_calendar_detail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <include
+                android:id="@+id/subject_1_calendar_detail_activity"
+                layout="@layout/schedule_item_body" />
+
+            <include
+                android:id="@+id/subject_2_calendar_detail_activity"
+                layout="@layout/schedule_item_body" />
+
+            <include
+                android:id="@+id/subject_3_calendar_detail_activity"
+                layout="@layout/schedule_item_body" />
+
+            <include
+                android:id="@+id/subject_4_calendar_detail_activity"
+                layout="@layout/schedule_item_body" />
+
+            <include
+                android:id="@+id/subject_5_calendar_detail_activity"
+                layout="@layout/schedule_item_body" />
+        </LinearLayout>
+    </ScrollView>
+</FrameLayout>

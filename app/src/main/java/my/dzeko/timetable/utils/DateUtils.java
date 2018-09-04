@@ -161,4 +161,43 @@ public abstract class DateUtils {
                 return -1;
         }
     }
+
+    public static int findDayPositionByDayNumber(int dayNumber, int month) {
+        Calendar calendar = new GregorianCalendar();
+        calendar.set(Calendar.DAY_OF_MONTH, dayNumber);
+        calendar.set(Calendar.MONTH, month);
+        return dayInWeekNumber(calendar.get(Calendar.DAY_OF_WEEK));
+    }
+
+    public static Date getDateFromDayAndMonth(int day, int month) {
+        Calendar calendar = new GregorianCalendar();
+        calendar.set(Calendar.DAY_OF_MONTH, day);
+        calendar.set(Calendar.MONTH, month);
+        return calendar.getTime();
+    }
+
+    public static int getWeekNumberFromDate(Date date, long keyDateLong){
+        Date keyDate = new Date(keyDateLong);
+
+        long diffInMillies = Math.abs(date.getTime() - keyDate.getTime());
+        long diff = TimeUnit.DAYS.convert(diffInMillies, TimeUnit.MILLISECONDS) / 7;
+
+        return ((diff % 2) == 0) ? 1 : 2;
+    }
+
+    public static int getDayOfWeekFromDate(Date d) {
+        Calendar calendar = new GregorianCalendar();
+        calendar.setTime(d);
+        return dayInWeekNumber(calendar.get(Calendar.DAY_OF_WEEK)) + 1;
+    }
+
+    @SuppressLint("DefaultLocale")
+    public static String getdateInString(Date date) {
+        Calendar calendar = new GregorianCalendar();
+        calendar.setTime(date);
+        return String.format("%02d/%02d/%d",
+                calendar.get(Calendar.DAY_OF_MONTH),
+                calendar.get(Calendar.MONTH) + 1,
+                calendar.get(Calendar.YEAR));
+    }
 }

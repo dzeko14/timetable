@@ -28,4 +28,7 @@ public abstract class SubjectDao {
 
     @Insert
     public abstract long saveSubject(Subject subject);
+
+    @Query("SELECT * FROM Subject WHERE mDayId = :dayId AND mWeekId = :weekId AND mGroup = :groupName")
+    public abstract List<Subject> getSubjectsByDayIdAndWeekId(int dayId, int weekId, String groupName);
 }

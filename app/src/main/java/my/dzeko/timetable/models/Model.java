@@ -9,6 +9,7 @@ import my.dzeko.timetable.cache.CacheData;
 import my.dzeko.timetable.db.SubjectDao;
 import my.dzeko.timetable.entities.Group;
 import my.dzeko.timetable.entities.Schedule;
+import my.dzeko.timetable.entities.Subject;
 import my.dzeko.timetable.interfaces.IModel;
 import my.dzeko.timetable.observers.ScheduleObservable;
 import my.dzeko.timetable.utils.ApiUtils;
@@ -121,6 +122,12 @@ public class Model implements IModel{
     @Override
     public int getCurrentBottomNavigationFragment() {
         return SharedPreferencesWrapper.getInstance().getSelectedFragmentId();
+    }
+
+    @Override
+    public List<Subject> getSchedulesByDayIdAndWeekId(int dayId, int weekId, String groupName) {
+        return DatabaseWrapper.getDatabase().getSubjectDao().getSubjectsByDayIdAndWeekId(dayId,
+                weekId, groupName);
     }
 
     private void startParsingSchedule(final String groupName) {

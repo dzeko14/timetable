@@ -1,5 +1,9 @@
 package my.dzeko.timetable.presenters;
 
+import java.util.Date;
+
+import my.dzeko.timetable.activities.CalendarDetailActivity;
+import my.dzeko.timetable.contracts.CalendarDetailContract;
 import my.dzeko.timetable.contracts.CalendarUnitContract;
 import my.dzeko.timetable.utils.DateUtils;
 
@@ -40,12 +44,18 @@ public class CalendarUnitPresenter implements CalendarUnitContract.Presenter {
         while (weekCount < 6) {
             mView.hideWeekRow(weekCount++);
         }
-
+        if(MONTH == DateUtils.getCurrentMonth()) {
+            int dayNumber = DateUtils.getCurrentDay();
+            int week = DateUtils.getCurrentWeek() - 1;
+            int dayPositionInWeek = DateUtils.findDayPositionByDayNumber(dayNumber, MONTH);
+            mView.setSelectedMonth(dayPositionInWeek, week);
+        }
     }
 
     @Override
     public void onCalendarUserClick(int day) {
-        //TODO: Implement
+        Date date = DateUtils.getDateFromDayAndMonth(day, MONTH);
+        mView.startActivity(CalendarDetailActivity.class, date);
     }
 
     @Override
