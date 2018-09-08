@@ -14,7 +14,7 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 
 import my.dzeko.timetable.R;
-import my.dzeko.timetable.adapters.CalendarAdapter;
+import my.dzeko.timetable.adapters.CalendarPagerAdapter;
 import my.dzeko.timetable.contracts.CalendarContract;
 import my.dzeko.timetable.presenters.CalendarPresenter;
 
@@ -59,7 +59,7 @@ public class CalendarFragment extends Fragment implements CalendarContract.View 
                         assert parent != null;
                         parent.addView(view);
                         mViewPager = (ViewPager) view;
-                        mViewPager.setAdapter(new CalendarAdapter(getFragmentManager()));
+                        mViewPager.setAdapter(new CalendarPagerAdapter(getFragmentManager()));
                         mPresenter.onViewInitialized();
                     }
                 });

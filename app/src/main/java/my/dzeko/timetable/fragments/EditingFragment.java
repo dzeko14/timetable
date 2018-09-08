@@ -4,17 +4,34 @@ package my.dzeko.timetable.fragments;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
+import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.BaseExpandableListAdapter;
+import android.widget.ExpandableListView;
+import android.widget.ProgressBar;
+import android.widget.SimpleExpandableListAdapter;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import my.dzeko.timetable.R;
+import my.dzeko.timetable.adapters.EditingPagerAdapter;
+import my.dzeko.timetable.contracts.EditingContract;
+import my.dzeko.timetable.entities.Day;
+import my.dzeko.timetable.entities.Subject;
+import my.dzeko.timetable.presenters.EditingPresenter;
 
-/**
- * A simple {@link Fragment} subclass.
- */
-public class EditingFragment extends Fragment {
+public class EditingFragment extends Fragment implements EditingContract.View {
+    EditingContract.Presenter mPresenter;
+
+    private ProgressBar mProgressBar;
+    private ViewPager mViewPager;
+
+    private EditingPagerAdapter mPagerAdapter;
 
 
     public EditingFragment() {
@@ -28,38 +45,57 @@ public class EditingFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.d("MeLog", "EditingFragment onCreate");
+        initializePresenter();
+        initializeAdapter();
+    }
+
+    private void initializeAdapter() {
+        mPagerAdapter = new EditingPagerAdapter(getFragmentManager());
+    }
+
+    private void initializePresenter() {
+        mPresenter = new EditingPresenter(this);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        Log.d("MeLog", "EditingFragment onCreateView");
-        return inflater.inflate(R.layout.fragment_editing, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_editing, container, false);
+        initializeView(rootView);
+        mPresenter.onViewCreated();
+        return rootView;
+    }
+
+    private void initializeView(View rootView) {
+        mProgressBar = rootView.findViewById(R.id.editing_progress_bar);
+        mViewPager = rootView.findViewById(R.id.editing_view_pager);
     }
 
     @Override
-    public void onStart() {
-        super.onStart();
-        Log.d("MeLog", "EditingFragment onStart");
+    public void onDestroy() {
+        super.onDestroy();
+        mPresenter.destroy();
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-        Log.d("MeLog", "EditingFragment onResume");
+    public void showLoading() {
+        mProgressBar.setVisibility(View.VISIBLE);
+        mViewPager.setVisibility(View.GONE);
     }
 
     @Override
-    public void onStop() {
-        super.onStop();
-        Log.d("MeLog", "EditingFragment onStop");
+    public void hideLoading() {
+        mProgressBar.setVisibility(View.GONE);
+        mViewPager.setVisibility(View.VISIBLE);
     }
 
     @Override
-    public void onDetach() {
-        super.onDetach();
-        Log.d("MeLog", "EditingFragment onDestroy");
+    public void addWeekToAdapter(List<Day> week) {
+        mPagerAdapter.addWeek(week);
+    }
+
+    @Override
+    public void setupAdapter() {
+        mViewPager.setAdapter(mPagerAdapter);
     }
 }

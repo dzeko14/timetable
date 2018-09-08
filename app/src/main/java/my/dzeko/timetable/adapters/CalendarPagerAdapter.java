@@ -7,10 +7,10 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 
 import my.dzeko.timetable.fragments.CalendarUnitFragment;
 
-public class CalendarAdapter extends FragmentStatePagerAdapter {
-    public static final int MONTH_COUNT = 12;
+public class CalendarPagerAdapter extends FragmentStatePagerAdapter {
+    private static final int MONTH_COUNT = 12;
 
-    public CalendarAdapter(FragmentManager fm) {
+    public CalendarPagerAdapter(FragmentManager fm) {
         super(fm);
     }
 

@@ -3,7 +3,6 @@ package my.dzeko.timetable.presenters;
 import java.util.Date;
 
 import my.dzeko.timetable.activities.CalendarDetailActivity;
-import my.dzeko.timetable.contracts.CalendarDetailContract;
 import my.dzeko.timetable.contracts.CalendarUnitContract;
 import my.dzeko.timetable.utils.DateUtils;
 
@@ -19,7 +18,7 @@ public class CalendarUnitPresenter implements CalendarUnitContract.Presenter {
 
     @Override
     public void onCalendarInitialization() {
-        mView.setMonthName(DateUtils.getMonthName(MONTH));
+        mView.setMonthName(DateUtils.getMonthNameById(MONTH));
 
         int daysAmount = DateUtils.getDaysAmountInMonth(MONTH);
         int firstDayInWeek = DateUtils.getFirstDayInWeekNumber(MONTH);

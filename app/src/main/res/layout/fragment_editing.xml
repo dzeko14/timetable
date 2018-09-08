@@ -5,10 +5,17 @@
     android:layout_height="match_parent"
     tools:context=".fragments.EditingFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <ProgressBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/Base.Widget.AppCompat.ProgressBar"
+        android:id="@+id/editing_progress_bar"
+        android:layout_gravity="center"/>
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/editing_view_pager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="Coming soon" />
+        android:visibility="gone"/>
 
 </FrameLayout>

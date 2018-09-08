@@ -2,8 +2,11 @@ package my.dzeko.timetable.utils;
 
 import android.annotation.SuppressLint;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
@@ -82,7 +85,7 @@ public abstract class DateUtils {
         return dates;
     }
 
-    public static String getMonthName(int month) {
+    public static String getMonthNameById(int month) {
         switch (month) {
             case Calendar.JANUARY:
                 return "Січень";
@@ -199,5 +202,14 @@ public abstract class DateUtils {
                 calendar.get(Calendar.DAY_OF_MONTH),
                 calendar.get(Calendar.MONTH) + 1,
                 calendar.get(Calendar.YEAR));
+    }
+
+    public static int getDayIdByName(String dayName) {
+        final String[] DAY_OF_WEEKS_NAME = {
+                "",
+                "Понеділок", "Вівторок", "Середа", "Четвер", "П'ятниця", "Субота"
+        };
+        List<String> dayList = Arrays.asList(DAY_OF_WEEKS_NAME);
+        return dayList.indexOf(dayName);
     }
 }

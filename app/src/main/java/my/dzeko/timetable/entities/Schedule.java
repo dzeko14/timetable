@@ -28,4 +28,20 @@ public class Schedule {
         this.mSchedule = schedule;
     }
 
+    public List<Day> getFirstWeek() {
+        List<Day> firstWeek = new ArrayList<>();
+        for (Day day : mSchedule) {
+            if(day.getWeekId() == 1) firstWeek.add(day);
+        }
+        return firstWeek.size() == 0 ? null : firstWeek;
+    }
+
+    public List<Day> getSecondWeek() {
+        List<Day> secondWeek = new ArrayList<>();
+        for (Day day : mSchedule) {
+            if(day.getWeekId() == 2) secondWeek.add(day);
+        }
+        return secondWeek.size() == 0 ? null : secondWeek;
+    }
+
 }

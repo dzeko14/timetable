@@ -12,7 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import my.dzeko.timetable.R;
-import my.dzeko.timetable.adapters.ScheduleAdapter;
+import my.dzeko.timetable.adapters.ScheduleRecyclerAdapter;
 import my.dzeko.timetable.contracts.ScheduleContract;
 import my.dzeko.timetable.entities.Schedule;
 import my.dzeko.timetable.presenters.SchedulePresenter;
@@ -22,7 +22,7 @@ import my.dzeko.timetable.presenters.SchedulePresenter;
  */
 public class ScheduleFragment extends Fragment implements ScheduleContract.View {
     ScheduleContract.Presenter mPresenter;
-    ScheduleAdapter mAdapter;
+    ScheduleRecyclerAdapter mAdapter;
     RecyclerView mRecyclerView;
 
     View mProgressBar;
@@ -67,7 +67,7 @@ public class ScheduleFragment extends Fragment implements ScheduleContract.View 
         mRecyclerView = rootFragmentView.findViewById(R.id.schedule_recycler_view);
         LinearLayoutManager manager = new LinearLayoutManager(this.getContext());
         mRecyclerView.setLayoutManager(manager);
-        mAdapter = new ScheduleAdapter(Schedule.getEmptySchedule());
+        mAdapter = new ScheduleRecyclerAdapter(Schedule.getEmptySchedule());
         mRecyclerView.setAdapter(mAdapter);
     }
 

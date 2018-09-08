@@ -11,7 +11,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 
-import java.util.Calendar;
 import java.util.List;
 
 import my.dzeko.timetable.R;
@@ -20,13 +19,13 @@ import my.dzeko.timetable.entities.Schedule;
 import my.dzeko.timetable.entities.Subject;
 import my.dzeko.timetable.utils.DateUtils;
 
-public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.DayViewHolder> {
+public class ScheduleRecyclerAdapter extends RecyclerView.Adapter<ScheduleRecyclerAdapter.DayViewHolder> {
     private final int CURRENT_DATE;
     private List<Day> mSchedule;
 
     private int mCurrentDayViewHolderPosition = -1;
 
-    public ScheduleAdapter(Schedule schedule) {
+    public ScheduleRecyclerAdapter(Schedule schedule) {
         CURRENT_DATE = DateUtils.getCurrentDay();
         mSchedule = schedule.getSchedule();
 
