@@ -7,6 +7,7 @@ import io.reactivex.SingleObserver;
 import io.reactivex.disposables.Disposable;
 import my.dzeko.timetable.cache.CacheData;
 import my.dzeko.timetable.db.SubjectDao;
+import my.dzeko.timetable.entities.Day;
 import my.dzeko.timetable.entities.Group;
 import my.dzeko.timetable.entities.Schedule;
 import my.dzeko.timetable.entities.Subject;
@@ -47,10 +48,12 @@ public class Model implements IModel{
 
         //Else get selected schedule from DB
         try {
-            return ScheduleUtils.fetchScheduleFromList(
+            Schedule schedule = ScheduleUtils.fetchScheduleFromList(
                     DatabaseWrapper.getDatabase().getSubjectDao().getSubjectsByGroupName(selectedSchedule),
                     selectedSchedule
             );
+            mCacheData.addCachedSchedule(selectedSchedule, schedule);
+            return schedule;
         } catch (ParseException e) {
             e.printStackTrace();
             return null;
@@ -73,6 +76,7 @@ public class Model implements IModel{
             try {
                 schedule = ScheduleUtils.fetchScheduleFromList(
                         subjectDao.getSubjectsByGroupName(groupName), groupName);
+                mCacheData.addCachedSchedule(groupName, schedule);
             } catch (ParseException e) {
                 e.printStackTrace();
             }
@@ -110,8 +114,6 @@ public class Model implements IModel{
                 e.printStackTrace();
             }
         });
-
-
     }
 
     @Override
@@ -141,7 +143,6 @@ public class Model implements IModel{
                     @Override
                     public void onSuccess(Schedule schedule) {
                         ScheduleObservable.getInstance().notifySelectedScheduleChanged(schedule);
-                        mCacheData.setCachedSchedule(groupName, schedule);
                     }
 
                     @Override
@@ -152,4 +153,26 @@ public class Model implements IModel{
                 });
     }
 
+    @Override
+    public void removeSubject(Subject subject) {
+        DatabaseWrapper.getDatabase().getSubjectDao().removeSubject(subject);
+        String selectedSchedule = SharedPreferencesWrapper.getInstance().getSelectedGroup();
+        Schedule schedule = mCacheData.getCachedSchedule(selectedSchedule);
+        for (Day day: schedule.getSchedule()) {
+            if (day.getSubjects().remove(subject)) break;
+        }
+        ScheduleObservable.getInstance().notifySelectedScheduleChanged(schedule);
+    }
+
+    @Override
+    public void removeDay(Day day) {
+        String selectedSchedule = SharedPreferencesWrapper.getInstance().getSelectedGroup();
+        Schedule schedule = mCacheData.getCachedSchedule(selectedSchedule);
+        SubjectDao dao = DatabaseWrapper.getDatabase().getSubjectDao();
+        for (Subject subject : day.getSubjects()) {
+            dao.removeSubject(subject);
+        }
+        schedule.getSchedule().remove(day);
+        ScheduleObservable.getInstance().notifySelectedScheduleChanged(schedule);
+    }
 }

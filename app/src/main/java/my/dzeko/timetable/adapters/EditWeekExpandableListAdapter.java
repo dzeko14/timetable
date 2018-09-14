@@ -76,7 +76,7 @@ public class EditWeekExpandableListAdapter extends BaseExpandableListAdapter {
 
     @Override
     public View getGroupView(final int groupPosition, boolean isExpanded,
-                             View convertView, ViewGroup parent) {
+                             View convertView, final ViewGroup parent) {
         View view = convertView;
 
         if (view == null) {
@@ -85,7 +85,7 @@ public class EditWeekExpandableListAdapter extends BaseExpandableListAdapter {
         }
 
         TextView dayNameTV = view.findViewById(R.id.editing_expandable_list_group_item_day_name_text_view);
-        Button removeButton = view.findViewById(R.id.editing_expandable_list_group_item_remove_button);
+        final Button removeButton = view.findViewById(R.id.editing_expandable_list_group_item_remove_button);
 
         final Day day = mWeek.get(groupPosition);
         String dayName = day.getName();
@@ -94,7 +94,6 @@ public class EditWeekExpandableListAdapter extends BaseExpandableListAdapter {
         removeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int dayId = mWeek.get(groupPosition).getId();
                 mRemoveGroupItemListener.onRemoveGroupItemClick(day);
             }
         });
@@ -124,7 +123,7 @@ public class EditWeekExpandableListAdapter extends BaseExpandableListAdapter {
         editButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mEditChildItemListener.onEditClick(subject);
+                mEditChildItemListener.onEditChildItemClick(subject);
             }
         });
 
@@ -143,7 +142,6 @@ public class EditWeekExpandableListAdapter extends BaseExpandableListAdapter {
         return false;
     }
 
-
     //Listeners
     public interface OnRemoveExpandableListViewChildItemListener {
         void onRemoveChildItemClick(Subject subject);
@@ -154,6 +152,6 @@ public class EditWeekExpandableListAdapter extends BaseExpandableListAdapter {
     }
 
     public interface OnEditExpandableListViewChildItemListener {
-        void onEditClick(Subject subject);
+        void onEditChildItemClick(Subject subject);
     }
 }

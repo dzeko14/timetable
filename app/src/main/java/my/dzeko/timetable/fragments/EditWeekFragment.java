@@ -13,6 +13,7 @@ import android.widget.SimpleExpandableListAdapter;
 import java.util.List;
 
 import my.dzeko.timetable.R;
+import my.dzeko.timetable.adapters.EditWeekExpandableListAdapter;
 import my.dzeko.timetable.contracts.EditWeekContract;
 import my.dzeko.timetable.entities.Day;
 import my.dzeko.timetable.presenters.EditWeekPresenter;
@@ -63,7 +64,12 @@ public class EditWeekFragment extends Fragment implements EditWeekContract.View 
     }
 
     @Override
-    public void setupExpandableListAdapter(BaseExpandableListAdapter adapter) {
+    public void updateAdapter() {
+        ((EditWeekExpandableListAdapter)mExpandableListView.getExpandableListAdapter()).notifyDataSetChanged();
+    }
+
+    @Override
+    public void setAdapter(BaseExpandableListAdapter adapter) {
         mExpandableListView.setAdapter(adapter);
     }
 }

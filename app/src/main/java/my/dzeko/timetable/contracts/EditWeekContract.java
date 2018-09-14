@@ -11,7 +11,8 @@ import my.dzeko.timetable.interfaces.IView;
 
 public class EditWeekContract {
     public interface View extends IView {
-        void setupExpandableListAdapter(BaseExpandableListAdapter adapter);
+        void setAdapter(BaseExpandableListAdapter adapter);
+        void updateAdapter();
     }
 
     public interface Presenter extends IPresenter,

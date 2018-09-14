@@ -12,7 +12,7 @@ public class CacheData {
         return mCachedSchedule.get(groupName);
     }
 
-    public void setCachedSchedule(String groupName, Schedule cachedSchedule) {
+    public void addCachedSchedule(String groupName, Schedule cachedSchedule) {
         this.mCachedSchedule.put(groupName, cachedSchedule);
     }
 
