@@ -1,11 +1,11 @@
 package my.dzeko.timetable.models;
 
+import java.io.IOException;
 import java.text.ParseException;
 import java.util.List;
 
-import io.reactivex.SingleObserver;
-import io.reactivex.disposables.Disposable;
 import my.dzeko.timetable.cache.CacheData;
+import my.dzeko.timetable.db.GroupDao;
 import my.dzeko.timetable.db.SubjectDao;
 import my.dzeko.timetable.entities.Day;
 import my.dzeko.timetable.entities.Group;
@@ -14,7 +14,6 @@ import my.dzeko.timetable.entities.Subject;
 import my.dzeko.timetable.interfaces.IModel;
 import my.dzeko.timetable.observers.ScheduleObservable;
 import my.dzeko.timetable.utils.ApiUtils;
-import my.dzeko.timetable.utils.DateUtils;
 import my.dzeko.timetable.utils.ScheduleUtils;
 import my.dzeko.timetable.wrappers.DatabaseWrapper;
 import my.dzeko.timetable.wrappers.SharedPreferencesWrapper;
@@ -91,29 +90,24 @@ public class Model implements IModel{
     }
 
     @Override
-    public void parseSchedule(final String groupName) {
-        //Parsing current week number
-        ApiUtils.parseCurrentWeek().subscribe(new SingleObserver<Integer>() {
-            @Override
-            public void onSubscribe(Disposable d) {
+    public void parseSchedule(String groupName) {
+        try {
+            ApiUtils.parseCurrentWeek();
+            ApiUtils.parseSchedule(groupName);
+            saveGroupName(groupName);
+        } catch (IOException e) {
+            e.printStackTrace();
+            //TODO Implement on error handling
+        } catch (ParseException e) {
+            e.printStackTrace();
+            //TODO Implement on error handling
+        }
+    }
 
-            }
-
-            @Override
-            public void onSuccess(Integer weekNumber) {
-                SharedPreferencesWrapper.getInstance().setKeyDate(
-                        DateUtils.createKeyDate(weekNumber == 1)
-                );
-                //Start parsing the schedule
-                startParsingSchedule(groupName);
-            }
-
-            @Override
-            public void onError(Throwable e) {
-                //TODO Implement on error handling
-                e.printStackTrace();
-            }
-        });
+    private void saveGroupName(String groupName) {
+        GroupDao groupDao = DatabaseWrapper.getDatabase().getGroupDao();
+        groupDao.saveGroup(new Group(groupName));
+        SharedPreferencesWrapper.getInstance().setSelectedGroup(groupName);
     }
 
     @Override
@@ -130,27 +124,6 @@ public class Model implements IModel{
     public List<Subject> getSchedulesByDayIdAndWeekId(int dayId, int weekId, String groupName) {
         return DatabaseWrapper.getDatabase().getSubjectDao().getSubjectsByDayIdAndWeekId(dayId,
                 weekId, groupName);
-    }
-
-    private void startParsingSchedule(final String groupName) {
-        ApiUtils.parseSchedule(groupName)
-                .subscribe(new SingleObserver<Schedule>() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
-
-                    }
-
-                    @Override
-                    public void onSuccess(Schedule schedule) {
-                        ScheduleObservable.getInstance().notifySelectedScheduleChanged(schedule);
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        //TODO Implement on error handling
-                        e.printStackTrace();
-                    }
-                });
     }
 
     @Override
