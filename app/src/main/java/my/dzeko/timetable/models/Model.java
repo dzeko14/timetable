@@ -29,7 +29,6 @@ public class Model implements IModel{
         return mInstance;
     }
 //  --------------------------------------------------------
-    private CacheData mCacheData = new CacheData();
 
     @Override
     public List<Group> getGroupList() {
@@ -40,18 +39,12 @@ public class Model implements IModel{
     public Schedule getSelectedSchedule() {
         String selectedSchedule = SharedPreferencesWrapper.getInstance().getSelectedGroup();
 
-        //Get selected schedule from cache if its there
-        if(mCacheData.isScheduleCached(selectedSchedule)) {
-            return mCacheData.getCachedSchedule(selectedSchedule);
-        }
-
         //Else get selected schedule from DB
         try {
             Schedule schedule = ScheduleUtils.fetchScheduleFromList(
                     DatabaseWrapper.getDatabase().getSubjectDao().getSubjectsByGroupName(selectedSchedule),
                     selectedSchedule
             );
-            mCacheData.addCachedSchedule(selectedSchedule, schedule);
             return schedule;
         } catch (ParseException e) {
             e.printStackTrace();
@@ -66,20 +59,14 @@ public class Model implements IModel{
 
         Schedule schedule = null;
 
-        if (mCacheData.isScheduleCached(groupName)) {
-            //Get selected schedule from cache if its there
-           schedule = mCacheData.getCachedSchedule(groupName);
-        } else {
             //Else get selected schedule from DB
             SubjectDao subjectDao = DatabaseWrapper.getDatabase().getSubjectDao();
             try {
                 schedule = ScheduleUtils.fetchScheduleFromList(
                         subjectDao.getSubjectsByGroupName(groupName), groupName);
-                mCacheData.addCachedSchedule(groupName, schedule);
             } catch (ParseException e) {
                 e.printStackTrace();
             }
-        }
 
         observable.notifySelectedScheduleChanged(schedule);
     }
@@ -129,23 +116,16 @@ public class Model implements IModel{
     @Override
     public void removeSubject(Subject subject) {
         DatabaseWrapper.getDatabase().getSubjectDao().removeSubject(subject);
-        String selectedSchedule = SharedPreferencesWrapper.getInstance().getSelectedGroup();
-        Schedule schedule = mCacheData.getCachedSchedule(selectedSchedule);
-        for (Day day: schedule.getSchedule()) {
-            if (day.getSubjects().remove(subject)) break;
-        }
-        ScheduleObservable.getInstance().notifySelectedScheduleChanged(schedule);
+        ScheduleObservable.getInstance().notifySelectedScheduleChanged(getSelectedSchedule());
     }
 
     @Override
     public void removeDay(Day day) {
         String selectedSchedule = SharedPreferencesWrapper.getInstance().getSelectedGroup();
-        Schedule schedule = mCacheData.getCachedSchedule(selectedSchedule);
         SubjectDao dao = DatabaseWrapper.getDatabase().getSubjectDao();
         for (Subject subject : day.getSubjects()) {
             dao.removeSubject(subject);
         }
-        schedule.getSchedule().remove(day);
-        ScheduleObservable.getInstance().notifySelectedScheduleChanged(schedule);
+        ScheduleObservable.getInstance().notifySelectedScheduleChanged(getSelectedSchedule());
     }
 }

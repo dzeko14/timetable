@@ -49,6 +49,11 @@ public class EditWeekPresenter implements EditWeekContract.Presenter {
                 mModel.removeSubject(subject);
                 for (int i = 0; i < mWeek.size(); i++) {
                     Day day = mWeek.get(i);
+
+                    if (day.getId() == subject.getDayId()){
+                        day.getSubjects().remove(subject);
+                    }
+
                     if (day.getSubjects().size() == 0) {
                         mWeek.remove(day);
                         break;
