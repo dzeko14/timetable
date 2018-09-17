@@ -3,6 +3,7 @@ package my.dzeko.timetable.db;
 import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Delete;
 import android.arch.persistence.room.Insert;
+import android.arch.persistence.room.OnConflictStrategy;
 import android.arch.persistence.room.Query;
 import android.arch.persistence.room.Transaction;
 
@@ -27,7 +28,7 @@ public abstract class SubjectDao {
         saveSubjects(subjects);
     }
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     public abstract long saveSubject(Subject subject);
 
     @Query("SELECT * FROM Subject WHERE mDayId = :dayId AND mWeekId = :weekId AND mGroup = :groupName")
@@ -35,4 +36,7 @@ public abstract class SubjectDao {
 
     @Delete
     public abstract void removeSubject(Subject subject);
+
+    @Query("SELECT * FROM Subject WHERE mId = :subjectId")
+    public abstract Subject getSubjectById(long subjectId);
 }

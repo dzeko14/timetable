@@ -20,4 +20,8 @@ public interface IModel {
     void removeSubject(Subject subject);
 
     void removeDay(Day day);
+
+    Subject getSubject(long subjectId);
+
+    void saveSubject(Subject subject);
 }

@@ -28,4 +28,17 @@
     <string name="item_week_calendar_friday">Пт</string>
     <string name="item_week_calendar_saturday">Сб</string>
     <string name="item_week_calendar_sunday">Нд</string>
+    <string name="create_or_update_subject_activity_menu_check">Підтвердити</string>
+    <string name="activity_create_or_update_subject_name_hint">Назва предмету</string>
+    <string name="activity_create_or_update_subject_full_name_hint">Повна назва</string>
+    <string name="activity_create_or_update_subject_teacher_hint">Викладач</string>
+    <string name="activity_create_or_update_subject_cabinet_hint">Аудиторія</string>
+
+    <string-array name="positions">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+    </string-array>
 </resources>

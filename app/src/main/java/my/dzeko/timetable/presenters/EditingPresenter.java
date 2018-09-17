@@ -1,12 +1,6 @@
 package my.dzeko.timetable.presenters;
 
 import android.annotation.SuppressLint;
-import android.widget.SimpleExpandableListAdapter;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -14,14 +8,11 @@ import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.functions.Function;
 import io.reactivex.observers.DisposableSingleObserver;
 import io.reactivex.schedulers.Schedulers;
-import my.dzeko.timetable.R;
 import my.dzeko.timetable.contracts.EditingContract;
-import my.dzeko.timetable.entities.Day;
 import my.dzeko.timetable.entities.Schedule;
-import my.dzeko.timetable.entities.Subject;
+import my.dzeko.timetable.entities.Week;
 import my.dzeko.timetable.interfaces.IModel;
 import my.dzeko.timetable.models.Model;
-import my.dzeko.timetable.observers.ScheduleObservable;
 
 public class EditingPresenter implements EditingContract.Presenter {
     private EditingContract.View mView;
@@ -32,7 +23,6 @@ public class EditingPresenter implements EditingContract.Presenter {
     public EditingPresenter(EditingContract.View view) {
         mView = view;
         mModel = Model.getInstance();
-        ScheduleObservable.getInstance().registerObserver(this);
     }
 
     @Override
@@ -43,13 +33,7 @@ public class EditingPresenter implements EditingContract.Presenter {
     @Override
     public void destroy() {
         mView = null;
-        ScheduleObservable.getInstance().unregisterObserver(this);
         mCD.dispose();
-    }
-
-    @Override
-    public void onSelectedScheduleChanged(Schedule schedule) {
-
     }
 
     @Override
@@ -73,8 +57,8 @@ public class EditingPresenter implements EditingContract.Presenter {
     }
 
     private void setupSchedule(Schedule schedule) {
-        List<Day> firstWeek = schedule.getFirstWeek();
-        List<Day> secondWeek = schedule.getSecondWeek();
+        Week firstWeek = schedule.getFirstWeek();
+        Week secondWeek = schedule.getSecondWeek();
 
         if(firstWeek != null) mView.addWeekToAdapter(firstWeek);
         if(secondWeek != null) mView.addWeekToAdapter(secondWeek);

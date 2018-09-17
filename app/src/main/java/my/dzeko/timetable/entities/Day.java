@@ -3,6 +3,7 @@ package my.dzeko.timetable.entities;
 import android.support.annotation.NonNull;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 
 public class Day implements Comparable<Day> {
@@ -13,7 +14,6 @@ public class Day implements Comparable<Day> {
     private String mWeek;
     private ArrayList<Subject> mSubjects;
     private boolean mIsFirstDayInTheWeek;
-    private boolean mIsSelected;
 
     public Day(int id, int weekId, String name, String date, String week, boolean isFirstDayInTheWeek) {
         mSubjects = new ArrayList<>(5);
@@ -23,7 +23,6 @@ public class Day implements Comparable<Day> {
         mDate = date;
         mWeek = week;
         mIsFirstDayInTheWeek = isFirstDayInTheWeek;
-        mIsSelected = false;
     }
 
     public String getName() {
@@ -34,7 +33,8 @@ public class Day implements Comparable<Day> {
         return mDate;
     }
 
-    public final ArrayList<Subject> getSubjects() {
+    public ArrayList<Subject> getSubjects() {
+        Collections.sort(mSubjects);
         return mSubjects;
     }
 
@@ -68,14 +68,6 @@ public class Day implements Comparable<Day> {
 
     public int getDayOfMonth() {
         return Integer.parseInt(mDate.substring(0,2));
-    }
-
-    public boolean isSelected() {
-        return mIsSelected;
-    }
-
-    public void setSelected(boolean mIsSelected) {
-        this.mIsSelected = mIsSelected;
     }
 
     public int getSubjectsAmount() {

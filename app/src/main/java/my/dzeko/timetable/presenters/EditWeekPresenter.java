@@ -1,28 +1,37 @@
 package my.dzeko.timetable.presenters;
 
 import android.annotation.SuppressLint;
+import android.os.Bundle;
 
 import java.util.List;
 
 import io.reactivex.Completable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.functions.Action;
 import io.reactivex.observers.DisposableCompletableObserver;
 import io.reactivex.schedulers.Schedulers;
+import my.dzeko.timetable.activities.CreateOrUpdateSubjectActivity;
 import my.dzeko.timetable.adapters.EditWeekExpandableListAdapter;
+import my.dzeko.timetable.contracts.CreateOrUpdateSubjectContract;
 import my.dzeko.timetable.contracts.EditWeekContract;
 import my.dzeko.timetable.entities.Day;
+import my.dzeko.timetable.entities.Schedule;
 import my.dzeko.timetable.entities.Subject;
+import my.dzeko.timetable.entities.Week;
 import my.dzeko.timetable.interfaces.IModel;
 import my.dzeko.timetable.models.Model;
+import my.dzeko.timetable.observers.ScheduleObservable;
 
 public class EditWeekPresenter implements EditWeekContract.Presenter {
     private EditWeekContract.View mView;
     private IModel mModel = Model.getInstance();
-    private List<Day> mWeek;
+    private Week mWeek;
+    private CompositeDisposable mCD = new CompositeDisposable();
 
     public EditWeekPresenter(EditWeekContract.View view) {
         mView = view;
+        ScheduleObservable.getInstance().registerObserver(this);
     }
 
     @Override
@@ -33,11 +42,17 @@ public class EditWeekPresenter implements EditWeekContract.Presenter {
     @Override
     public void destroy() {
         mView = null;
+        ScheduleObservable.getInstance().unregisterObserver(this);
+        mCD.dispose();
     }
 
     @Override
     public void onEditChildItemClick(Subject subject) {
-
+        Bundle bundle = new Bundle();
+        bundle.putLong(CreateOrUpdateSubjectContract.SUBJECT_ID, subject.getId());
+        bundle.putInt(CreateOrUpdateSubjectContract.DAY_ID, subject.getDayId());
+        bundle.putInt(CreateOrUpdateSubjectContract.WEEK_ID, subject.getWeekId());
+        mView.startActivity(bundle, CreateOrUpdateSubjectActivity.class);
     }
 
     @SuppressLint("CheckResult")
@@ -47,15 +62,15 @@ public class EditWeekPresenter implements EditWeekContract.Presenter {
             @Override
             public void run() throws Exception {
                 mModel.removeSubject(subject);
-                for (int i = 0; i < mWeek.size(); i++) {
-                    Day day = mWeek.get(i);
+                for (int i = 0; i < mWeek.getDaysList().size(); i++) {
+                    Day day = mWeek.getDaysList().get(i);
 
                     if (day.getId() == subject.getDayId()){
                         day.getSubjects().remove(subject);
                     }
 
                     if (day.getSubjects().size() == 0) {
-                        mWeek.remove(day);
+                        mWeek.getDaysList().remove(day);
                         break;
                     }
                 }
@@ -84,7 +99,7 @@ public class EditWeekPresenter implements EditWeekContract.Presenter {
             @Override
             public void run() throws Exception {
                 mModel.removeDay(day);
-                mWeek.remove(day);
+                mWeek.getDaysList().remove(day);
             }
         })
                 .subscribeOn(Schedulers.io())
@@ -103,9 +118,8 @@ public class EditWeekPresenter implements EditWeekContract.Presenter {
     }
 
     @Override
-    public void setWeek(List<Day> week) {
+    public void setWeek(Week week) {
         mWeek = week;
-
     }
 
     private EditWeekExpandableListAdapter getAdapterFromSchedule(List<Day> schedule) {
@@ -114,10 +128,29 @@ public class EditWeekPresenter implements EditWeekContract.Presenter {
 
     @Override
     public void onViewInitialized() {
-        EditWeekExpandableListAdapter adapter = getAdapterFromSchedule(mWeek);
+        EditWeekExpandableListAdapter adapter = getAdapterFromSchedule(mWeek.getDaysList());
         adapter.setEditChildItemListener(this);
         adapter.setRemoveGroupItemListener(this);
         adapter.setRemoveChildItemListener(this);
         mView.setAdapter(adapter);
+    }
+
+    @SuppressLint("CheckResult")
+    @Override
+    public void onSelectedScheduleChanged(final Schedule schedule) {
+        mCD.add(
+        Completable.fromAction(new Action() {
+            @Override
+            public void run() throws Exception {
+                if (mWeek.getId() == 1) {
+                    mWeek = schedule.getFirstWeek();
+                } else if (mWeek.getId() == 2) {
+                    mWeek = schedule.getSecondWeek();
+                }
+                mView.updateAdapter(mWeek);
+            }
+        }).subscribeOn(AndroidSchedulers.mainThread())
+                .subscribe()
+        );
     }
 }

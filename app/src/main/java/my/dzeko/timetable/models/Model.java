@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.util.List;
 
-import my.dzeko.timetable.cache.CacheData;
 import my.dzeko.timetable.db.GroupDao;
 import my.dzeko.timetable.db.SubjectDao;
 import my.dzeko.timetable.entities.Day;
@@ -39,13 +38,12 @@ public class Model implements IModel{
     public Schedule getSelectedSchedule() {
         String selectedSchedule = SharedPreferencesWrapper.getInstance().getSelectedGroup();
 
-        //Else get selected schedule from DB
+        //get selected schedule from DB
         try {
-            Schedule schedule = ScheduleUtils.fetchScheduleFromList(
+            return ScheduleUtils.fetchScheduleFromList(
                     DatabaseWrapper.getDatabase().getSubjectDao().getSubjectsByGroupName(selectedSchedule),
                     selectedSchedule
             );
-            return schedule;
         } catch (ParseException e) {
             e.printStackTrace();
             return null;
@@ -121,11 +119,41 @@ public class Model implements IModel{
 
     @Override
     public void removeDay(Day day) {
-        String selectedSchedule = SharedPreferencesWrapper.getInstance().getSelectedGroup();
         SubjectDao dao = DatabaseWrapper.getDatabase().getSubjectDao();
         for (Subject subject : day.getSubjects()) {
             dao.removeSubject(subject);
         }
+        ScheduleObservable.getInstance().notifySelectedScheduleChanged(getSelectedSchedule());
+    }
+
+    @Override
+    public Subject getSubject(long subjectId) {
+        return DatabaseWrapper.getDatabase().getSubjectDao().getSubjectById(subjectId);
+    }
+
+    @Override
+    public void saveSubject(Subject subject) {
+        SubjectDao subjectDao = DatabaseWrapper.getDatabase().getSubjectDao();
+        Subject subjectPositionToChange = null;
+        int oldPosition = -1;
+        List<Subject> subjects = subjectDao.getSubjectsByDayIdAndWeekId(subject.getDayId(),
+                subject.getWeekId(), getSelectedScheduleGroupName());
+
+        for (Subject s: subjects) {
+            if (subject.getId() == s.getId()) {
+                oldPosition = s.getPosition();
+            }
+            if (s.getPosition() == subject.getPosition()) {
+                subjectPositionToChange = s;
+            }
+        }
+
+        if (subjectPositionToChange != null) {
+            subjectPositionToChange.setPosition(oldPosition);
+            subjectDao.saveSubject(subjectPositionToChange);
+        }
+
+        subjectDao.saveSubject(subject);
         ScheduleObservable.getInstance().notifySelectedScheduleChanged(getSelectedSchedule());
     }
 }

@@ -8,10 +8,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import my.dzeko.timetable.entities.Day;
+import my.dzeko.timetable.entities.Week;
 import my.dzeko.timetable.fragments.EditWeekFragment;
 
 public class EditingPagerAdapter extends FragmentPagerAdapter {
-    private List<List<Day>> mWeeks = new ArrayList<>();
+    private List<Week> mWeeks = new ArrayList<>();
 
 
     public EditingPagerAdapter(FragmentManager fm) {
@@ -30,7 +31,7 @@ public class EditingPagerAdapter extends FragmentPagerAdapter {
         return mWeeks.size();
     }
 
-    public void addWeek(List<Day> week) {
+    public void addWeek(Week week) {
         mWeeks.add(week);
         notifyDataSetChanged();
     }

@@ -2,6 +2,7 @@ package my.dzeko.timetable.fragments;
 
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
@@ -23,6 +24,7 @@ import my.dzeko.timetable.adapters.EditingPagerAdapter;
 import my.dzeko.timetable.contracts.EditingContract;
 import my.dzeko.timetable.entities.Day;
 import my.dzeko.timetable.entities.Subject;
+import my.dzeko.timetable.entities.Week;
 import my.dzeko.timetable.presenters.EditingPresenter;
 
 public class EditingFragment extends Fragment implements EditingContract.View {
@@ -58,7 +60,7 @@ public class EditingFragment extends Fragment implements EditingContract.View {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_editing, container, false);
         initializeView(rootView);
@@ -90,7 +92,7 @@ public class EditingFragment extends Fragment implements EditingContract.View {
     }
 
     @Override
-    public void addWeekToAdapter(List<Day> week) {
+    public void addWeekToAdapter(Week week) {
         mPagerAdapter.addWeek(week);
     }
 

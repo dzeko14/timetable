@@ -31,8 +31,10 @@
             android:enabled="true"
             android:exported="false" />
 
-        <activity android:name=".activities.CalendarDetailActivity"
-            android:parentActivityName=".activities.MainActivity"/>
+        <activity
+            android:name=".activities.CalendarDetailActivity"
+            android:parentActivityName=".activities.MainActivity" />
+        <activity android:name=".activities.CreateOrUpdateSubjectActivity"/>
     </application>
 
 </manifest>

@@ -142,6 +142,11 @@ public class EditWeekExpandableListAdapter extends BaseExpandableListAdapter {
         return false;
     }
 
+    public void updateData(List<Day> week){
+        mWeek = week;
+        notifyDataSetChanged();
+    }
+
     //Listeners
     public interface OnRemoveExpandableListViewChildItemListener {
         void onRemoveChildItemClick(Subject subject);

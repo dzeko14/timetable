@@ -1,7 +1,9 @@
 package my.dzeko.timetable.fragments;
 
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,8 +16,10 @@ import java.util.List;
 
 import my.dzeko.timetable.R;
 import my.dzeko.timetable.adapters.EditWeekExpandableListAdapter;
+import my.dzeko.timetable.contracts.CreateOrUpdateSubjectContract;
 import my.dzeko.timetable.contracts.EditWeekContract;
 import my.dzeko.timetable.entities.Day;
+import my.dzeko.timetable.entities.Week;
 import my.dzeko.timetable.presenters.EditWeekPresenter;
 
 public class EditWeekFragment extends Fragment implements EditWeekContract.View {
@@ -31,7 +35,7 @@ public class EditWeekFragment extends Fragment implements EditWeekContract.View 
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_edit_week, container, false);
         initializeViews(rootView);
@@ -49,7 +53,7 @@ public class EditWeekFragment extends Fragment implements EditWeekContract.View 
         mExpandableListView = rootView.findViewById(R.id.edit_week_fragment_expandable_list_view);
     }
 
-    public void setWeek(List<Day> week) {
+    public void setWeek(Week week) {
         mPresenter.setWeek(week);
     }
 
@@ -69,7 +73,25 @@ public class EditWeekFragment extends Fragment implements EditWeekContract.View 
     }
 
     @Override
+    public void updateAdapter(Week week) {
+        ((EditWeekExpandableListAdapter)mExpandableListView.getExpandableListAdapter())
+                .updateData(week.getDaysList());
+    }
+
+    @Override
     public void setAdapter(BaseExpandableListAdapter adapter) {
         mExpandableListView.setAdapter(adapter);
+    }
+
+    @Override
+    public void startActivity(Bundle bundle, Class c) {
+        Intent intent = new Intent(this.getContext(), c);
+        intent.putExtra(CreateOrUpdateSubjectContract.SUBJECT_ID,
+                bundle.getLong(CreateOrUpdateSubjectContract.SUBJECT_ID));
+        intent.putExtra(CreateOrUpdateSubjectContract.DAY_ID,
+                bundle.getInt(CreateOrUpdateSubjectContract.DAY_ID));
+        intent.putExtra(CreateOrUpdateSubjectContract.WEEK_ID,
+                bundle.getInt(CreateOrUpdateSubjectContract.WEEK_ID));
+        startActivity(intent);
     }
 }
