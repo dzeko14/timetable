@@ -1,13 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".fragments.EditWeekFragment">
+
+    <TextView
+        android:id="@+id/edit_week_fragment_name_text_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        tools:text="First Week"
+        android:textColor="#FFFFFF"
+        android:background="#304ffe"/>
 
     <ExpandableListView
         android:id="@+id/edit_week_fragment_expandable_list_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 
-</FrameLayout>
+</LinearLayout>

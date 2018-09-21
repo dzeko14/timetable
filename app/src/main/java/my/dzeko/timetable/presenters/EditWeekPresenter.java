@@ -11,6 +11,7 @@ import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.functions.Action;
 import io.reactivex.observers.DisposableCompletableObserver;
 import io.reactivex.schedulers.Schedulers;
+import my.dzeko.timetable.R;
 import my.dzeko.timetable.activities.CreateOrUpdateSubjectActivity;
 import my.dzeko.timetable.adapters.EditWeekExpandableListAdapter;
 import my.dzeko.timetable.contracts.CreateOrUpdateSubjectContract;
@@ -133,6 +134,15 @@ public class EditWeekPresenter implements EditWeekContract.Presenter {
         adapter.setRemoveGroupItemListener(this);
         adapter.setRemoveChildItemListener(this);
         mView.setAdapter(adapter);
+
+        String weekName = null;
+        if (mWeek.getId() == 1) {
+            weekName = mView.getContext().getResources().getString(R.string.first_week);
+        } else {
+            weekName = mView.getContext().getResources().getString(R.string.second_week);
+        }
+
+        mView.setTitle(weekName);
     }
 
     @SuppressLint("CheckResult")

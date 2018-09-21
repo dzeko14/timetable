@@ -18,6 +18,7 @@ public class EditWeekContract {
         void updateAdapter();
         void startActivity(Bundle bundle, Class c);
         void updateAdapter(Week mWeek);
+        void setTitle(String weekName);
     }
 
     public interface Presenter extends IPresenter,

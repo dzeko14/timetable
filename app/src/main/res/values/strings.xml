@@ -34,6 +34,9 @@
     <string name="activity_create_or_update_subject_teacher_hint">Викладач</string>
     <string name="activity_create_or_update_subject_cabinet_hint">Аудиторія</string>
 
+    <string name="first_week">Перший тиждень</string>
+    <string name="second_week">Другий тиждень</string>
+
     <string-array name="positions">
         <item>1</item>
         <item>2</item>

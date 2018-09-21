@@ -10,21 +10,19 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.ExpandableListView;
-import android.widget.SimpleExpandableListAdapter;
-
-import java.util.List;
+import android.widget.TextView;
 
 import my.dzeko.timetable.R;
 import my.dzeko.timetable.adapters.EditWeekExpandableListAdapter;
 import my.dzeko.timetable.contracts.CreateOrUpdateSubjectContract;
 import my.dzeko.timetable.contracts.EditWeekContract;
-import my.dzeko.timetable.entities.Day;
 import my.dzeko.timetable.entities.Week;
 import my.dzeko.timetable.presenters.EditWeekPresenter;
 
 public class EditWeekFragment extends Fragment implements EditWeekContract.View {
     private EditWeekContract.Presenter mPresenter = new EditWeekPresenter(this);
     private ExpandableListView mExpandableListView;
+    private TextView mTitleTextView;
 
     public EditWeekFragment() {
         // Required empty public constructor
@@ -38,7 +36,7 @@ public class EditWeekFragment extends Fragment implements EditWeekContract.View 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_edit_week, container, false);
-        initializeViews(rootView);
+        findViews(rootView);
         mPresenter.onViewInitialized();
         return rootView;
     }
@@ -49,8 +47,9 @@ public class EditWeekFragment extends Fragment implements EditWeekContract.View 
         mPresenter.destroy();
     }
 
-    private void initializeViews(View rootView) {
+    private void findViews(View rootView) {
         mExpandableListView = rootView.findViewById(R.id.edit_week_fragment_expandable_list_view);
+        mTitleTextView = rootView.findViewById(R.id.edit_week_fragment_name_text_view);
     }
 
     public void setWeek(Week week) {
@@ -93,5 +92,10 @@ public class EditWeekFragment extends Fragment implements EditWeekContract.View 
         intent.putExtra(CreateOrUpdateSubjectContract.WEEK_ID,
                 bundle.getInt(CreateOrUpdateSubjectContract.WEEK_ID));
         startActivity(intent);
+    }
+
+    @Override
+    public void setTitle(String weekName) {
+        mTitleTextView.setText(weekName);
     }
 }

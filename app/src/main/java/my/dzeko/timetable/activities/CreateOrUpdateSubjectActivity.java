@@ -96,7 +96,7 @@ public class CreateOrUpdateSubjectActivity extends AppCompatActivity
         mSubjectNameEditText.setText(subject.getSubjectName());
         mSubjectFullNameEditText.setText(subject.getFullSubjectName());
         mSubjectTeacherEditText.setText(subject.getTeacher());
-        mSubjectCabinetEditText.setText(subject.getTeacher());
+        mSubjectCabinetEditText.setText(subject.getCabinet());
         mPositionSpinner.setSelection(subject.getPosition() - 1);
     }
 }
