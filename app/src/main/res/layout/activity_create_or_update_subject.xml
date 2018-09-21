@@ -80,7 +80,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:ems="10"
-        android:hint="@string/activity_create_or_update_subject_teacher_hint"
+        android:hint="@string/activity_create_or_update_subject_full_name_hint"
         android:inputType="text"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

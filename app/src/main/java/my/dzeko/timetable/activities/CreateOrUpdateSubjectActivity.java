@@ -45,7 +45,7 @@ public class CreateOrUpdateSubjectActivity extends AppCompatActivity
         long subjectId = intent.getLongExtra(CreateOrUpdateSubjectContract.SUBJECT_ID, -1);
         int dayId = intent.getIntExtra(CreateOrUpdateSubjectContract.DAY_ID, -1);
         int weekId = intent.getIntExtra(CreateOrUpdateSubjectContract.WEEK_ID, -1);
-        mPresenter.onSubjectIdReceived(dayId, weekId, subjectId);
+        mPresenter.onDataReceived(dayId, weekId, subjectId);
     }
 
     @Override

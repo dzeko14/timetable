@@ -3,11 +3,13 @@ package my.dzeko.timetable.fragments;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 
 import my.dzeko.timetable.R;
@@ -21,6 +23,8 @@ public class EditingFragment extends Fragment implements EditingContract.View {
 
     private ProgressBar mProgressBar;
     private ViewPager mViewPager;
+    private LinearLayout mContentLinearLayout;
+    private TabLayout mTabLayout;
 
     private EditingPagerAdapter mPagerAdapter;
 
@@ -52,14 +56,21 @@ public class EditingFragment extends Fragment implements EditingContract.View {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_editing, container, false);
-        initializeView(rootView);
+        findViews(rootView);
+        initializeTabs();
         mPresenter.onViewCreated();
         return rootView;
     }
 
-    private void initializeView(View rootView) {
+    private void initializeTabs() {
+        mTabLayout.setupWithViewPager(mViewPager, false);
+    }
+
+    private void findViews(View rootView) {
         mProgressBar = rootView.findViewById(R.id.editing_progress_bar);
         mViewPager = rootView.findViewById(R.id.editing_view_pager);
+        mContentLinearLayout = rootView.findViewById(R.id.editing_fragment_content_layout);
+        mTabLayout = rootView.findViewById(R.id.editing_fragment_tab_layout);
     }
 
     @Override
@@ -71,18 +82,18 @@ public class EditingFragment extends Fragment implements EditingContract.View {
     @Override
     public void showLoading() {
         mProgressBar.setVisibility(View.VISIBLE);
-        mViewPager.setVisibility(View.GONE);
+        mContentLinearLayout.setVisibility(View.GONE);
     }
 
     @Override
     public void hideLoading() {
         mProgressBar.setVisibility(View.GONE);
-        mViewPager.setVisibility(View.VISIBLE);
+        mContentLinearLayout.setVisibility(View.VISIBLE);
     }
 
     @Override
-    public void addWeekToAdapter(Week week) {
-        mPagerAdapter.addWeek(week);
+    public void addWeekToAdapter(Week week, String title) {
+        mPagerAdapter.addWeek(week, title);
     }
 
     @Override

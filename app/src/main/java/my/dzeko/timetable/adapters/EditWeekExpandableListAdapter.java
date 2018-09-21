@@ -21,6 +21,7 @@ public class EditWeekExpandableListAdapter extends BaseExpandableListAdapter {
     private OnRemoveExpandableListViewChildItemListener mRemoveChildItemListener;
     private OnEditExpandableListViewChildItemListener mEditChildItemListener;
     private OnRemoveExpandableListViewGroupItemListener mRemoveGroupItemListener;
+    private OnAddExpandableListViewGroupItemListener mAddGroupItemListener;
 
     public EditWeekExpandableListAdapter(Context context, List<Day> week) {
         mWeek = week;
@@ -37,6 +38,10 @@ public class EditWeekExpandableListAdapter extends BaseExpandableListAdapter {
 
     public void setRemoveGroupItemListener(OnRemoveExpandableListViewGroupItemListener removeGroupItemListener) {
         this.mRemoveGroupItemListener = removeGroupItemListener;
+    }
+
+    public void setAddGroupItemListener(OnAddExpandableListViewGroupItemListener onAddGroupItemListener) {
+        this.mAddGroupItemListener = onAddGroupItemListener;
     }
 
     @Override
@@ -85,11 +90,25 @@ public class EditWeekExpandableListAdapter extends BaseExpandableListAdapter {
         }
 
         TextView dayNameTV = view.findViewById(R.id.editing_expandable_list_group_item_day_name_text_view);
-        final Button removeButton = view.findViewById(R.id.editing_expandable_list_group_item_remove_button);
+        Button removeButton = view.findViewById(R.id.editing_expandable_list_group_item_remove_button);
+        Button addButton = view.findViewById(R.id.editing_expandable_list_group_item_add_button);
 
         final Day day = mWeek.get(groupPosition);
         String dayName = day.getName();
         dayNameTV.setText(dayName);
+
+        if (day.getSubjects().size() == 5) {
+            addButton.setEnabled(false);
+        } else {
+            addButton.setEnabled(true);
+        }
+
+        addButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mAddGroupItemListener.onAddGroupItemClick(day);
+            }
+        });
 
         removeButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -158,5 +177,9 @@ public class EditWeekExpandableListAdapter extends BaseExpandableListAdapter {
 
     public interface OnEditExpandableListViewChildItemListener {
         void onEditChildItemClick(Subject subject);
+    }
+
+    public interface OnAddExpandableListViewGroupItemListener{
+        void onAddGroupItemClick(Day day);
     }
 }

@@ -22,7 +22,6 @@ import my.dzeko.timetable.presenters.EditWeekPresenter;
 public class EditWeekFragment extends Fragment implements EditWeekContract.View {
     private EditWeekContract.Presenter mPresenter = new EditWeekPresenter(this);
     private ExpandableListView mExpandableListView;
-    private TextView mTitleTextView;
 
     public EditWeekFragment() {
         // Required empty public constructor
@@ -49,7 +48,6 @@ public class EditWeekFragment extends Fragment implements EditWeekContract.View 
 
     private void findViews(View rootView) {
         mExpandableListView = rootView.findViewById(R.id.edit_week_fragment_expandable_list_view);
-        mTitleTextView = rootView.findViewById(R.id.edit_week_fragment_name_text_view);
     }
 
     public void setWeek(Week week) {
@@ -92,10 +90,5 @@ public class EditWeekFragment extends Fragment implements EditWeekContract.View 
         intent.putExtra(CreateOrUpdateSubjectContract.WEEK_ID,
                 bundle.getInt(CreateOrUpdateSubjectContract.WEEK_ID));
         startActivity(intent);
-    }
-
-    @Override
-    public void setTitle(String weekName) {
-        mTitleTextView.setText(weekName);
     }
 }

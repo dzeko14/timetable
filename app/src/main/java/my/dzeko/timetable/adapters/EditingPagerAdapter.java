@@ -1,5 +1,6 @@
 package my.dzeko.timetable.adapters;
 
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -13,6 +14,7 @@ import my.dzeko.timetable.fragments.EditWeekFragment;
 
 public class EditingPagerAdapter extends FragmentPagerAdapter {
     private List<Week> mWeeks = new ArrayList<>();
+    private List<String> mTitles = new ArrayList<>();
 
 
     public EditingPagerAdapter(FragmentManager fm) {
@@ -31,8 +33,15 @@ public class EditingPagerAdapter extends FragmentPagerAdapter {
         return mWeeks.size();
     }
 
-    public void addWeek(Week week) {
+    public void addWeek(Week week, String title) {
         mWeeks.add(week);
+        mTitles.add(title);
         notifyDataSetChanged();
+    }
+
+    @Nullable
+    @Override
+    public CharSequence getPageTitle(int position) {
+        return mTitles.get(position);
     }
 }

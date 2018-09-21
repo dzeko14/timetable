@@ -18,14 +18,14 @@ public class EditWeekContract {
         void updateAdapter();
         void startActivity(Bundle bundle, Class c);
         void updateAdapter(Week mWeek);
-        void setTitle(String weekName);
     }
 
     public interface Presenter extends IPresenter,
             IScheduleObserver,
             EditWeekExpandableListAdapter.OnEditExpandableListViewChildItemListener,
             EditWeekExpandableListAdapter.OnRemoveExpandableListViewChildItemListener,
-            EditWeekExpandableListAdapter.OnRemoveExpandableListViewGroupItemListener{
+            EditWeekExpandableListAdapter.OnRemoveExpandableListViewGroupItemListener,
+            EditWeekExpandableListAdapter.OnAddExpandableListViewGroupItemListener{
         void onViewInitialized();
         void setWeek(Week week);
     }

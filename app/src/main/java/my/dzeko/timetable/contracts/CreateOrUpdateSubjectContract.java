@@ -16,6 +16,6 @@ public class CreateOrUpdateSubjectContract {
 
     public interface Presenter extends IPresenter {
         void onDataSaving(String name, String fullName, String cabinet, String teacher, int position);
-        void onSubjectIdReceived(int dayId, int weekId, long subjectId);
+        void onDataReceived(int dayId, int weekId, long subjectId);
     }
 }

@@ -133,16 +133,8 @@ public class EditWeekPresenter implements EditWeekContract.Presenter {
         adapter.setEditChildItemListener(this);
         adapter.setRemoveGroupItemListener(this);
         adapter.setRemoveChildItemListener(this);
+        adapter.setAddGroupItemListener(this);
         mView.setAdapter(adapter);
-
-        String weekName = null;
-        if (mWeek.getId() == 1) {
-            weekName = mView.getContext().getResources().getString(R.string.first_week);
-        } else {
-            weekName = mView.getContext().getResources().getString(R.string.second_week);
-        }
-
-        mView.setTitle(weekName);
     }
 
     @SuppressLint("CheckResult")
@@ -162,5 +154,13 @@ public class EditWeekPresenter implements EditWeekContract.Presenter {
         }).subscribeOn(AndroidSchedulers.mainThread())
                 .subscribe()
         );
+    }
+
+    @Override
+    public void onAddGroupItemClick(Day day) {
+        Bundle bundle = new Bundle();
+        bundle.putInt(CreateOrUpdateSubjectContract.DAY_ID, day.getId());
+        bundle.putInt(CreateOrUpdateSubjectContract.WEEK_ID, day.getWeekId());
+        mView.startActivity(bundle, CreateOrUpdateSubjectActivity.class);
     }
 }

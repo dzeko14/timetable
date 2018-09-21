@@ -13,7 +13,7 @@ import my.dzeko.timetable.observers.interfaces.IScheduleObserver;
 
 public class EditingContract {
     public interface View extends IView {
-        void addWeekToAdapter(Week week);
+        void addWeekToAdapter(Week week, String title);
         void setupAdapter();
     }
 

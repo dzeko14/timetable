@@ -2,13 +2,17 @@ package my.dzeko.timetable.presenters;
 
 import android.annotation.SuppressLint;
 
+import java.util.ArrayList;
+
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.functions.Function;
 import io.reactivex.observers.DisposableSingleObserver;
 import io.reactivex.schedulers.Schedulers;
+import my.dzeko.timetable.R;
 import my.dzeko.timetable.contracts.EditingContract;
+import my.dzeko.timetable.entities.Day;
 import my.dzeko.timetable.entities.Schedule;
 import my.dzeko.timetable.entities.Week;
 import my.dzeko.timetable.interfaces.IModel;
@@ -60,8 +64,14 @@ public class EditingPresenter implements EditingContract.Presenter {
         Week firstWeek = schedule.getFirstWeek();
         Week secondWeek = schedule.getSecondWeek();
 
-        if(firstWeek != null) mView.addWeekToAdapter(firstWeek);
-        if(secondWeek != null) mView.addWeekToAdapter(secondWeek);
+        String firstWeekTitle = mView.getContext().getString(R.string.first_week);
+        String secondWeekTitle = mView.getContext().getString(R.string.second_week);
+
+        if(firstWeek == null) firstWeek = new Week(new ArrayList<Day>(), 1);
+        if(secondWeek == null) secondWeek = new Week(new ArrayList<Day>(), 2);
+
+        mView.addWeekToAdapter(firstWeek, firstWeekTitle);
+        mView.addWeekToAdapter(secondWeek, secondWeekTitle);
 
         mView.setupAdapter();
     }

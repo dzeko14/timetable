@@ -110,11 +110,17 @@ public class CreateOrUpdateSubjectPresenter implements CreateOrUpdateSubjectCont
 
     @SuppressLint("CheckResult")
     @Override
-    public void onSubjectIdReceived(int dayId, int weekId, final long subjectId) {
-        mView.showLoading();
+    public void onDataReceived(int dayId, int weekId, long subjectId) {
         mDayId = dayId;
         mWeekId = weekId;
 
+        if (subjectId != -1) {
+            mView.showLoading();
+            loadSubjectFromDB(subjectId);
+        }
+    }
+
+    private void loadSubjectFromDB(final long subjectId) {
         mGetScheduleFromDBDisposable = Single.just(mModel)
                 .map(new Function<IModel, Subject>() {
                     @Override
