@@ -124,7 +124,7 @@ public class EditWeekPresenter implements EditWeekContract.Presenter {
     }
 
     private EditWeekExpandableListAdapter getAdapterFromSchedule(List<Day> schedule) {
-        return new EditWeekExpandableListAdapter(mView.getContext(), schedule);
+        return new EditWeekExpandableListAdapter(mView.getContext(), new Week(schedule, mWeek.getId()));
     }
 
     @Override

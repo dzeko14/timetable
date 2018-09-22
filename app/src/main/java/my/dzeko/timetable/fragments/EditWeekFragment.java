@@ -72,7 +72,7 @@ public class EditWeekFragment extends Fragment implements EditWeekContract.View 
     @Override
     public void updateAdapter(Week week) {
         ((EditWeekExpandableListAdapter)mExpandableListView.getExpandableListAdapter())
-                .updateData(week.getDaysList());
+                .updateData(week);
     }
 
     @Override

@@ -37,6 +37,15 @@
     <string name="first_week">Перший тиждень</string>
     <string name="second_week">Другий тиждень</string>
 
+    <string-array name="day_of_weeks_names">
+        <item>Понеділок</item>
+        <item>Вівторок</item>
+        <item>Середа</item>
+        <item>Четвер</item>
+        <item>П\'ятниця</item>
+        <item>Субота</item>
+    </string-array>
+
     <string-array name="positions">
         <item>1</item>
         <item>2</item>
