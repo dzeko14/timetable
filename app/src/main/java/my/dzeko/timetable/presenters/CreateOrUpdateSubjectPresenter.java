@@ -50,6 +50,8 @@ public class CreateOrUpdateSubjectPresenter implements CreateOrUpdateSubjectCont
 
     @Override
     public void onDataSaving(String name, String fullName, String cabinet, String teacher, int position) {
+        if (TextUtils.isEmpty(name)) return;
+
         if (mSubject == null) {
             createSubject(name, fullName, cabinet, teacher, position);
         } else {
@@ -63,10 +65,15 @@ public class CreateOrUpdateSubjectPresenter implements CreateOrUpdateSubjectCont
         Completable.fromAction(new Action() {
             @Override
             public void run() throws Exception {
-                if (!TextUtils.isEmpty(name)) mSubject.setSubjectName(name);
+                mSubject.setSubjectName(name);
+
                 if (!TextUtils.isEmpty(fullName)) mSubject.setFullSubjectName(fullName);
+                else mSubject.setFullSubjectName(name);
+
                 if (!TextUtils.isEmpty(cabinet)) mSubject.setCabinet(cabinet);
+
                 if (!TextUtils.isEmpty(teacher)) mSubject.setTeacher(teacher);
+
                 mSubject.setPosition(position);
                 mModel.saveSubject(mSubject);
             }
@@ -91,7 +98,7 @@ public class CreateOrUpdateSubjectPresenter implements CreateOrUpdateSubjectCont
                         mWeekId,
                         mModel.getSelectedScheduleGroupName(),
                         name,
-                        fullName,
+                        (TextUtils.isEmpty(fullName) ? name : fullName),
                         cabinet,
                         teacher,
                         position

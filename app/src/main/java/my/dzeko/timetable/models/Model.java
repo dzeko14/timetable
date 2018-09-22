@@ -2,6 +2,7 @@ package my.dzeko.timetable.models;
 
 import java.io.IOException;
 import java.text.ParseException;
+import java.util.Collections;
 import java.util.List;
 
 import my.dzeko.timetable.db.GroupDao;
@@ -139,6 +140,7 @@ public class Model implements IModel{
         int oldPosition = -1;
         List<Subject> subjects = subjectDao.getSubjectsByDayIdAndWeekId(subject.getDayId(),
                 subject.getWeekId(), getSelectedScheduleGroupName());
+        Collections.sort(subjects);
 
         for (Subject s: subjects) {
             if (subject.getId() == s.getId()) {
@@ -146,6 +148,14 @@ public class Model implements IModel{
             }
             if (s.getPosition() == subject.getPosition()) {
                 subjectPositionToChange = s;
+            }
+        }
+
+        if (oldPosition == -1) {
+            oldPosition = 1;
+            for (Subject s: subjects) {
+                if (s.getPosition() == oldPosition) oldPosition++;
+                else break;
             }
         }
 
