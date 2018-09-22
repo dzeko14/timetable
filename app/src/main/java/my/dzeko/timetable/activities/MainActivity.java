@@ -1,14 +1,17 @@
 package my.dzeko.timetable.activities;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.annotation.NonNull;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -17,6 +20,7 @@ import android.view.SubMenu;
 import android.view.View;
 
 import my.dzeko.timetable.R;
+import my.dzeko.timetable.contracts.AddScheduleContract;
 import my.dzeko.timetable.contracts.MainContract;
 import my.dzeko.timetable.fragments.CalendarFragment;
 import my.dzeko.timetable.fragments.EditingFragment;
@@ -162,7 +166,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     @Override
     public void startActivity(Class c) {
         Intent intent = new Intent(this, c);
-        startActivity(intent);
+        startActivityForResult(intent, MainContract.ADD_SCHEDULE_REQUEST_CODE);
     }
 
     @Override
@@ -220,5 +224,30 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     @Override
     public void setBottomNavigationItem(int itemId) {
         mBottomNavigationView.getMenu().findItem(itemId).setChecked(true);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == MainContract.ADD_SCHEDULE_REQUEST_CODE && resultCode == RESULT_OK) {
+            mPresenter.onManuallyScheduleCreated();
+        }
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    @Override
+    public void showManuallyCreationHint() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage(R.string.schedule_manually_creation_message)
+                .setTitle(R.string.schedule_manually_creation_message_title)
+                .setPositiveButton(R.string.ok, new EmptyListener())
+                .create()
+                .show();
+    }
+
+    private static class EmptyListener implements DialogInterface.OnClickListener {
+        @Override
+        public void onClick(DialogInterface dialog, int which) {
+            //Empty
+        }
     }
 }

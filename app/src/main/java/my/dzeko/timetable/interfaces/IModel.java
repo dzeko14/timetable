@@ -24,4 +24,6 @@ public interface IModel {
     Subject getSubject(long subjectId);
 
     void saveSubject(Subject subject);
+
+    void saveGroup(String groupName);
 }

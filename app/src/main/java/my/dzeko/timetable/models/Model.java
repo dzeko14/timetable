@@ -11,6 +11,7 @@ import my.dzeko.timetable.entities.Group;
 import my.dzeko.timetable.entities.Schedule;
 import my.dzeko.timetable.entities.Subject;
 import my.dzeko.timetable.interfaces.IModel;
+import my.dzeko.timetable.observers.GroupObservable;
 import my.dzeko.timetable.observers.ScheduleObservable;
 import my.dzeko.timetable.utils.ApiUtils;
 import my.dzeko.timetable.utils.ScheduleUtils;
@@ -155,5 +156,16 @@ public class Model implements IModel{
 
         subjectDao.saveSubject(subject);
         ScheduleObservable.getInstance().notifySelectedScheduleChanged(getSelectedSchedule());
+    }
+
+    @Override
+    public void saveGroup(String groupName) {
+        GroupDao groupDao = DatabaseWrapper.getDatabase().getGroupDao();
+        if (!groupDao.getGroupByName(groupName).getName().equals(groupName)) {
+            saveGroupName(groupName);
+            GroupObservable.getInstance().notifyGroupAdded(groupName);
+            ScheduleObservable.getInstance()
+                    .notifySelectedScheduleChanged(ScheduleUtils.createEmptySchedule(groupName));
+        }
     }
 }

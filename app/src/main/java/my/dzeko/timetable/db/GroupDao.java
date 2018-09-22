@@ -15,6 +15,9 @@ public interface GroupDao {
     @Query("SELECT * FROM `Group`")
     List<Group> getAllGroups();
 
+    @Query("SELECT * FROM `Group` WHERE mName = :groupName")
+    Group getGroupByName(String groupName);
+
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     void saveGroup(Group group);
 

@@ -29,11 +29,13 @@ public abstract class ScheduleUtils {
             }
         }
 
-        resultDays.get(0).setIsFirstDayInTheWeek(true);
-        for (Day d: resultDays) {
-            if(d.getWeekId() == 2) {
-                d.setIsFirstDayInTheWeek(true);
-                break;
+        if (resultDays.size() != 0) {
+            resultDays.get(0).setIsFirstDayInTheWeek(true);
+            for (Day d : resultDays) {
+                if (d.getWeekId() == 2) {
+                    d.setIsFirstDayInTheWeek(true);
+                    break;
+                }
             }
         }
 
@@ -76,5 +78,9 @@ public abstract class ScheduleUtils {
             ));
         }
         return days;
+    }
+
+    public static Schedule createEmptySchedule(String groupName) {
+        return new Schedule(groupName, new ArrayList<Day>());
     }
 }

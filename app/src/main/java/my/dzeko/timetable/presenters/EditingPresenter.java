@@ -17,6 +17,7 @@ import my.dzeko.timetable.entities.Schedule;
 import my.dzeko.timetable.entities.Week;
 import my.dzeko.timetable.interfaces.IModel;
 import my.dzeko.timetable.models.Model;
+import my.dzeko.timetable.utils.ScheduleUtils;
 
 public class EditingPresenter implements EditingContract.Presenter {
     private EditingContract.View mView;
@@ -81,7 +82,13 @@ public class EditingPresenter implements EditingContract.Presenter {
         return Single.just(mModel).map(new Function<IModel, Schedule>() {
             @Override
             public Schedule apply(IModel model) throws Exception {
-                return model.getSelectedSchedule();
+                Schedule schedule = model.getSelectedSchedule();
+
+                if (schedule == null) {
+                    schedule = ScheduleUtils.createEmptySchedule(model.getSelectedScheduleGroupName());
+                }
+
+                return schedule;
             }
         });
     }

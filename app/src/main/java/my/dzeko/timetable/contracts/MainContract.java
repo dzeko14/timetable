@@ -8,12 +8,14 @@ public class MainContract {
     public static final int SCHEDULE_FRAGMENT_ID = 0;
     public static final int CALENDAR_FRAGMENT_ID = 1;
     public static final int EDITING_FRAGMENT_ID = 2;
+    public static final int ADD_SCHEDULE_REQUEST_CODE = 124;
 
     public interface Presenter extends IPresenter, IGroupObserver{
         void onGroupsFirstLoad();
         boolean onBottomNavigationItemSelected(int itemId);
         boolean onNavigationItemSelected(int itemId, String itemName);
         void onFragmentInitialization();
+        void onManuallyScheduleCreated();
     }
 
     public interface View extends IView {
@@ -29,5 +31,6 @@ public class MainContract {
         void createFragment(int fragmentId);
         void setBottomNavigationItem(int itemId);
         void startActivity(Class c);
+        void showManuallyCreationHint();
     }
 }

@@ -94,4 +94,10 @@ public class AddScheduleActivity extends AppCompatActivity implements AddSchedul
 
         startService(intent);
     }
+
+    @Override
+    public void notifyScheduleCreated() {
+        setResult(RESULT_OK);
+        finish();
+    }
 }

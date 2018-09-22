@@ -1,7 +1,11 @@
 package my.dzeko.timetable.presenters;
 
+import android.annotation.SuppressLint;
 import android.text.TextUtils;
 
+import io.reactivex.Completable;
+import io.reactivex.functions.Action;
+import io.reactivex.schedulers.Schedulers;
 import my.dzeko.timetable.R;
 import my.dzeko.timetable.contracts.AddScheduleContract;
 import my.dzeko.timetable.interfaces.IModel;
@@ -43,10 +47,22 @@ public class AddSchedulePresenter implements AddScheduleContract.Presenter {
         mView.startService(groupName, ParseScheduleService.class);
     }
 
-
-
+    @SuppressLint("CheckResult")
     private void createGroupSchedule() {
-        //TODO: Implement schedule creating manually
+        final String groupName = mView.getGroupName().toUpperCase();
+        if(TextUtils.isEmpty(groupName)) {
+            mView.showEmptyGroupName();
+            return;
+        }
+        Completable.fromAction(new Action() {
+            @Override
+            public void run() throws Exception {
+                mModel.saveGroup(groupName);
+            }
+        })
+                .subscribeOn(Schedulers.io())
+                .subscribe();
+        mView.notifyScheduleCreated();
     }
 
     @Override

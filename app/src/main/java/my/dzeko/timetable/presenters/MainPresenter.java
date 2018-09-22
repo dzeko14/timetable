@@ -330,4 +330,10 @@ public class MainPresenter implements MainContract.Presenter {
         }
         return 0;
     }
+
+    @Override
+    public void onManuallyScheduleCreated() {
+        //onBottomNavigationItemSelected(R.id.editing_bottom_navigation_main);
+        mView.showManuallyCreationHint();
+    }
 }

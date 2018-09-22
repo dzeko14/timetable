@@ -33,7 +33,7 @@ public class Schedule {
         for (Day day : mSchedule) {
             if(day.getWeekId() == 1) firstWeek.add(day);
         }
-        return firstWeek.size() == 0 ? null : new Week(firstWeek, 1);
+        return new Week(firstWeek, 1);
     }
 
     public Week getSecondWeek() {
@@ -41,7 +41,7 @@ public class Schedule {
         for (Day day : mSchedule) {
             if(day.getWeekId() == 2) secondWeek.add(day);
         }
-        return secondWeek.size() == 0 ? null : new Week(secondWeek, 2);
+        return new Week(secondWeek, 2);
     }
 
 }

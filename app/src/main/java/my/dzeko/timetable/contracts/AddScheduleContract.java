@@ -10,6 +10,7 @@ public class AddScheduleContract {
         void showEmptyGroupName();
         void close();
         void startService(String groupName, Class c);
+        void notifyScheduleCreated();
     }
 
     public interface Presenter extends IPresenter, IScheduleObserver {
