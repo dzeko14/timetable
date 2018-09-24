@@ -67,12 +67,18 @@ public class CalendarDetailPresenter implements CalendarDetailContract.Presenter
         return Single.just(mModel).map(new Function<IModel, List<Subject>>() {
                     @Override
                     public List<Subject> apply(IModel model) throws Exception {
-                        int day = DateUtils.getDayOfWeekFromDate(date);
-                        int week = DateUtils.getWeekNumberFromDate(date,
-                                SharedPreferencesWrapper.getInstance().getKeyDate());
-                        return mModel.getSchedulesByDayIdAndWeekId(day,
-                                week,
-                                mModel.getSelectedScheduleGroupName());
+                        boolean isSingleWeekSchedule = mModel.getIsSelectedScheduleSingleWeek();
+                        if (!isSingleWeekSchedule) {
+                            int day = DateUtils.getDayOfWeekFromDate(date);
+                            int week = DateUtils.getWeekNumberFromDate(date,
+                                    SharedPreferencesWrapper.getInstance().getKeyDate());
+                            return mModel.getSubjectsByDayIdAndWeekId(day,
+                                    week,
+                                    mModel.getSelectedScheduleGroupName());
+                        } else {
+                            int day = DateUtils.getDayOfWeekFromDate(date);
+                            return mModel.getSubjectsByDayId(day, mModel.getSelectedScheduleGroupName());
+                        }
                     }
                 });
     }

@@ -2,6 +2,7 @@ package my.dzeko.timetable.utils;
 
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import my.dzeko.timetable.entities.Day;
@@ -29,17 +30,37 @@ public abstract class ScheduleUtils {
             }
         }
 
+        Schedule schedule = new Schedule(groupName, resultDays);
         if (resultDays.size() != 0) {
+            Collections.sort(resultDays);
+            int[] firstDayPosInWeek = {-1, -1};
+            int weekId = 1;
             resultDays.get(0).setIsFirstDayInTheWeek(true);
+            int i = 0;
             for (Day d : resultDays) {
-                if (d.getWeekId() == 2) {
+                if (d.getWeekId() == weekId) {
                     d.setIsFirstDayInTheWeek(true);
-                    break;
+                    firstDayPosInWeek[weekId - 1] = i;
+                    if (weekId == 2) break;
+                    weekId++;
+                }
+                i++;
+            }
+
+            if (firstDayPosInWeek[0] == -1 ) {
+                schedule.setIsSingleWeek(true);
+            } else if (firstDayPosInWeek[1] == -1) {
+                schedule.setIsSingleWeek(true);
+
+                List<String> currentWeekDates = DateUtils.getCurrentWeekDates();
+
+                for (Day day : resultDays) {
+                    day.setDate(currentWeekDates.get(day.getId() - 1));
                 }
             }
         }
 
-        return new Schedule(groupName, resultDays);
+        return schedule;
     }
 
     private static List<Day> createDaysList() {

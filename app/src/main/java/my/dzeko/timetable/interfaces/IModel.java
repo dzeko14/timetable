@@ -15,7 +15,8 @@ public interface IModel {
     void parseSchedule(String groupName);
     void saveCurrentBottomNavigationFragment(int fragmentId);
     int getCurrentBottomNavigationFragment();
-    List<Subject> getSchedulesByDayIdAndWeekId(int dayId, int weekId, String groupName);
+    List<Subject> getSubjectsByDayIdAndWeekId(int dayId, int weekId, String groupName);
+    List<Subject> getSubjectsByDayId(int dayId, String groupName);
 
     void removeSubject(Subject subject);
 
@@ -26,4 +27,7 @@ public interface IModel {
     void saveSubject(Subject subject);
 
     void saveGroup(String groupName);
+
+    boolean getIsSelectedScheduleSingleWeek();
+
 }

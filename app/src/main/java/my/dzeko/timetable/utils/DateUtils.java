@@ -212,4 +212,21 @@ public abstract class DateUtils {
         List<String> dayList = Arrays.asList(DAY_OF_WEEKS_NAME);
         return dayList.indexOf(dayName);
     }
+
+    public static List<String> getCurrentWeekDates() {
+        List<String> dates = new ArrayList<>(6);
+        Calendar calendar = new GregorianCalendar();
+        calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
+
+        for (int i = 0; i < 6; i++) {
+            @SuppressLint("DefaultLocale")
+            String date = String.format("%02d.%02d",
+                    calendar.get(Calendar.DAY_OF_MONTH),
+                    calendar.get(Calendar.MONTH) + 1);
+            dates.add(date);
+            calendar.add(Calendar.DAY_OF_MONTH, 1);
+        }
+
+        return dates;
+    }
 }

@@ -6,10 +6,16 @@ import java.util.List;
 public class Schedule {
     private String mGroupName;
     private List<Day> mSchedule;
+    private boolean mIsSingleWeek;
 
-    public Schedule(String mGroupName, List<Day> mSchedule) {
-        this.mGroupName = mGroupName;
-        this.mSchedule = mSchedule;
+    public Schedule(String groupName, List<Day> schedule) {
+        this.mGroupName = groupName;
+        this.mSchedule = schedule;
+    }
+
+    public Schedule(String groupName, List<Day> schedule, boolean isSingleWeek)  {
+        this(groupName, schedule);
+        mIsSingleWeek = isSingleWeek;
     }
 
     public static Schedule getEmptySchedule() {
@@ -44,4 +50,11 @@ public class Schedule {
         return new Week(secondWeek, 2);
     }
 
+    public boolean isSingleWeek() {
+        return mIsSingleWeek;
+    }
+
+    public void setIsSingleWeek(boolean isSingleWeek) {
+        this.mIsSingleWeek = isSingleWeek;
+    }
 }

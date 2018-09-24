@@ -19,7 +19,7 @@ import my.dzeko.timetable.wrappers.SharedPreferencesWrapper;
 import retrofit2.Call;
 
 public abstract class ApiUtils {
-    public static void parseSchedule(String groupName) throws IOException, ParseException {
+    public static Schedule parseSchedule(String groupName) throws IOException, ParseException {
         Call<ScheduleApiRespond> scheduleCall = ApiBuilder.buildGetGroupScheduleServiceObservable(groupName);
         SubjectDao subjectDao = DatabaseWrapper.getDatabase().getSubjectDao();
 
@@ -51,6 +51,7 @@ public abstract class ApiUtils {
 
         Schedule schedule = ScheduleUtils.fetchScheduleFromList(subjectList, groupName);
         ScheduleObservable.getInstance().notifySelectedScheduleChanged(schedule);
+        return schedule;
     }
 
     public static void parseCurrentWeek() throws IOException {

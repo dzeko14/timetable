@@ -23,11 +23,15 @@ public class ScheduleRecyclerAdapter extends RecyclerView.Adapter<ScheduleRecycl
     private final int CURRENT_DATE;
     private List<Day> mSchedule;
 
+    private boolean mIsSingleWeek;
+
     private int mCurrentDayViewHolderPosition = -1;
 
     public ScheduleRecyclerAdapter(Schedule schedule) {
         CURRENT_DATE = DateUtils.getCurrentDay();
         mSchedule = schedule.getSchedule();
+
+        mIsSingleWeek = schedule.isSingleWeek();
 
         findCurrentDayViewHolderPosition();
     }
@@ -72,6 +76,7 @@ public class ScheduleRecyclerAdapter extends RecyclerView.Adapter<ScheduleRecycl
     public void updateSchedule(Schedule schedule) {
         if(schedule == null) return;
         mSchedule = schedule.getSchedule();
+        mIsSingleWeek = schedule.isSingleWeek();
         findCurrentDayViewHolderPosition();
         notifyDataSetChanged();
     }
@@ -79,7 +84,7 @@ public class ScheduleRecyclerAdapter extends RecyclerView.Adapter<ScheduleRecycl
     /**
      * A ViewHolder class for Schedule RecyclerView Adapter
      */
-    class DayViewHolder extends RecyclerView.ViewHolder {
+     class DayViewHolder extends RecyclerView.ViewHolder {
 
         boolean mIsHeadCurrentDayColor = false;
 
@@ -146,7 +151,7 @@ public class ScheduleRecyclerAdapter extends RecyclerView.Adapter<ScheduleRecycl
 
             if(day == null) return;
 
-            if(day.isFirstDayInTheWeek()) {
+            if(day.isFirstDayInTheWeek() && !mIsSingleWeek) {
                 mWeekTextView.setText(day.getWeek());
                 mWeekTextView.setVisibility(View.VISIBLE);
             }

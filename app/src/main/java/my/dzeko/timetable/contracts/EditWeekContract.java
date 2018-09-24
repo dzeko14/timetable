@@ -20,8 +20,7 @@ public class EditWeekContract {
         void updateAdapter(Week mWeek);
     }
 
-    public interface Presenter extends IPresenter,
-            IScheduleObserver,
+    public interface Presenter extends IPresenter, IScheduleObserver,
             EditWeekExpandableListAdapter.OnEditExpandableListViewChildItemListener,
             EditWeekExpandableListAdapter.OnRemoveExpandableListViewChildItemListener,
             EditWeekExpandableListAdapter.OnRemoveExpandableListViewGroupItemListener,

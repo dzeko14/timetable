@@ -16,6 +16,16 @@ public class ScheduleObservable extends Observable<IScheduleObserver> {
         return mInstance;
     }
 
+    private Schedule mCachedSchedule = null;
+
+    @Override
+    public void registerObserver(IScheduleObserver observer) {
+        super.registerObserver(observer);
+        if (mCachedSchedule != null) {
+            observer.onSelectedScheduleChanged(mCachedSchedule);
+        }
+    }
+
     public void notifySelectedScheduleChanged(Schedule schedule) {
         List<IScheduleObserver> observers = getObservers();
         for (IScheduleObserver observer : observers) {

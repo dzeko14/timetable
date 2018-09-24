@@ -2,6 +2,7 @@ package my.dzeko.timetable.models;
 
 import java.io.IOException;
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -31,6 +32,8 @@ public class Model implements IModel{
     }
 //  --------------------------------------------------------
 
+    private boolean mIsCurrentSchedule = false;
+
     @Override
     public List<Group> getGroupList() {
        return DatabaseWrapper.getDatabase().getGroupDao().getAllGroups();
@@ -42,10 +45,12 @@ public class Model implements IModel{
 
         //get selected schedule from DB
         try {
-            return ScheduleUtils.fetchScheduleFromList(
+            Schedule schedule = ScheduleUtils.fetchScheduleFromList(
                     DatabaseWrapper.getDatabase().getSubjectDao().getSubjectsByGroupName(selectedSchedule),
                     selectedSchedule
             );
+            mIsCurrentSchedule = schedule.isSingleWeek();
+            return schedule;
         } catch (ParseException e) {
             e.printStackTrace();
             return null;
@@ -57,16 +62,18 @@ public class Model implements IModel{
         SharedPreferencesWrapper.getInstance().setSelectedGroup(groupName);
         ScheduleObservable observable = ScheduleObservable.getInstance();
 
-        Schedule schedule = null;
+        Schedule schedule = new Schedule(groupName, new ArrayList<Day>());
 
-            //Else get selected schedule from DB
-            SubjectDao subjectDao = DatabaseWrapper.getDatabase().getSubjectDao();
-            try {
-                schedule = ScheduleUtils.fetchScheduleFromList(
-                        subjectDao.getSubjectsByGroupName(groupName), groupName);
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
+        //Else get selected schedule from DB
+        SubjectDao subjectDao = DatabaseWrapper.getDatabase().getSubjectDao();
+        try {
+            schedule = ScheduleUtils.fetchScheduleFromList(
+                    subjectDao.getSubjectsByGroupName(groupName), groupName);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        mIsCurrentSchedule = schedule.isSingleWeek();
 
         observable.notifySelectedScheduleChanged(schedule);
     }
@@ -80,7 +87,7 @@ public class Model implements IModel{
     public void parseSchedule(String groupName) {
         try {
             ApiUtils.parseCurrentWeek();
-            ApiUtils.parseSchedule(groupName);
+            mIsCurrentSchedule = ApiUtils.parseSchedule(groupName).isSingleWeek();
             saveGroupName(groupName);
         } catch (IOException e) {
             e.printStackTrace();
@@ -108,7 +115,7 @@ public class Model implements IModel{
     }
 
     @Override
-    public List<Subject> getSchedulesByDayIdAndWeekId(int dayId, int weekId, String groupName) {
+    public List<Subject> getSubjectsByDayIdAndWeekId(int dayId, int weekId, String groupName) {
         return DatabaseWrapper.getDatabase().getSubjectDao().getSubjectsByDayIdAndWeekId(dayId,
                 weekId, groupName);
     }
@@ -171,11 +178,22 @@ public class Model implements IModel{
     @Override
     public void saveGroup(String groupName) {
         GroupDao groupDao = DatabaseWrapper.getDatabase().getGroupDao();
-        if (!groupDao.getGroupByName(groupName).getName().equals(groupName)) {
+        Group sameGroup = groupDao.getGroupByName(groupName);
+        if (sameGroup == null) {
             saveGroupName(groupName);
             GroupObservable.getInstance().notifyGroupAdded(groupName);
             ScheduleObservable.getInstance()
                     .notifySelectedScheduleChanged(ScheduleUtils.createEmptySchedule(groupName));
         }
+    }
+
+    @Override
+    public List<Subject> getSubjectsByDayId(int dayId, String groupName) {
+        return DatabaseWrapper.getDatabase().getSubjectDao().getSubjectsByDayId(dayId, groupName);
+    }
+
+    @Override
+    public boolean getIsSelectedScheduleSingleWeek() {
+        return mIsCurrentSchedule;
     }
 }

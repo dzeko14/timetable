@@ -74,6 +74,10 @@ public class Day implements Comparable<Day> {
         return mSubjects.size();
     }
 
+    public void setDate(String date) {
+        this.mDate = date;
+    }
+
     @Override
     public int compareTo(@NonNull Day day) {
         //return (this.mId + 1)*(this.mWeekId + 1) - (day.mId + 1)*(day.mWeekId + 1);

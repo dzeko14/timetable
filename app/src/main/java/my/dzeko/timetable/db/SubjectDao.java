@@ -39,4 +39,7 @@ public abstract class SubjectDao {
 
     @Query("SELECT * FROM Subject WHERE mId = :subjectId")
     public abstract Subject getSubjectById(long subjectId);
+
+    @Query("SELECT * FROM Subject WHERE mDayId = :dayId AND mGroup = :groupName")
+    public abstract List<Subject> getSubjectsByDayId(int dayId, String groupName);
 }
