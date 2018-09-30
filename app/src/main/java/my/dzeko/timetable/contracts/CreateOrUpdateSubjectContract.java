@@ -1,5 +1,7 @@
 package my.dzeko.timetable.contracts;
 
+import android.os.Bundle;
+
 import my.dzeko.timetable.entities.Subject;
 import my.dzeko.timetable.interfaces.IPresenter;
 import my.dzeko.timetable.interfaces.IView;
@@ -17,5 +19,9 @@ public class CreateOrUpdateSubjectContract {
     public interface Presenter extends IPresenter {
         void onDataSaving(String name, String fullName, String cabinet, String teacher, int position);
         void onDataReceived(int dayId, int weekId, long subjectId);
+
+        void onRestoreInstanceState(Bundle savedInstanceState);
+
+        Bundle saveState();
     }
 }

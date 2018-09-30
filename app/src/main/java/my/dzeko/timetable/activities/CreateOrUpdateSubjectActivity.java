@@ -24,12 +24,20 @@ public class CreateOrUpdateSubjectActivity extends AppCompatActivity
     private EditText mSubjectTeacherEditText;
     private Spinner mPositionSpinner;
 
+    private static final String SUBJECT_NAME = "subject name";
+    private static final String SUBJECT_FULL_NAME = "subject full name";
+    private static final String SUBJECT_CABINET = "subject cabinet";
+    private static final String SUBJECT_TEACHER = "subject teacher";
+    private static final String SUBJECT_POSITION = "subject position";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_or_update_subject);
         findViews();
+        mPresenter.onRestoreInstanceState(savedInstanceState);
         getDataFromIntent();
+
     }
 
     private void findViews() {
@@ -40,12 +48,33 @@ public class CreateOrUpdateSubjectActivity extends AppCompatActivity
         mPositionSpinner = findViewById(R.id.activity_create_or_update_subject_position_spinner);
     }
 
-    public void getDataFromIntent() {
+    private void getDataFromIntent() {
         Intent intent = getIntent();
         long subjectId = intent.getLongExtra(CreateOrUpdateSubjectContract.SUBJECT_ID, -1);
         int dayId = intent.getIntExtra(CreateOrUpdateSubjectContract.DAY_ID, -1);
         int weekId = intent.getIntExtra(CreateOrUpdateSubjectContract.WEEK_ID, -1);
         mPresenter.onDataReceived(dayId, weekId, subjectId);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        mSubjectNameEditText.setText(savedInstanceState.getString(SUBJECT_NAME));
+        mSubjectFullNameEditText.setText(savedInstanceState.getString(SUBJECT_FULL_NAME));
+        mSubjectCabinetEditText.setText(savedInstanceState.getString(SUBJECT_CABINET));
+        mSubjectTeacherEditText.setText(savedInstanceState.getString(SUBJECT_TEACHER));
+        mPositionSpinner.setSelection(savedInstanceState.getInt(SUBJECT_POSITION));
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString(SUBJECT_NAME, mSubjectNameEditText.getText().toString());
+        outState.putString(SUBJECT_FULL_NAME, mSubjectFullNameEditText.getText().toString());
+        outState.putString(SUBJECT_CABINET, mSubjectCabinetEditText.getText().toString());
+        outState.putString(SUBJECT_TEACHER, mSubjectTeacherEditText.getText().toString());
+        outState.putInt(SUBJECT_POSITION, mPositionSpinner.getSelectedItemPosition());
+        outState.putAll(mPresenter.saveState());
     }
 
     @Override

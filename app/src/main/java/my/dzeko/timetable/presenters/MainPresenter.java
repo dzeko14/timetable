@@ -1,7 +1,9 @@
 package my.dzeko.timetable.presenters;
 
 import android.annotation.SuppressLint;
+import android.os.Bundle;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -41,6 +43,12 @@ public class MainPresenter implements MainContract.Presenter {
     private boolean[] mIsCreatedFragment = {false, false, false};
     private int mActiveBottomNavigationFragmentId = -1;
 
+    private boolean mIsRestoredState = false;
+
+    private static final String PREV_BOT_NAV_ITEM_ID = "mPreviousBottomNavigationItemId";
+    private static final String CREATED_FRAGMENTS = "mIsCreatedFragment";
+    private static final String ACTIVE_BOT_NAV_FRAGMENT_ID = "mActiveBottomNavigationFragmentId";
+
     public MainPresenter(MainContract.View view) {
         mView = view;
         mModel = Model.getInstance();
@@ -51,6 +59,26 @@ public class MainPresenter implements MainContract.Presenter {
 
         //Initialize SharedPrefs
         SharedPreferencesWrapper.initialize(mView.getContext());
+    }
+
+    @Override
+    public void onRestoreState(Bundle savedInstanceState) {
+        if (savedInstanceState == null) return;
+
+        mIsRestoredState = true;
+
+        mPreviousBottomNavigationItemId = savedInstanceState.getInt(PREV_BOT_NAV_ITEM_ID);
+        mIsCreatedFragment = savedInstanceState.getBooleanArray(CREATED_FRAGMENTS);
+        mActiveBottomNavigationFragmentId = savedInstanceState.getInt(ACTIVE_BOT_NAV_FRAGMENT_ID);
+    }
+
+    @Override
+    public Bundle saveState() {
+        Bundle bundle = new Bundle();
+        bundle.putInt(PREV_BOT_NAV_ITEM_ID, mPreviousBottomNavigationItemId);
+        bundle.putBooleanArray(CREATED_FRAGMENTS, mIsCreatedFragment);
+        bundle.putInt(ACTIVE_BOT_NAV_FRAGMENT_ID, mActiveBottomNavigationFragmentId);
+        return bundle;
     }
 
     @Override
@@ -245,16 +273,6 @@ public class MainPresenter implements MainContract.Presenter {
                     }
                 })
         );
-
-//        List<Group> groups = mModel.getGroupList();
-//        for (Group group : groups) {
-//            mGroupIds.put(group.getName(), mGroupIdCounter);
-//            mView.addGroupNameNavigationDrawer(group.getName(), mGroupIdCounter++);
-//        }
-//        String selectedGroup = mModel.getSelectedScheduleGroupName();
-//        int id = mGroupIds.get(selectedGroup);
-//        mView.setCheckedGroupNameNavigationView(id, true);
-//        mPreviousGroupNameNavigationItemId = id;
     }
 
     @SuppressLint("CheckResult")
@@ -288,6 +306,8 @@ public class MainPresenter implements MainContract.Presenter {
     @SuppressLint("CheckResult")
     @Override
     public void onFragmentInitialization() {
+        if (mIsRestoredState) return;
+
         mCompositeDisposable.add(
             Single.just(mModel)
                 .map(new Function<IModel, Integer>() {

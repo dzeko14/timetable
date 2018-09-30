@@ -1,5 +1,7 @@
 package my.dzeko.timetable.contracts;
 
+import android.os.Bundle;
+
 import my.dzeko.timetable.interfaces.IPresenter;
 import my.dzeko.timetable.interfaces.IView;
 import my.dzeko.timetable.observers.interfaces.IGroupObserver;
@@ -16,6 +18,10 @@ public class MainContract {
         boolean onNavigationItemSelected(int itemId, String itemName);
         void onFragmentInitialization();
         void onManuallyScheduleCreated();
+
+        void onRestoreState(Bundle savedInstanceState);
+
+        Bundle saveState();
     }
 
     public interface View extends IView {

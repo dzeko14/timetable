@@ -35,6 +35,7 @@ public class CalendarFragment extends Fragment implements CalendarContract.View 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setRetainInstance(true);
         mPresenter = new CalendarPresenter(this);
     }
 

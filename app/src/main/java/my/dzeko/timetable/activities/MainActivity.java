@@ -4,10 +4,10 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.annotation.NonNull;
-import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
@@ -20,12 +20,15 @@ import android.view.SubMenu;
 import android.view.View;
 
 import my.dzeko.timetable.R;
-import my.dzeko.timetable.contracts.AddScheduleContract;
 import my.dzeko.timetable.contracts.MainContract;
 import my.dzeko.timetable.fragments.CalendarFragment;
 import my.dzeko.timetable.fragments.EditingFragment;
 import my.dzeko.timetable.fragments.ScheduleFragment;
 import my.dzeko.timetable.presenters.MainPresenter;
+
+import static my.dzeko.timetable.contracts.MainContract.CALENDAR_FRAGMENT_ID;
+import static my.dzeko.timetable.contracts.MainContract.EDITING_FRAGMENT_ID;
+import static my.dzeko.timetable.contracts.MainContract.SCHEDULE_FRAGMENT_ID;
 
 public class MainActivity extends AppCompatActivity implements MainContract.View {
     private MainContract.Presenter mPresenter;
@@ -45,12 +48,27 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         setContentView(R.layout.activity_main);
 
         findViews();
-        initializePresenter();
+        initializePresenter(savedInstanceState);
         initializeBottomNavigationView();
         initializeToolBar();
         initializeFragments();
         initializeNavigationView();
         loadGroupNames();
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putAll(mPresenter.saveState());
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        mFragments[0] = fragmentManager.findFragmentByTag(String.valueOf(SCHEDULE_FRAGMENT_ID));
+        mFragments[1] = fragmentManager.findFragmentByTag(String.valueOf(CALENDAR_FRAGMENT_ID));
+        mFragments[2] = fragmentManager.findFragmentByTag(String.valueOf(EDITING_FRAGMENT_ID));
     }
 
     private void findViews() {
@@ -59,8 +77,9 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         mFragmentLayout = findViewById(R.id.fragments_frame_layout_main_activity);
     }
 
-    private void initializePresenter() {
+    private void initializePresenter(Bundle savedInstanceState) {
         mPresenter = new MainPresenter(this);
+        mPresenter.onRestoreState(savedInstanceState);
     }
 
     private void initializeToolBar() {
@@ -195,7 +214,8 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         getSupportFragmentManager()
                 .beginTransaction()
                 .hide(activeFragment)
-                .add(R.id.fragments_frame_layout_main_activity,  mFragments[fragmentId])
+                .add(R.id.fragments_frame_layout_main_activity,  mFragments[fragmentId],
+                        String.valueOf(fragmentId))
                 .commit();
     }
 
@@ -204,17 +224,18 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         mFragments[fragmentId] = getFragmentById(fragmentId);
         getSupportFragmentManager()
                 .beginTransaction()
-                .add(R.id.fragments_frame_layout_main_activity,  mFragments[fragmentId])
+                .add(R.id.fragments_frame_layout_main_activity,  mFragments[fragmentId],
+                        String.valueOf(fragmentId))
                 .commit();
     }
 
     private Fragment getFragmentById(int fragmentId) {
         switch (fragmentId) {
-            case MainContract.SCHEDULE_FRAGMENT_ID:
+            case SCHEDULE_FRAGMENT_ID:
                 return ScheduleFragment.getInstance();
-            case MainContract.CALENDAR_FRAGMENT_ID:
+            case CALENDAR_FRAGMENT_ID:
                 return CalendarFragment.getInstance();
-            case MainContract.EDITING_FRAGMENT_ID:
+            case EDITING_FRAGMENT_ID:
                 return EditingFragment.getInstance();
             default:
                 return null;

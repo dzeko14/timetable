@@ -4,6 +4,7 @@ package my.dzeko.timetable.fragments;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,12 +24,26 @@ public class EditWeekFragment extends Fragment implements EditWeekContract.View 
     private EditWeekContract.Presenter mPresenter = new EditWeekPresenter(this);
     private ExpandableListView mExpandableListView;
 
+    public static final String WEEK = "week";
+
     public EditWeekFragment() {
         // Required empty public constructor
     }
 
     public static EditWeekFragment getInstance() {
         return new EditWeekFragment();
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setRetainInstance(true);
+        setPresenterArguments();
+    }
+
+    private void setPresenterArguments() {
+        Bundle bundle = getArguments();
+        mPresenter.setWeek((Week) bundle.getParcelable(WEEK));
     }
 
     @Override
@@ -48,10 +63,6 @@ public class EditWeekFragment extends Fragment implements EditWeekContract.View 
 
     private void findViews(View rootView) {
         mExpandableListView = rootView.findViewById(R.id.edit_week_fragment_expandable_list_view);
-    }
-
-    public void setWeek(Week week) {
-        mPresenter.setWeek(week);
     }
 
     @Override

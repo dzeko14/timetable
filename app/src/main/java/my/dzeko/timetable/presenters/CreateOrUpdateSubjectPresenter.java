@@ -1,6 +1,8 @@
 package my.dzeko.timetable.presenters;
 
 import android.annotation.SuppressLint;
+import android.os.Bundle;
+import android.os.Parcelable;
 import android.text.TextUtils;
 
 import io.reactivex.Completable;
@@ -28,6 +30,12 @@ public class CreateOrUpdateSubjectPresenter implements CreateOrUpdateSubjectCont
     private int mDayId;
     private int mWeekId;
 
+    private boolean mIsStateRestored = false;
+
+    private static final String SUBJECT_IN_PRESENTER = "subject in presenter";
+    private static final String DAY_ID = "day id";
+    private static final String WEEK_ID = "week id";
+
     public CreateOrUpdateSubjectPresenter(CreateOrUpdateSubjectContract.View view) {
         mView = view;
     }
@@ -43,9 +51,31 @@ public class CreateOrUpdateSubjectPresenter implements CreateOrUpdateSubjectCont
     }
 
     @Override
+    public void onRestoreInstanceState(Bundle savedInstanceState) {
+        if (savedInstanceState == null) return;
+
+        mIsStateRestored = true;
+
+        mSubject = savedInstanceState.getParcelable(SUBJECT_IN_PRESENTER);
+        mDayId = savedInstanceState.getInt(DAY_ID);
+        mWeekId = savedInstanceState.getInt(WEEK_ID);
+    }
+
+    @Override
+    public Bundle saveState() {
+        Bundle bundle = new Bundle();
+        bundle.putParcelable(SUBJECT_IN_PRESENTER, (Parcelable) mSubject);
+        bundle.putInt(DAY_ID, mDayId);
+        bundle.putInt(WEEK_ID, mWeekId);
+        return bundle;
+    }
+
+    @Override
     public void destroy() {
         mView = null;
-        mGetScheduleFromDBDisposable.dispose();
+        if (mGetScheduleFromDBDisposable != null) {
+            mGetScheduleFromDBDisposable.dispose();
+        }
     }
 
     @Override
@@ -118,6 +148,7 @@ public class CreateOrUpdateSubjectPresenter implements CreateOrUpdateSubjectCont
     @SuppressLint("CheckResult")
     @Override
     public void onDataReceived(int dayId, int weekId, long subjectId) {
+        if (mIsStateRestored) return;
         mDayId = dayId;
         mWeekId = weekId;
 

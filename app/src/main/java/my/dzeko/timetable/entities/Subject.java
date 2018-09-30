@@ -4,6 +4,8 @@ import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.ForeignKey;
 import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 
 import com.google.gson.annotations.SerializedName;
@@ -13,7 +15,7 @@ import java.util.ArrayList;
 import static android.arch.persistence.room.ForeignKey.CASCADE;
 
 @Entity
-public class Subject implements Comparable<Subject> {
+public class Subject implements Comparable<Subject>, Parcelable {
     @PrimaryKey(autoGenerate = true)
     private long mId;
 
@@ -59,6 +61,31 @@ public class Subject implements Comparable<Subject> {
         mPosition = position;
         mFullSubjectName = fullSubjectName;
     }
+
+    protected Subject(Parcel in) {
+        mId = in.readLong();
+        mDayId = in.readInt();
+        mWeekId = in.readInt();
+        mPosition = in.readInt();
+        mSubjectName = in.readString();
+        mFullSubjectName = in.readString();
+        mCabinet = in.readString();
+        mType = in.readString();
+        mTeacher = in.readString();
+        mGroup = in.readString();
+    }
+
+    public static final Creator<Subject> CREATOR = new Creator<Subject>() {
+        @Override
+        public Subject createFromParcel(Parcel in) {
+            return new Subject(in);
+        }
+
+        @Override
+        public Subject[] newArray(int size) {
+            return new Subject[size];
+        }
+    };
 
     public String getSubjectName() {
         return mSubjectName;
@@ -166,5 +193,24 @@ public class Subject implements Comparable<Subject> {
     @Override
     public int compareTo(@NonNull Subject subject) {
         return mPosition - subject.mPosition;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeLong(mId);
+        dest.writeInt(mDayId);
+        dest.writeInt(mWeekId);
+        dest.writeInt(mPosition);
+        dest.writeString(mSubjectName);
+        dest.writeString(mFullSubjectName);
+        dest.writeString(mCabinet);
+        dest.writeString(mType);
+        dest.writeString(mTeacher);
+        dest.writeString(mGroup);
     }
 }

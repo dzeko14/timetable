@@ -24,17 +24,11 @@ public class CalendarUnitFragment extends Fragment implements CalendarUnitContra
 
     private CalendarUnitContract.Presenter mPresenter;
 
-    private Bundle mArgsBundle;
-
     private TextView mMonthNameTextView;
     private ViewGroup[] mDaysNumberRows = new ViewGroup[6];
 
     public CalendarUnitFragment() {
         // Required empty public constructor
-    }
-
-    public void setArgs(Bundle bundle) {
-        mArgsBundle = bundle;
     }
 
     @Override
@@ -44,9 +38,8 @@ public class CalendarUnitFragment extends Fragment implements CalendarUnitContra
     }
 
     private void initializePresenter() {
-        int month = mArgsBundle.getInt(MONTH_NUMBER);
+        int month = getArguments().getInt(MONTH_NUMBER);
         mPresenter = new CalendarUnitPresenter(this, month);
-        mArgsBundle = null;
     }
 
     @Override

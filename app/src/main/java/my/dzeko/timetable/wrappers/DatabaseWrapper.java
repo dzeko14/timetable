@@ -14,6 +14,7 @@ public class DatabaseWrapper {
     }
 
     public static void initialize(Context context) {
+        if (database != null) return;
         database = Room.databaseBuilder(context, AppDatabase.class, DATABASE_NAME).build();
     }
 

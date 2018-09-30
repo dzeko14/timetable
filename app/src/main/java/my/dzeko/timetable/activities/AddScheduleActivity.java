@@ -14,19 +14,20 @@ import my.dzeko.timetable.presenters.AddSchedulePresenter;
 import my.dzeko.timetable.services.ParseScheduleService;
 
 public class AddScheduleActivity extends AppCompatActivity implements AddScheduleContract.View {
-    private AddScheduleContract.Presenter mPresenter;
+    private AddScheduleContract.Presenter mPresenter = new AddSchedulePresenter(this);
 
     private EditText mGroupNameEditText;
     private View mConfirmGroupNameButton;
     private View mCreateGroupScheduleButton;
     private View mProgressBar;
 
+    private static final String GROUP_NAME = "group name";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_schedule);
 
-        initializePresenter();
         initializeViewComponent();
     }
 
@@ -37,8 +38,16 @@ public class AddScheduleActivity extends AppCompatActivity implements AddSchedul
         mProgressBar = findViewById(R.id.loading_progressBar_addScheduleActivity);
     }
 
-    private void initializePresenter() {
-        mPresenter = new AddSchedulePresenter(this);
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString(GROUP_NAME, mGroupNameEditText.getText().toString());
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        mGroupNameEditText.setText(savedInstanceState.getString(GROUP_NAME));
     }
 
     @Override

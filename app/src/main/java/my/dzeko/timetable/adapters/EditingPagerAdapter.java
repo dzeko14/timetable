@@ -1,5 +1,7 @@
 package my.dzeko.timetable.adapters;
 
+import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -24,7 +26,9 @@ public class EditingPagerAdapter extends FragmentPagerAdapter {
     @Override
     public Fragment getItem(int position) {
         EditWeekFragment fragment = EditWeekFragment.getInstance();
-        fragment.setWeek(mWeeks.get(position));
+        Bundle bundle = new Bundle();
+        bundle.putParcelable(EditWeekFragment.WEEK, mWeeks.get(position));
+        fragment.setArguments(bundle);
         return fragment;
     }
 

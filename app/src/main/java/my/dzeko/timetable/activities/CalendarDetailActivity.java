@@ -18,7 +18,7 @@ import my.dzeko.timetable.entities.Subject;
 import my.dzeko.timetable.presenters.CalendarDetailPresenter;
 
 public class CalendarDetailActivity extends AppCompatActivity implements CalendarDetailContract.View {
-    CalendarDetailContract.Presenter mPresenter;
+    CalendarDetailContract.Presenter mPresenter = new CalendarDetailPresenter(this);
 
     ViewGroup mDayScrollView;
     ProgressBar mProgressBar;
@@ -30,7 +30,6 @@ public class CalendarDetailActivity extends AppCompatActivity implements Calenda
         setContentView(R.layout.activity_calendar_detail);
 
         initializeViews();
-        initializePresenter();
 
         mPresenter.findRespectSubjects(getDate());
     }
@@ -48,10 +47,6 @@ public class CalendarDetailActivity extends AppCompatActivity implements Calenda
         mSubjectsViewGroups[2] = findViewById(R.id.subject_3_calendar_detail_activity);
         mSubjectsViewGroups[3] = findViewById(R.id.subject_4_calendar_detail_activity);
         mSubjectsViewGroups[4] = findViewById(R.id.subject_5_calendar_detail_activity);
-    }
-
-    private void initializePresenter() {
-        mPresenter = new CalendarDetailPresenter(this);
     }
 
     @Override

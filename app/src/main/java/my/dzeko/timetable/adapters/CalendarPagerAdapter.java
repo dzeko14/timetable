@@ -19,7 +19,7 @@ public class CalendarPagerAdapter extends FragmentStatePagerAdapter {
         CalendarUnitFragment fragment = new CalendarUnitFragment();
         Bundle args = new Bundle();
         args.putInt(CalendarUnitFragment.MONTH_NUMBER, position);
-        fragment.setArgs(args);
+        fragment.setArguments(args);
         return fragment;
     }
 

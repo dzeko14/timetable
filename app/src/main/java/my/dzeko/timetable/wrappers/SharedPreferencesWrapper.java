@@ -14,6 +14,7 @@ public class SharedPreferencesWrapper {
     private SharedPreferencesWrapper(){ }
 
     public static void initialize(Context context) {
+        if (mInstance != null) return;
         mInstance = new SharedPreferencesWrapper();
         mInstance.mSharedPreferences = context.getSharedPreferences(PREFS_FILE_NAME, Context.MODE_PRIVATE);
     }
