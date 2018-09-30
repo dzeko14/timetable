@@ -20,7 +20,10 @@ import io.reactivex.observers.DisposableSingleObserver;
 import io.reactivex.schedulers.Schedulers;
 import my.dzeko.timetable.R;
 import my.dzeko.timetable.activities.AddScheduleActivity;
+import my.dzeko.timetable.activities.RemoveScheduleActivity;
+import my.dzeko.timetable.adapters.RemoveScheduleAdapter;
 import my.dzeko.timetable.contracts.MainContract;
+import my.dzeko.timetable.contracts.RemoveScheduleContract;
 import my.dzeko.timetable.entities.Group;
 import my.dzeko.timetable.interfaces.IModel;
 import my.dzeko.timetable.models.Model;
@@ -121,16 +124,29 @@ public class MainPresenter implements MainContract.Presenter {
         );
     }
 
+    @SuppressLint("CheckResult")
     @Override
-    public void onGroupRemoved(String deletedGroupName, String newSelectedGroupName) {
-        int thisGroupNameId = mGroupIds.get(deletedGroupName);
-        if(deletedGroupName.equals(mModel.getSelectedScheduleGroupName())) {
-            int newSelectedGroupNameId = mGroupIds.get(newSelectedGroupName);
-            mView.setCheckedGroupNameNavigationView(newSelectedGroupNameId, true);
-            mPreviousGroupNameNavigationItemId = newSelectedGroupNameId;
-        }
-        mView.removeGroupNameNavigationDrawer(thisGroupNameId);
-        mGroupIds.remove(deletedGroupName);
+    public void onGroupRemoved(final String deletedGroupName, final String newSelectedGroupName) {
+
+        mCompositeDisposable.add(
+        Completable.fromAction(new Action() {
+            @Override
+            public void run() throws Exception {
+                mView.showLoading();
+                int thisGroupNameId = mGroupIds.get(deletedGroupName);
+                if (newSelectedGroupName != null) {
+                    int newSelectedGroupNameId = mGroupIds.get(newSelectedGroupName);
+                    mView.setCheckedGroupNameNavigationView(newSelectedGroupNameId, true);
+                    mPreviousGroupNameNavigationItemId = newSelectedGroupNameId;
+                }
+                mView.removeGroupNameNavigationDrawer(thisGroupNameId);
+                mGroupIds.remove(deletedGroupName);
+                mView.hideLoading();
+            }
+        })
+                .subscribeOn(AndroidSchedulers.mainThread())
+                .subscribe()
+        );
     }
 
     @Override
@@ -214,6 +230,10 @@ public class MainPresenter implements MainContract.Presenter {
             switch (itemId) {
                 case R.id.add_schedule_navigation:
                     mView.startActivity(AddScheduleActivity.class);
+                    mView.closeDrawer();
+                    return true;
+                case R.id.remove_schedule_navigation:
+                    mView.startActivity(RemoveScheduleActivity.class);
                     mView.closeDrawer();
                     return true;
             }

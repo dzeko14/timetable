@@ -22,4 +22,19 @@ public class Group {
     public String getName() {
         return mName;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof Group) {
+            Group otherGroup = (Group) obj;
+            return mName.equals(otherGroup.mName);
+        }
+
+        return super.equals(obj);
+    }
+
+    @Override
+    public int hashCode() {
+        return mName.hashCode();
+    }
 }

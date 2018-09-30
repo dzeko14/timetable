@@ -34,7 +34,9 @@
         <activity
             android:name=".activities.CalendarDetailActivity"
             android:parentActivityName=".activities.MainActivity" />
-        <activity android:name=".activities.CreateOrUpdateSubjectActivity"/>
+        <activity android:name=".activities.CreateOrUpdateSubjectActivity" />
+        <activity android:name=".activities.RemoveScheduleActivity"
+            android:parentActivityName=".activities.MainActivity"/>
     </application>
 
 </manifest>

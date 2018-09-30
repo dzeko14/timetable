@@ -7,10 +7,13 @@
             <group android:id="@+id/schedule_list_navigation_group"/>
         </menu>
     </item>
+    <item android:title="@string/add_schedule_navigation"
+        android:orderInCategory="1"
+        android:id="@+id/add_schedule_navigation"/>
+    <item android:title="@string/remove_schedule_navigation"
+        android:orderInCategory="2"
+        android:id="@+id/remove_schedule_navigation"/>
     <item android:title="@string/settings_navigation"
         android:id="@+id/settings_navigation"
         android:orderInCategory="3"/>
-    <item android:title="@string/add_schedule_navigation"
-        android:orderInCategory="2"
-        android:id="@+id/add_schedule_navigation"/>
 </menu>

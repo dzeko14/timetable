@@ -39,6 +39,7 @@
     <string name="schedule_manually_creation_message">Використовуючи вкладку \'Редагування\' Ви можете створювати та редагувати свій розклад!</string>
     <string name="schedule_manually_creation_message_title">Створення розкладу вручну</string>
     <string name="ok">OK</string>
+    <string name="remove_schedule_navigation">Видалити розклад</string>
 
     <string-array name="day_of_weeks_names">
         <item>Понеділок</item>

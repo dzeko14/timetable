@@ -1,5 +1,7 @@
 package my.dzeko.timetable.models;
 
+import android.text.TextUtils;
+
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -195,5 +197,34 @@ public class Model implements IModel{
     @Override
     public boolean getIsSelectedScheduleSingleWeek() {
         return mIsCurrentSchedule;
+    }
+
+    @Override
+    public void removeSchedule(String groupName) {
+        GroupDao groupDao = DatabaseWrapper.getDatabase().getGroupDao();
+        SubjectDao subjectDao = DatabaseWrapper.getDatabase().getSubjectDao();
+
+        groupDao.deleteGroup(new Group(groupName));
+        subjectDao.deleteSubjectsByGroupName(groupName);
+
+        String newSelectedGroup = null;
+
+        if (groupName.equals(getSelectedScheduleGroupName())){
+            List<Group> groups = groupDao.getAllGroups();
+            if (groups.size() == 0) return;
+
+            newSelectedGroup = groups.get(0).getName();
+            try {
+                Schedule schedule = ScheduleUtils.fetchScheduleFromList(
+                        subjectDao.getSubjectsByGroupName(newSelectedGroup),
+                        newSelectedGroup
+                );
+                ScheduleObservable.getInstance().notifySelectedScheduleChanged(schedule);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        }
+
+        GroupObservable.getInstance().notifyGroupRemoved(groupName, newSelectedGroup);
     }
 }
