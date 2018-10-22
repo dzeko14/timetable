@@ -7,6 +7,8 @@
     <ExpandableListView
         android:id="@+id/edit_week_fragment_expandable_list_view"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:divider="?android:colorBackground"
+        android:childDivider="#000000"/>
 
 </FrameLayout>

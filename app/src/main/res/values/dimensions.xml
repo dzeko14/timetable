@@ -3,4 +3,7 @@
     <!--Calendar week item dimensions-->
     <dimen name="calendar_week_item_size">50dp</dimen>
     <dimen name="calendar_week_item_text_size">20sp</dimen>
+
+    <!--Schedule item landscape-->
+    <dimen name="schedule_body_item_landscape_width">490dp</dimen>
 </resources>

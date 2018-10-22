@@ -1,18 +1,27 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorPrimaryDark">@color/colorPrimary</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:colorBackground">@color/colorSecondary</item>
+        <item name="android:textColorPrimary">@color/text_primary</item>
+        <item name="actionBarStyle">@style/Widget.AppTheme.ActionBar</item>
+    </style>
+
+    <style name="Widget.AppTheme.ActionBar" parent="Widget.AppCompat.ActionBar.Solid">
+        <item name="elevation">0dp</item>
     </style>
 
     <!--Main Activity theme-->
     <style name="MainActivityTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorPrimaryDark">@color/colorPrimary</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:colorBackground">@color/colorSecondary</item>
+        <item name="android:textColorPrimary">@color/text_primary</item>
     </style>
 
     <!--Calendar week header item-->
@@ -20,7 +29,7 @@
         <item name="android:textSize">@dimen/calendar_week_item_text_size</item>
         <item name="android:gravity">center</item>
         <item name="android:textColor">@color/item_week_calendar_day_text_color</item>
-        <item name="android:background">@color/item_week_calendar_day_color</item>
+        <item name="android:background">@drawable/item_week_calendar_header_background</item>
     </style>
 
     <!--Calendar week item-->

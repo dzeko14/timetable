@@ -23,6 +23,9 @@
             android:id="@+id/editing_fragment_tab_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@color/colorPrimary"
+            app:tabTextColor="@color/colorPrimaryLight"
+            app:tabSelectedTextColor="@color/text_primary_light"
             app:tabMode="fixed"
             app:tabGravity="fill"/>
 

@@ -7,6 +7,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.List;
@@ -101,8 +103,8 @@ public class EditWeekExpandableListAdapter extends BaseExpandableListAdapter {
         }
 
         TextView dayNameTV = view.findViewById(R.id.editing_expandable_list_group_item_day_name_text_view);
-        Button removeButton = view.findViewById(R.id.editing_expandable_list_group_item_remove_button);
-        Button addButton = view.findViewById(R.id.editing_expandable_list_group_item_add_button);
+        ImageView removeButton = view.findViewById(R.id.editing_expandable_list_group_item_remove_button);
+        ImageView addButton = view.findViewById(R.id.editing_expandable_list_group_item_add_button);
 
         final Day day = mWeek.getDaysList().get(groupPosition);
         String dayName = day.getName();
@@ -148,8 +150,8 @@ public class EditWeekExpandableListAdapter extends BaseExpandableListAdapter {
 
         TextView subjectNumberTV = view.findViewById(R.id.editing_expandable_list_child_item_subject_number_text_view);
         TextView subjectNameTV = view.findViewById(R.id.editing_expandable_list_child_item_subject_name_text_view);
-        Button editButton = view.findViewById(R.id.editing_expandable_list_child_item_edit_button);
-        Button removeButton = view.findViewById(R.id.editing_expandable_list_child_item_delete_button);
+        ImageView editButton = view.findViewById(R.id.editing_expandable_list_child_item_edit_button);
+        ImageView removeButton = view.findViewById(R.id.editing_expandable_list_child_item_delete_button);
 
         final Subject subject = mWeek.getDaysList().get(groupPosition).getSubjects().get(childPosition);
 

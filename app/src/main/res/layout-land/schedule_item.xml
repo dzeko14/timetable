@@ -24,7 +24,7 @@
     <include
         android:id="@+id/head_cardview"
         layout="@layout/schedule_item_head"
-        android:layout_width="0dp"
+        android:layout_width="500dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="2dp"
         android:layout_marginLeft="2dp"
@@ -38,7 +38,7 @@
     <include
         android:id="@+id/body_cardview_1"
         layout="@layout/schedule_item_body"
-        android:layout_width="0dp"
+        android:layout_width="@dimen/schedule_body_item_landscape_width"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
@@ -53,7 +53,7 @@
     <include
         android:id="@+id/body_cardview_2"
         layout="@layout/schedule_item_body"
-        android:layout_width="0dp"
+        android:layout_width="@dimen/schedule_body_item_landscape_width"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
@@ -68,7 +68,7 @@
     <include
         android:id="@+id/body_cardview_3"
         layout="@layout/schedule_item_body"
-        android:layout_width="0dp"
+        android:layout_width="@dimen/schedule_body_item_landscape_width"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
@@ -83,7 +83,7 @@
     <include
         android:id="@+id/body_cardview_4"
         layout="@layout/schedule_item_body"
-        android:layout_width="0dp"
+        android:layout_width="@dimen/schedule_body_item_landscape_width"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
@@ -98,7 +98,7 @@
     <include
         android:id="@+id/body_cardview_5"
         layout="@layout/schedule_item_body"
-        android:layout_width="0dp"
+        android:layout_width="@dimen/schedule_body_item_landscape_width"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
