@@ -276,4 +276,12 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
             //Empty
         }
     }
+
+    @Override
+    public void setTitle(String title) {
+        String formatTitle = String.format("%s: %s",
+                getString(R.string.schedule),
+                title);
+        getSupportActionBar().setTitle(formatTitle);
+    }
 }

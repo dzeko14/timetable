@@ -118,6 +118,8 @@ public class MainPresenter implements MainContract.Presenter {
                     }
                     mView.setCheckedGroupNameNavigationView(id, true);
                     mPreviousGroupNameNavigationItemId = id;
+
+                    mView.setTitle(groupName);
                 }
             })
             .subscribeOn(AndroidSchedulers.mainThread())
@@ -207,6 +209,8 @@ public class MainPresenter implements MainContract.Presenter {
             if (itemId == mPreviousGroupNameNavigationItemId) return false;
 
             mView.showLoading();
+
+            mView.setTitle(itemName);
 
             mCompositeDisposable.add(
                     selectSchedule(itemName)
@@ -316,6 +320,7 @@ public class MainPresenter implements MainContract.Presenter {
                         int id = mGroupIds.get(selectedGroup);
                         mView.setCheckedGroupNameNavigationView(id, true);
                         mPreviousGroupNameNavigationItemId = id;
+                        mView.setTitle(selectedGroup);
                         mView.hideLoading();
                     }
 

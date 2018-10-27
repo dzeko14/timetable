@@ -89,6 +89,7 @@ public class CalendarUnitFragment extends Fragment implements CalendarUnitContra
         SquareTextView day = (SquareTextView) mDaysNumberRows[week].getChildAt(dayPositionInWeek);
         day.setText(String.valueOf(number));
         day.setEnabled(true);
+        day.setVisibility(View.VISIBLE);
     }
 
     @Override

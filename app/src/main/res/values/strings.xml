@@ -1,9 +1,11 @@
 <resources>
-    <string name="app_name">Розклад</string>
+    <string name="app_name">@string/schedule</string>
+
+    <string name="schedule">Розклад</string>
 
     <!--Main Activity-->
     <!--Bottom Navigation View Menu-->
-    <string name="schedule_bottom_navigation">Розклад</string>
+    <string name="schedule_bottom_navigation">@string/schedule</string>
     <string name="calendar_bottom_navigation">Календар</string>
     <string name="editing_bottom_navigation">Редагування</string>
 

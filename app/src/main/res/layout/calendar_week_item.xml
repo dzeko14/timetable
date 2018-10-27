@@ -10,14 +10,17 @@
         style="@style/CalendarWeekDayItem"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:visibility="invisible"
         app:layout_constraintEnd_toStartOf="@+id/calendar_day_button_2"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:text="14" />
+        tools:text="14"
+        tools:visibility="visible"/>
 
     <my.dzeko.timetable.ui.views.SquareTextView
         android:id="@+id/calendar_day_button_2"
+        android:visibility="invisible"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         style="@style/CalendarWeekDayItem"
@@ -25,10 +28,12 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/calendar_day_button_1"
         app:layout_constraintTop_toTopOf="parent"
-        tools:text="14" />
+        tools:text="14"
+        tools:visibility="visible"/>
 
     <my.dzeko.timetable.ui.views.SquareTextView
         android:id="@+id/calendar_day_button_3"
+        android:visibility="invisible"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         style="@style/CalendarWeekDayItem"
@@ -36,10 +41,12 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/calendar_day_button_2"
         app:layout_constraintTop_toTopOf="parent"
-        tools:text="14" />
+        tools:text="14"
+        tools:visibility="visible"/>
 
     <my.dzeko.timetable.ui.views.SquareTextView
         android:id="@+id/calendar_day_button_4"
+        android:visibility="invisible"
         style="@style/CalendarWeekDayItem"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -47,10 +54,12 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/calendar_day_button_3"
         app:layout_constraintTop_toTopOf="parent"
-        tools:text="14" />
+        tools:text="14"
+        tools:visibility="visible"/>
 
     <my.dzeko.timetable.ui.views.SquareTextView
         android:id="@+id/calendar_day_button_5"
+        android:visibility="invisible"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         style="@style/CalendarWeekDayItem"
@@ -58,10 +67,12 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/calendar_day_button_4"
         app:layout_constraintTop_toTopOf="parent"
-        tools:text="14" />
+        tools:text="14"
+        tools:visibility="visible"/>
 
     <my.dzeko.timetable.ui.views.SquareTextView
         android:id="@+id/calendar_day_button_6"
+        android:visibility="invisible"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         style="@style/CalendarWeekDayItem"
@@ -69,10 +80,12 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/calendar_day_button_5"
         app:layout_constraintTop_toTopOf="parent"
-        tools:text="14" />
+        tools:text="14"
+        tools:visibility="visible"/>
 
     <my.dzeko.timetable.ui.views.SquareTextView
         android:id="@+id/calendar_day_button_7"
+        android:visibility="invisible"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         style="@style/CalendarWeekDayItem"
@@ -80,5 +93,6 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/calendar_day_button_6"
         app:layout_constraintTop_toTopOf="parent"
-        tools:text="14" />
+        tools:text="14"
+        tools:visibility="visible"/>
 </android.support.constraint.ConstraintLayout>

@@ -34,4 +34,5 @@
 
     <!--Expandable List view in editing fragment-->
     <color name="editing_group_item_expandable_list_color">#F5F5F5</color>
+    <color name="editing_child_item_expandable_list_separator_color">#EEEEEE</color>
 </resources>

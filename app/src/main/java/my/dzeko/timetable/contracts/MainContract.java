@@ -37,5 +37,6 @@ public class MainContract {
         void setBottomNavigationItem(int itemId);
         void startActivity(Class c);
         void showManuallyCreationHint();
+        void setTitle(String title);
     }
 }
