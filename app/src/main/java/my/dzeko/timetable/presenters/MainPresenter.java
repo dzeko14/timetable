@@ -21,6 +21,7 @@ import io.reactivex.schedulers.Schedulers;
 import my.dzeko.timetable.R;
 import my.dzeko.timetable.activities.AddScheduleActivity;
 import my.dzeko.timetable.activities.RemoveScheduleActivity;
+import my.dzeko.timetable.activities.SettingsActivity;
 import my.dzeko.timetable.adapters.RemoveScheduleAdapter;
 import my.dzeko.timetable.contracts.MainContract;
 import my.dzeko.timetable.contracts.RemoveScheduleContract;
@@ -236,6 +237,9 @@ public class MainPresenter implements MainContract.Presenter {
                     mView.startActivity(RemoveScheduleActivity.class);
                     mView.closeDrawer();
                     return true;
+                case R.id.settings_navigation:
+                    mView.startActivity(SettingsActivity.class);
+                    mView.closeDrawer();
             }
         }
         return false;
@@ -375,5 +379,17 @@ public class MainPresenter implements MainContract.Presenter {
     public void onManuallyScheduleCreated() {
         //onBottomNavigationItemSelected(R.id.editing_bottom_navigation_main);
         mView.showManuallyCreationHint();
+    }
+
+    @SuppressLint("CheckResult")
+    @Override
+    public void onCurrentWeekChecking() {
+        Completable.fromAction(new Action() {
+            @Override
+            public void run() throws Exception {
+                mModel.checkCurrentWeek();
+            }
+        }).subscribeOn(Schedulers.io())
+                .subscribe();
     }
 }

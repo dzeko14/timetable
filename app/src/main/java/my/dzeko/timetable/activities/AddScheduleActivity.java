@@ -1,7 +1,9 @@
 package my.dzeko.timetable.activities;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -108,5 +110,35 @@ public class AddScheduleActivity extends AppCompatActivity implements AddSchedul
     public void notifyScheduleCreated() {
         setResult(RESULT_OK);
         finish();
+    }
+
+    @Override
+    public void showChoseWeekNumberDialog() {
+        String[] items = getContext().getResources().getStringArray(R.array.weeks);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(R.string.pick_current_week_title)
+                .setSingleChoiceItems(items, 0,
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                mPresenter.setCurrentWeek(which);
+                            }
+                        })
+                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                mPresenter.createGroupSchedule();
+            }
+        })
+                .setNegativeButton(android.R.string.cancel, new EmptyClickListener())
+                .create()
+                .show();
+    }
+
+    private class EmptyClickListener implements DialogInterface.OnClickListener{
+        @Override
+        public void onClick(DialogInterface dialog, int which) {
+            //Empty
+        }
     }
 }

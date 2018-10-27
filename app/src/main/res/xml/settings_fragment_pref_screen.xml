@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <ListPreference android:title="@string/weeks_prefs_title"
+        android:key="@string/weeks_prefs_key"
+        android:defaultValue="@string/first_week_prefs_value"
+        android:entries="@array/weeks"
+        android:entryValues="@array/weeks_values"/>
+</PreferenceScreen>

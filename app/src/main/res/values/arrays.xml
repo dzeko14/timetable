@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="weeks">
+        <item>@string/first_week</item>
+        <item>@string/second_week</item>
+    </string-array>
+
+    <array name="weeks_values">
+        <item>@string/first_week_prefs_value</item>
+        <item>@string/second_week_prefs_value</item>
+    </array>
+</resources>

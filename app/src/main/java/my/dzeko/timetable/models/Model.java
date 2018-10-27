@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 import my.dzeko.timetable.db.GroupDao;
@@ -18,6 +19,7 @@ import my.dzeko.timetable.interfaces.IModel;
 import my.dzeko.timetable.observers.GroupObservable;
 import my.dzeko.timetable.observers.ScheduleObservable;
 import my.dzeko.timetable.utils.ApiUtils;
+import my.dzeko.timetable.utils.DateUtils;
 import my.dzeko.timetable.utils.ScheduleUtils;
 import my.dzeko.timetable.wrappers.DatabaseWrapper;
 import my.dzeko.timetable.wrappers.SharedPreferencesWrapper;
@@ -211,7 +213,10 @@ public class Model implements IModel{
 
         if (groupName.equals(getSelectedScheduleGroupName())){
             List<Group> groups = groupDao.getAllGroups();
-            if (groups.size() == 0) return;
+            if (groups.size() == 0) {
+                SharedPreferencesWrapper.getInstance().removeSelectedGroup();
+                return;
+            }
 
             newSelectedGroup = groups.get(0).getName();
             try {
@@ -220,11 +225,27 @@ public class Model implements IModel{
                         newSelectedGroup
                 );
                 ScheduleObservable.getInstance().notifySelectedScheduleChanged(schedule);
+                SharedPreferencesWrapper.getInstance().setSelectedGroup(newSelectedGroup);
             } catch (ParseException e) {
                 e.printStackTrace();
             }
         }
 
         GroupObservable.getInstance().notifyGroupRemoved(groupName, newSelectedGroup);
+    }
+
+    @Override
+    public void setCurrentWeek(boolean isFirst) {
+        SharedPreferencesWrapper wrapper = SharedPreferencesWrapper.getInstance();
+        wrapper.setCurrentWeek(isFirst);
+        wrapper.setKeyDate(DateUtils.createKeyDate(isFirst));
+    }
+
+    @Override
+    public void checkCurrentWeek() {
+        SharedPreferencesWrapper wrapper = SharedPreferencesWrapper.getInstance();
+        long keyDate = wrapper.getKeyDate();
+        int currentWeek = DateUtils.getWeekNumberFromDate(new Date(), keyDate);
+        wrapper.setCurrentWeek(currentWeek == 1);
     }
 }

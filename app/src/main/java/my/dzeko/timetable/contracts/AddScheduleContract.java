@@ -11,9 +11,13 @@ public class AddScheduleContract {
         void close();
         void startService(String groupName, Class c);
         void notifyScheduleCreated();
+        void showChoseWeekNumberDialog();
+
     }
 
     public interface Presenter extends IPresenter, IScheduleObserver {
+        void createGroupSchedule();
 
+        void setCurrentWeek(int which);
     }
 }

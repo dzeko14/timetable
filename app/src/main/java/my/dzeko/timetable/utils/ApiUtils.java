@@ -57,8 +57,9 @@ public abstract class ApiUtils {
     public static void parseCurrentWeek() throws IOException {
         Call<WeekApiRespond> weekCall = ApiBuilder.buildGetCurrentWeekServiceObservable();
         int currentWeekNumber = weekCall.execute().body().getData();
-        SharedPreferencesWrapper.getInstance().setKeyDate(
-                DateUtils.createKeyDate(currentWeekNumber == 1)
+        SharedPreferencesWrapper wrapper = SharedPreferencesWrapper.getInstance();
+        wrapper.setCurrentWeek(currentWeekNumber == 1);
+        wrapper.setKeyDate(DateUtils.createKeyDate(currentWeekNumber == 1)
         );
     }
 }

@@ -31,4 +31,8 @@ public interface IModel {
     boolean getIsSelectedScheduleSingleWeek();
 
     void removeSchedule(String groupName);
+
+    void setCurrentWeek(boolean isFirst);
+
+    void checkCurrentWeek();
 }
