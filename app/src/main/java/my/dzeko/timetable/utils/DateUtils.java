@@ -179,6 +179,12 @@ public abstract class DateUtils {
         return calendar.getTime();
     }
 
+    /**
+     *
+     * @param date Date, over which determines week number.
+     * @param keyDateLong Key date, using to determine week number.
+     * @return Week number. (First week = 1; Second Week = 2)
+     */
     public static int getWeekNumberFromDate(Date date, long keyDateLong){
         Date keyDate = new Date(keyDateLong);
 

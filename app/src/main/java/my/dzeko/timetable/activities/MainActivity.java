@@ -54,6 +54,11 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         initializeFragments();
         initializeNavigationView();
         loadGroupNames();
+        checkCurrentWeek();
+    }
+
+    private void checkCurrentWeek() {
+        mPresenter.onCurrentWeekChecking();
     }
 
     @Override

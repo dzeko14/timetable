@@ -18,10 +18,9 @@ public class MainContract {
         boolean onNavigationItemSelected(int itemId, String itemName);
         void onFragmentInitialization();
         void onManuallyScheduleCreated();
-
         void onRestoreState(Bundle savedInstanceState);
-
         Bundle saveState();
+        void onCurrentWeekChecking();
     }
 
     public interface View extends IView {

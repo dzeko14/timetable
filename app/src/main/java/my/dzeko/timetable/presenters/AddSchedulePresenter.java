@@ -31,7 +31,7 @@ public class AddSchedulePresenter implements AddScheduleContract.Presenter {
                 parseGroupSchedule();
                 return true;
             case R.id.createGroup_button_addGroupActivity:
-                createGroupSchedule();
+                choseCurrentWeekNumberBeforeCreating();
                 return true;
         }
         return false;
@@ -47,13 +47,20 @@ public class AddSchedulePresenter implements AddScheduleContract.Presenter {
         mView.startService(groupName, ParseScheduleService.class);
     }
 
-    @SuppressLint("CheckResult")
-    private void createGroupSchedule() {
+    private void choseCurrentWeekNumberBeforeCreating(){
         final String groupName = mView.getGroupName().toUpperCase();
         if(TextUtils.isEmpty(groupName)) {
             mView.showEmptyGroupName();
             return;
         }
+
+        mView.showChoseWeekNumberDialog();
+    }
+
+    @Override
+    @SuppressLint("CheckResult")
+    public void createGroupSchedule() {
+        final String groupName = mView.getGroupName().toUpperCase();
         Completable.fromAction(new Action() {
             @Override
             public void run() throws Exception {
@@ -74,5 +81,18 @@ public class AddSchedulePresenter implements AddScheduleContract.Presenter {
     @Override
     public void onSelectedScheduleChanged(Schedule schedule) {
         mView.close();
+    }
+
+    @SuppressLint("CheckResult")
+    @Override
+    public void setCurrentWeek(final int which) {
+        Completable.fromAction(new Action() {
+            @Override
+            public void run() throws Exception {
+                mModel.setCurrentWeek(which == 0);
+            }
+        })
+                .subscribeOn(Schedulers.io())
+                .subscribe();
     }
 }
