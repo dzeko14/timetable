@@ -4,6 +4,7 @@ import java.util.List;
 
 import my.dzeko.timetable.entities.Day;
 import my.dzeko.timetable.entities.Group;
+import my.dzeko.timetable.entities.Note;
 import my.dzeko.timetable.entities.Schedule;
 import my.dzeko.timetable.entities.Subject;
 
@@ -35,4 +36,9 @@ public interface IModel {
     void setCurrentWeek(boolean isFirst);
 
     void checkCurrentWeek();
+
+    void getNotes(String group);
+    void getNotes(String group, String date);
+    void insertNote(Note note);
+    void deleteNote (Note note);
 }

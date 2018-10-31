@@ -16,4 +16,10 @@
     <item android:title="@string/settings_navigation"
         android:id="@+id/settings_navigation"
         android:orderInCategory="3"/>
+    <item android:title="Додати запис"
+        android:id="@+id/settings_add_note"
+        android:orderInCategory="4"/>
+    <item android:title="Всі записи"
+        android:id="@+id/settings_note"
+        android:orderInCategory="5"/>
 </menu>

@@ -9,10 +9,12 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
+import my.dzeko.timetable.db.AppDatabase;
 import my.dzeko.timetable.db.GroupDao;
 import my.dzeko.timetable.db.SubjectDao;
 import my.dzeko.timetable.entities.Day;
 import my.dzeko.timetable.entities.Group;
+import my.dzeko.timetable.entities.Note;
 import my.dzeko.timetable.entities.Schedule;
 import my.dzeko.timetable.entities.Subject;
 import my.dzeko.timetable.interfaces.IModel;
@@ -247,5 +249,25 @@ public class Model implements IModel{
         long keyDate = wrapper.getKeyDate();
         int currentWeek = DateUtils.getWeekNumberFromDate(new Date(), keyDate);
         wrapper.setCurrentWeek(currentWeek == 1);
+    }
+
+    @Override
+    public void getNotes(String group) {
+        DatabaseWrapper.getDatabase().getNoteDao().getNotesByGroup(group);
+    }
+
+    @Override
+    public void getNotes(String group, String date) {
+        DatabaseWrapper.getDatabase().getNoteDao().getNotesByGroupAndDate(group, date);
+    }
+
+    @Override
+    public void insertNote(Note note) {
+        DatabaseWrapper.getDatabase().getNoteDao().insertNote(note);
+    }
+
+    @Override
+    public void deleteNote(Note note) {
+        DatabaseWrapper.getDatabase().getNoteDao().deleteNote(note);
     }
 }

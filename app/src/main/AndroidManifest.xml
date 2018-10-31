@@ -38,8 +38,10 @@
         <activity
             android:name=".activities.RemoveScheduleActivity"
             android:parentActivityName=".activities.MainActivity" />
-        <activity android:name=".activities.SettingsActivity"
-            android:parentActivityName=".activities.MainActivity"/>
+        <activity
+            android:name=".activities.SettingsActivity"
+            android:parentActivityName=".activities.MainActivity" />
+        <activity android:name=".activities.AddNoteActivity"></activity>
     </application>
 
 </manifest>
