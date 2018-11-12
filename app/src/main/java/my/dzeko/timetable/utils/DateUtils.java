@@ -31,6 +31,11 @@ public abstract class DateUtils {
         return calendar.get(Calendar.MONTH);
     }
 
+    public static int getCurrentYear() {
+        Calendar calendar = new GregorianCalendar();
+        return calendar.get(Calendar.YEAR);
+    }
+
     public static boolean isCurrentWeekFirst(long keyDateLong) {
         Date keyDate = new Date(keyDateLong);
         Date currentDate = new Date();
@@ -234,5 +239,17 @@ public abstract class DateUtils {
         }
 
         return dates;
+    }
+
+    public static long getMaxDateInCurrentYear(){
+        Calendar calendar = new GregorianCalendar();
+        calendar.set(Calendar.MONTH, Calendar.DECEMBER);
+        calendar.set(Calendar.DAY_OF_MONTH, 31);
+        return calendar.getTimeInMillis();
+    }
+
+    public static long getMinDateInCurrentYear(){
+        Calendar calendar = new GregorianCalendar();
+        return calendar.getTimeInMillis();
     }
 }

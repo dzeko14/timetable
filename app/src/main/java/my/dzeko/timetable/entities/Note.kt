@@ -14,7 +14,7 @@ data class Note(
         @PrimaryKey(autoGenerate = true)
         val id :Int,
         val text :String,
-        val date : String,
+        val date : Long,
         val subjectId :Int,
         val group :String
 )

@@ -6,7 +6,7 @@ import java.util.List;
 public class Schedule {
     private String mGroupName;
     private List<Day> mSchedule;
-    private boolean mIsSingleWeek;
+    private boolean mIsSingleWeek = true;
 
     public Schedule(String groupName, List<Day> schedule) {
         this.mGroupName = groupName;

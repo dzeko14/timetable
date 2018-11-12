@@ -19,6 +19,7 @@ import io.reactivex.observers.DisposableObserver;
 import io.reactivex.observers.DisposableSingleObserver;
 import io.reactivex.schedulers.Schedulers;
 import my.dzeko.timetable.R;
+import my.dzeko.timetable.activities.AddNoteActivity;
 import my.dzeko.timetable.activities.AddScheduleActivity;
 import my.dzeko.timetable.activities.RemoveScheduleActivity;
 import my.dzeko.timetable.activities.SettingsActivity;
@@ -243,6 +244,9 @@ public class MainPresenter implements MainContract.Presenter {
                     return true;
                 case R.id.settings_navigation:
                     mView.startActivity(SettingsActivity.class);
+                    mView.closeDrawer();
+                case R.id.settings_add_note:
+                    mView.startActivity(AddNoteActivity.class);
                     mView.closeDrawer();
             }
         }
