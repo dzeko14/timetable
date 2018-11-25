@@ -3,6 +3,11 @@
 
     <string name="schedule">Розклад</string>
 
+    <!--Notifications-->
+    <string name="main_notification_channel_name">Головне</string>
+    <string name="next_subject_notif_title">Завтра пари!!!</string>
+    <string name="next_subject_notif_text">Перша пара: </string>
+
     <!--Main Activity-->
     <!--Bottom Navigation View Menu-->
     <string name="schedule_bottom_navigation">@string/schedule</string>

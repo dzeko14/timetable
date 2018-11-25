@@ -29,6 +29,7 @@ import my.dzeko.timetable.entities.Group;
 import my.dzeko.timetable.interfaces.IModel;
 import my.dzeko.timetable.models.Model;
 import my.dzeko.timetable.observers.GroupObservable;
+import my.dzeko.timetable.utils.NotificationUtils;
 import my.dzeko.timetable.wrappers.DatabaseWrapper;
 import my.dzeko.timetable.wrappers.SharedPreferencesWrapper;
 
@@ -244,6 +245,10 @@ public class MainPresenter implements MainContract.Presenter {
                 case R.id.settings_navigation:
                     mView.startActivity(SettingsActivity.class);
                     mView.closeDrawer();
+                    return true;
+                case R.id.noti_navigation:
+                    NotificationUtils.INSTANCE.showNextSubjectNotification(mView.getContext(), "test");
+                    return true;
             }
         }
         return false;
