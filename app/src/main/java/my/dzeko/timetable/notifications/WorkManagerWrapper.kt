@@ -2,6 +2,7 @@ package my.dzeko.timetable.notifications
 
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
+import my.dzeko.timetable.utils.DateUtils
 import java.util.concurrent.TimeUnit
 
 private const val SUBJECT_NOTIFICATION_TAG = "Notification tag"
@@ -17,7 +18,7 @@ object WorkManagerWrapper {
 
     private fun getDuration() :Long {
         //TODO("Implement")
-        return 10
+        return DateUtils.countNavNotificationTime()
     }
 
     fun removeSubjectNotification(){
