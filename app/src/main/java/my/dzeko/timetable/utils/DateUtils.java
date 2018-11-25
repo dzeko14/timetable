@@ -219,7 +219,9 @@ public abstract class DateUtils {
         return dayList.indexOf(dayName);
     }
 
-    public static List<String> getCurrentWeekDates() {
+
+
+    static List<String> getCurrentWeekDates() {
         List<String> dates = new ArrayList<>(6);
         Calendar calendar = new GregorianCalendar();
         calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
@@ -234,5 +236,16 @@ public abstract class DateUtils {
         }
 
         return dates;
+    }
+
+
+    public static String getNextDayString(){
+        Calendar calendar = new GregorianCalendar();
+        calendar.add(Calendar.DAY_OF_MONTH, 1);
+        @SuppressLint("DefaultLocale")
+        String date = String.format("%02d.%02d",
+                calendar.get(Calendar.DAY_OF_MONTH),
+                calendar.get(Calendar.MONTH) + 1);
+        return date;
     }
 }

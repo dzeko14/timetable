@@ -59,6 +59,10 @@
     <string name="second_week_prefs_value">second_week</string>
     <string name="pick_current_week_title">Виберіть поточний тиждень</string>
     <string name="pick_current_week_msg">Якщо ваш розклад складається тільки з одного тижня - виберіть \'Перший тиждень\'</string>
+    <string name="next_subject_notify_key">next_subj_notify</string>
+    <string name="next_subject_notify_title">Оповіщення про наступний предмет</string>
+    <string name="next_subject_notify_summaryOff">Повідомлення не будуть приходити</string>
+    <string name="next_subject_notify_summaryOn">Повідомлення будуть приходити за день до початку пар</string>
 
     <string-array name="day_of_weeks_names">
         <item>Понеділок</item>
