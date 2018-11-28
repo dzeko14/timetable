@@ -11,7 +11,7 @@ object WorkManagerWrapper {
         val workManager = WorkManager.getInstance()
         val workerRequest = OneTimeWorkRequestBuilder<SubjectNotificationWorker>()
                 .addTag(SUBJECT_NOTIFICATION_TAG)
-                .setInitialDelay(getDuration(), TimeUnit.SECONDS)
+                .setInitialDelay(getDuration(), TimeUnit.MILLISECONDS)
                 .build()
         workManager.enqueue(workerRequest)
     }

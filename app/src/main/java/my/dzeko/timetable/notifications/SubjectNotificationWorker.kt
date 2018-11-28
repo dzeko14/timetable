@@ -7,6 +7,7 @@ import androidx.work.WorkerParameters
 import my.dzeko.timetable.models.AbstractModel
 import my.dzeko.timetable.utils.DateUtils
 import my.dzeko.timetable.utils.NotificationUtils
+import my.dzeko.timetable.wrappers.DatabaseWrapper
 import my.dzeko.timetable.wrappers.SharedPreferencesWrapper
 import java.lang.IllegalStateException
 
@@ -17,6 +18,11 @@ class SubjectNotificationWorker(
     private val mModel = AbstractModel.getModel()
 
     override fun doWork(): Result {
+        //Init SharedPrefs wrapper in case app is close
+        SharedPreferencesWrapper.initialize(applicationContext)
+        //Init database wrapper in case app is close
+        DatabaseWrapper.initialize(applicationContext)
+
         val subjectName :String? = getSubjectName()
         subjectName?.let {
             NotificationUtils.showNextSubjectNotification(applicationContext, it)
