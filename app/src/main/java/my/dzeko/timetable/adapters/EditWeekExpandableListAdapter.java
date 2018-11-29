@@ -26,7 +26,6 @@ public class EditWeekExpandableListAdapter extends BaseExpandableListAdapter {
 
     private OnRemoveExpandableListViewChildItemListener mRemoveChildItemListener;
     private OnEditExpandableListViewChildItemListener mEditChildItemListener;
-    private OnRemoveExpandableListViewGroupItemListener mRemoveGroupItemListener;
     private OnAddExpandableListViewGroupItemListener mAddGroupItemListener;
 
     private final static int GROUP_ITEMS_COUNT = 6;
@@ -47,10 +46,6 @@ public class EditWeekExpandableListAdapter extends BaseExpandableListAdapter {
 
     public void setEditChildItemListener(OnEditExpandableListViewChildItemListener editChildItemListener) {
         this.mEditChildItemListener = editChildItemListener;
-    }
-
-    public void setRemoveGroupItemListener(OnRemoveExpandableListViewGroupItemListener removeGroupItemListener) {
-        this.mRemoveGroupItemListener = removeGroupItemListener;
     }
 
     public void setAddGroupItemListener(OnAddExpandableListViewGroupItemListener onAddGroupItemListener) {
@@ -103,7 +98,6 @@ public class EditWeekExpandableListAdapter extends BaseExpandableListAdapter {
         }
 
         TextView dayNameTV = view.findViewById(R.id.editing_expandable_list_group_item_day_name_text_view);
-        ImageView removeButton = view.findViewById(R.id.editing_expandable_list_group_item_remove_button);
         ImageView addButton = view.findViewById(R.id.editing_expandable_list_group_item_add_button);
 
         final Day day = mWeek.getDaysList().get(groupPosition);
@@ -121,20 +115,6 @@ public class EditWeekExpandableListAdapter extends BaseExpandableListAdapter {
                 }
             });
         }
-
-        if (day.getSubjects().size() == 0) {
-            removeButton.setEnabled(false);
-        } else {
-            removeButton.setEnabled(true);
-            removeButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    mRemoveGroupItemListener.onRemoveGroupItemClick(day);
-                }
-            });
-        }
-
-
 
         return view;
     }
@@ -168,11 +148,32 @@ public class EditWeekExpandableListAdapter extends BaseExpandableListAdapter {
         removeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mRemoveChildItemListener.onRemoveChildItemClick(subject);
+                performRemovingAnimation((View) v.getParent(), subject);
             }
         });
 
         return view;
+    }
+
+    private void performRemovingAnimation(final View view, final Subject subject){
+        Animation animation = AnimationUtils.loadAnimation(view.getContext(), R.anim.removing_item);
+        animation.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+                view.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                mRemoveChildItemListener.onRemoveChildItemClick(subject);
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
+        view.startAnimation(animation);
     }
 
     @Override
@@ -188,10 +189,6 @@ public class EditWeekExpandableListAdapter extends BaseExpandableListAdapter {
     //Listeners
     public interface OnRemoveExpandableListViewChildItemListener {
         void onRemoveChildItemClick(Subject subject);
-    }
-
-    public interface OnRemoveExpandableListViewGroupItemListener {
-        void onRemoveGroupItemClick(Day day);
     }
 
     public interface OnEditExpandableListViewChildItemListener {

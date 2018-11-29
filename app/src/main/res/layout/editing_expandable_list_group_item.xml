@@ -62,9 +62,9 @@
         android:layout_marginRight="8dp"
         android:focusable="false"
         android:focusableInTouchMode="false"
-        android:src="@drawable/ic_add_green"
+        android:src="@drawable/item_editing_expandable_list_group_add_button"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/editing_expandable_list_group_item_remove_button"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.498" />
 

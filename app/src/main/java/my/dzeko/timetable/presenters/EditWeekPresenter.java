@@ -94,29 +94,6 @@ public class EditWeekPresenter implements EditWeekContract.Presenter {
     }
 
     @SuppressLint("CheckResult")
-    @Override
-    public void onRemoveGroupItemClick(final Day day) {
-        Completable.fromAction(new Action() {
-            @Override
-            public void run() throws Exception {
-                mModel.removeDay(day);
-                mWeek.getDaysList().remove(day);
-            }
-        })
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeWith(new DisposableCompletableObserver() {
-                    @Override
-                    public void onComplete() {
-                        mView.updateAdapter();
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        //TODO: Implement onError
-                    }
-                });
-    }
 
     @Override
     public void setWeek(Week week) {
@@ -131,7 +108,6 @@ public class EditWeekPresenter implements EditWeekContract.Presenter {
     public void onViewInitialized() {
         EditWeekExpandableListAdapter adapter = getAdapterFromSchedule(mWeek.getDaysList());
         adapter.setEditChildItemListener(this);
-        adapter.setRemoveGroupItemListener(this);
         adapter.setRemoveChildItemListener(this);
         adapter.setAddGroupItemListener(this);
         mView.setAdapter(adapter);

@@ -23,7 +23,6 @@ public class EditWeekContract {
     public interface Presenter extends IPresenter, IScheduleObserver,
             EditWeekExpandableListAdapter.OnEditExpandableListViewChildItemListener,
             EditWeekExpandableListAdapter.OnRemoveExpandableListViewChildItemListener,
-            EditWeekExpandableListAdapter.OnRemoveExpandableListViewGroupItemListener,
             EditWeekExpandableListAdapter.OnAddExpandableListViewGroupItemListener{
         void onViewInitialized();
         void setWeek(Week week);
