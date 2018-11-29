@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -14,12 +15,11 @@ import my.dzeko.timetable.R;
 import my.dzeko.timetable.entities.Group;
 
 public class RemoveScheduleAdapter extends RecyclerView.Adapter<RemoveScheduleAdapter.ViewHolder> {
-    private OnRemoveClickListener mRemoveClickListener;
     private List<Group> mGroups;
 
-    public RemoveScheduleAdapter(List<Group> groups, OnRemoveClickListener mRemoveClickListener) {
-        this.mRemoveClickListener = mRemoveClickListener;
+    public RemoveScheduleAdapter(List<Group> groups) {
         mGroups = groups;
+        setHasStableIds(true);
     }
 
     @NonNull
@@ -37,8 +37,17 @@ public class RemoveScheduleAdapter extends RecyclerView.Adapter<RemoveScheduleAd
     }
 
     @Override
+    public long getItemId(int position) {
+        return position;
+    }
+
+    @Override
     public int getItemCount() {
         return mGroups.size();
+    }
+
+    public String getGroupName(long position){
+        return mGroups.get((int) position).getName();
     }
 
     protected class ViewHolder extends RecyclerView.ViewHolder {
@@ -47,14 +56,12 @@ public class RemoveScheduleAdapter extends RecyclerView.Adapter<RemoveScheduleAd
         public ViewHolder(final View itemView) {
             super(itemView);
             mGroupTextView = itemView.findViewById(R.id.remove_schedule_text_view);
-            Button button = itemView.findViewById(R.id.remove_schedule_button);
-            button.setOnClickListener(new View.OnClickListener() {
+            itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    String groupName = mGroupTextView.getText().toString();
-                    mRemoveClickListener.onRemoveScheduleClick(groupName);
-                    mGroups.remove(new Group(groupName));
-                    notifyDataSetChanged();
+                    v.startAnimation(
+                            AnimationUtils.loadAnimation(v.getContext(), R.anim.partial_moving)
+                    );
                 }
             });
         }
