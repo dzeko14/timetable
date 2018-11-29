@@ -78,6 +78,7 @@ public class SchedulePresenter implements ScheduleContract.Presenter {
     @SuppressLint("CheckResult")
     @Override
     public void onSelectedScheduleChanged(final Schedule schedule) {
+        if (schedule == null) return;
         updateScheduleCompletable(schedule).subscribeOn(AndroidSchedulers.mainThread()).subscribe();
     }
 

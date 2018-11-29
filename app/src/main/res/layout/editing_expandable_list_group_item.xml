@@ -5,20 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <!--<ImageView-->
-        <!--android:id="@+id/imageView"-->
-        <!--android:layout_width="0dp"-->
-        <!--android:layout_height="0dp"-->
-        <!--android:layout_marginStart="4dp"-->
-        <!--android:layout_marginLeft="4dp"-->
-        <!--android:layout_marginEnd="4dp"-->
-        <!--android:layout_marginRight="4dp"-->
-        <!--app:layout_constraintBottom_toBottomOf="parent"-->
-        <!--app:layout_constraintEnd_toEndOf="parent"-->
-        <!--app:layout_constraintStart_toStartOf="parent"-->
-        <!--app:layout_constraintTop_toTopOf="parent"-->
-        <!--app:srcCompat="@drawable/item_group_list_expandable_editing" />-->
-
     <TextView
         android:id="@+id/editing_expandable_list_group_item_day_name_text_view"
         android:layout_width="wrap_content"
@@ -44,22 +30,11 @@
         tools:text="TextView" />
 
     <ImageView
-        android:id="@+id/editing_expandable_list_group_item_remove_button"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:focusable="false"
-        android:focusableInTouchMode="false"
-        android:src="@drawable/ic_remove_red"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <ImageView
         android:id="@+id/editing_expandable_list_group_item_add_button"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginRight="32dp"
         android:focusable="false"
         android:focusableInTouchMode="false"
         android:src="@drawable/item_editing_expandable_list_group_add_button"

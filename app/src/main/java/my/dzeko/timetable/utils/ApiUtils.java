@@ -17,6 +17,8 @@ import my.dzeko.timetable.observers.ScheduleObservable;
 import my.dzeko.timetable.wrappers.DatabaseWrapper;
 import my.dzeko.timetable.wrappers.SharedPreferencesWrapper;
 import retrofit2.Call;
+import retrofit2.HttpException;
+import retrofit2.Response;
 
 public abstract class ApiUtils {
     public static Schedule parseSchedule(String groupName) throws IOException, ParseException {
@@ -24,7 +26,10 @@ public abstract class ApiUtils {
         SubjectDao subjectDao = DatabaseWrapper.getDatabase().getSubjectDao();
 
         //Parse schedule
-        List<Subject> subjectList = scheduleCall.execute().body().getData();
+
+        Response<ScheduleApiRespond> response = scheduleCall.execute();
+        if (!response.isSuccessful()) throw new HttpException(response);
+        List<Subject> subjectList = response.body().getData();
 
         //Deleting old schedule of this group from db
         subjectDao.deleteSubjectsByGroupName(groupName);

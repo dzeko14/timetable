@@ -116,6 +116,8 @@ public class EditWeekPresenter implements EditWeekContract.Presenter {
     @SuppressLint("CheckResult")
     @Override
     public void onSelectedScheduleChanged(final Schedule schedule) {
+        if (schedule == null) return;
+
         mCD.add(
         Completable.fromAction(new Action() {
             @Override

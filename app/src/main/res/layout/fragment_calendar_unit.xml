@@ -10,7 +10,8 @@
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:rotation="180"
-        android:src="@drawable/ic_direction"
+        android:contentDescription="@string/direction_content_desc_left"
+        android:src="@drawable/ic_chevron"
         app:layout_constraintBottom_toBottomOf="@+id/month_fragment_calendar_unit"
         app:layout_constraintEnd_toStartOf="@+id/month_fragment_calendar_unit"
         app:layout_constraintTop_toTopOf="@+id/month_fragment_calendar_unit"
@@ -140,7 +141,7 @@
         app:layout_constraintBottom_toBottomOf="@+id/month_fragment_calendar_unit"
         app:layout_constraintStart_toEndOf="@+id/month_fragment_calendar_unit"
         app:layout_constraintTop_toTopOf="@+id/month_fragment_calendar_unit"
-        android:src="@drawable/ic_direction" />
+        app:layout_constraintVertical_bias="1.0" />
 
 
 </android.support.constraint.ConstraintLayout>

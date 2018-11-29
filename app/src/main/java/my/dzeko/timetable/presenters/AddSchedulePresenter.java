@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.text.TextUtils;
 
 import io.reactivex.Completable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Action;
 import io.reactivex.schedulers.Schedulers;
 import my.dzeko.timetable.R;
@@ -78,8 +79,20 @@ public class AddSchedulePresenter implements AddScheduleContract.Presenter {
         ScheduleObservable.getInstance().unregisterObserver(this);
     }
 
+    @SuppressLint("CheckResult")
     @Override
     public void onSelectedScheduleChanged(Schedule schedule) {
+        if (schedule == null){
+            Completable.fromAction(new Action() {
+                @Override
+                public void run() throws Exception {
+                    mView.showParseError();
+                    mView.hideLoading();
+                }
+            }).subscribeOn(AndroidSchedulers.mainThread())
+                    .subscribe();
+            return;
+        }
         mView.close();
     }
 

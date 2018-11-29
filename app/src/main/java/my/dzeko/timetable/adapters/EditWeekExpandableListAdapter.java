@@ -5,19 +5,16 @@ import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.BaseExpandableListAdapter;
-import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-import java.util.List;
 
 import my.dzeko.timetable.R;
 import my.dzeko.timetable.entities.Day;
 import my.dzeko.timetable.entities.Subject;
 import my.dzeko.timetable.entities.Week;
-import my.dzeko.timetable.utils.ScheduleUtils;
 import my.dzeko.timetable.utils.WeekUtils;
 
 public class EditWeekExpandableListAdapter extends BaseExpandableListAdapter {

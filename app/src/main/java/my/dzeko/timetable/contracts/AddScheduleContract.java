@@ -12,7 +12,7 @@ public class AddScheduleContract {
         void startService(String groupName, Class c);
         void notifyScheduleCreated();
         void showChoseWeekNumberDialog();
-
+        void showParseError();
     }
 
     public interface Presenter extends IPresenter, IScheduleObserver {
