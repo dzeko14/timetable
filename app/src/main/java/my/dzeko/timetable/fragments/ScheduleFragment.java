@@ -25,6 +25,9 @@ public class ScheduleFragment extends Fragment implements ScheduleContract.View 
     ScheduleRecyclerAdapter mAdapter;
     RecyclerView mRecyclerView;
 
+    View mNoScheduleIV;
+    View mNoScheduleTV;
+
     View mProgressBar;
 
     public ScheduleFragment() {
@@ -49,22 +52,25 @@ public class ScheduleFragment extends Fragment implements ScheduleContract.View 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootFragmentView = inflater.inflate(R.layout.fragment_schedule, container, false);
-        initializeRecyclerView(rootFragmentView);
-        initializeProgressBar(rootFragmentView);
+        findViews(rootFragmentView);
+        initializeRecyclerView();
         loadSchedule();
         return rootFragmentView;
+    }
+
+    private void findViews(View rootFragmentView) {
+        mNoScheduleIV = rootFragmentView.findViewById(R.id.no_schedule_image_view);
+        mNoScheduleTV = rootFragmentView.findViewById(R.id.no_schedule_text_view);
+        mRecyclerView = rootFragmentView.findViewById(R.id.schedule_recycler_view);
+        mProgressBar = rootFragmentView.findViewById(R.id.load_progress_bar_schedule);
     }
 
     private void loadSchedule() {
         mPresenter.onScheduleRequest();
     }
 
-    private void initializeProgressBar(View rootFragmentView) {
-        mProgressBar = rootFragmentView.findViewById(R.id.load_progress_bar_schedule);
-    }
+    private void initializeRecyclerView() {
 
-    private void initializeRecyclerView(View rootFragmentView) {
-        mRecyclerView = rootFragmentView.findViewById(R.id.schedule_recycler_view);
         LinearLayoutManager manager = new LinearLayoutManager(this.getContext());
         mRecyclerView.setLayoutManager(manager);
         mAdapter = new ScheduleRecyclerAdapter(Schedule.getEmptySchedule());
@@ -97,5 +103,19 @@ public class ScheduleFragment extends Fragment implements ScheduleContract.View 
     @Override
     public void scrollToCurrentDay() {
         mRecyclerView.scrollToPosition(mAdapter.getCurrentDayViewHolderPosition());
+    }
+
+    @Override
+    public void showEmptyScreen() {
+        mRecyclerView.setVisibility(View.GONE);
+        mNoScheduleIV.setVisibility(View.VISIBLE);
+        mNoScheduleTV.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideEmptyScreen() {
+        mRecyclerView.setVisibility(View.VISIBLE);
+        mNoScheduleIV.setVisibility(View.GONE);
+        mNoScheduleTV.setVisibility(View.GONE);
     }
 }

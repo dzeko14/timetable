@@ -47,7 +47,9 @@ public class RemoveScheduleActivity extends AppCompatActivity implements RemoveS
 
             @Override
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
-                mPresenter.onRemoveScheduleClick(mAdapter.getGroupName(viewHolder.getItemId()));
+                long itemId =  viewHolder.getItemId();
+                mPresenter.onRemoveScheduleClick(mAdapter.getGroupName(itemId));
+                mAdapter.removeItemById(itemId);
             }
         };
         new ItemTouchHelper(callback).attachToRecyclerView(mRecyclerView);

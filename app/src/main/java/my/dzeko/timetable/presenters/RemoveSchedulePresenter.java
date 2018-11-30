@@ -5,12 +5,9 @@ import android.annotation.SuppressLint;
 import java.util.List;
 
 import io.reactivex.Completable;
-import io.reactivex.Scheduler;
 import io.reactivex.Single;
-import io.reactivex.SingleObserver;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
-import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Action;
 import io.reactivex.functions.Function;
 import io.reactivex.observers.DisposableSingleObserver;
@@ -70,16 +67,31 @@ public class RemoveSchedulePresenter implements RemoveScheduleContract.Presenter
         );
     }
 
+    @SuppressLint("CheckResult")
     @Override
     public void onRemoveScheduleClick(final String groupName) {
-        Completable.fromAction(new Action() {
-            @Override
-            public void run() throws Exception {
-                mModel.removeSchedule(groupName);
-            }
-        })
+        mCD.add(
+        Single.just(mModel)
+                .map(new Function<IModel, List<Group>>() {
+                    @Override
+                    public List<Group> apply(IModel iModel) throws Exception {
+                        mModel.removeSchedule(groupName);
+                        return mModel.getGroupList();
+                    }
+                })
                 .subscribeOn(Schedulers.io())
-                .subscribe();
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(new DisposableSingleObserver<List<Group>>() {
+                    @Override
+                    public void onSuccess(List<Group> groups) {
+                        mView.setGroupList(groups);
+                    }
 
+                    @Override
+                    public void onError(Throwable e) {
+                        //TODO: Implement error handling
+                    }
+                })
+        );
     }
 }

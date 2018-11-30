@@ -43,6 +43,7 @@ public class CalendarDetailPresenter implements CalendarDetailContract.Presenter
     @SuppressLint("CheckResult")
     @Override
     public void findRespectSubjects(final Date date) {
+        mView.showLoading();
         mCompositeDisposable.add(
         getSubjects(date)
                 .subscribeOn(Schedulers.io())
@@ -50,7 +51,12 @@ public class CalendarDetailPresenter implements CalendarDetailContract.Presenter
                 .subscribeWith(new DisposableSingleObserver<List<Subject>>() {
                     @Override
                     public void onSuccess(List<Subject> subjects) {
-                        mView.setupSubjects(subjects);
+                        if (subjects.size() == 0) {
+                            mView.showEmptyScreen();
+                        } else {
+                            mView.hideEmptyScreen();
+                            mView.setupSubjects(subjects);
+                        }
                         mView.setActionBarTitle(DateUtils.getdateInString(date));
                         mView.hideLoading();
                     }

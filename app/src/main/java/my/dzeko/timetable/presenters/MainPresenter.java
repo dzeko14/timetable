@@ -142,6 +142,7 @@ public class MainPresenter implements MainContract.Presenter {
                     int newSelectedGroupNameId = mGroupIds.get(newSelectedGroupName);
                     mView.setCheckedGroupNameNavigationView(newSelectedGroupNameId, true);
                     mPreviousGroupNameNavigationItemId = newSelectedGroupNameId;
+                    mView.setTitle(newSelectedGroupName);
                 }
                 mView.removeGroupNameNavigationDrawer(thisGroupNameId);
                 mGroupIds.remove(deletedGroupName);

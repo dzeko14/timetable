@@ -50,6 +50,11 @@ public class RemoveScheduleAdapter extends RecyclerView.Adapter<RemoveScheduleAd
         return mGroups.get((int) position).getName();
     }
 
+    public void removeItemById(long itemId) {
+        mGroups.remove((int) itemId);
+        notifyDataSetChanged();
+    }
+
     protected class ViewHolder extends RecyclerView.ViewHolder {
         private TextView mGroupTextView;
 
