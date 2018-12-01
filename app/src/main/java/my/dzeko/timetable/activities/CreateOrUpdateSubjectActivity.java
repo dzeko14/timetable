@@ -38,6 +38,7 @@ public class CreateOrUpdateSubjectActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_or_update_subject);
+        setTitle(R.string.create_or_update_subject_activity);
         findViews();
         mPresenter.onRestoreInstanceState(savedInstanceState);
         getDataFromIntent();

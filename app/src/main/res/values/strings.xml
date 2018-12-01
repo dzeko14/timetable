@@ -3,6 +3,14 @@
 
     <string name="schedule">Розклад</string>
 
+    <string name="settings">Налаштування</string>
+
+    <!--Activities name-->
+    <string name="settings_activity_name">@string/settings</string>
+    <string name="add_schedule_activity">Додавання розкладу</string>
+    <string name="create_or_update_subject_activity">Редагування предмету</string>
+    <string name="remove_schedule_activity">Видалення розкладу</string>
+
     <!--Notifications-->
     <string name="main_notification_channel_name">Головне</string>
     <string name="next_subject_notif_title">Завтра пари!!!</string>
@@ -15,7 +23,7 @@
     <string name="editing_bottom_navigation">Редагування</string>
 
     <!--Navigation View Menu-->
-    <string name="settings_navigation">Налаштування</string>
+    <string name="settings_navigation">@string/settings</string>
     <string name="add_schedule_navigation">Додати розклад</string>
     <string name="schedule_item_navigation">Групи</string>
 

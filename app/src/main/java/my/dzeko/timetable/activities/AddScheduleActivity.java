@@ -32,7 +32,7 @@ public class AddScheduleActivity extends AppCompatActivity implements AddSchedul
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_schedule);
-
+        setTitle(R.string.add_schedule_activity);
         initializeViewComponent();
     }
 
