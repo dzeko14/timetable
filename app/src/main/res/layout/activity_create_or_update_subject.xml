@@ -6,6 +6,29 @@
     android:layout_height="match_parent"
     tools:context=".activities.CreateOrUpdateSubjectActivity">
 
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
+        android:text="@string/subject_type"
+        style="@style/EditSubjectLabel"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView" />
+
+    <Spinner
+        android:id="@+id/activity_create_or_update_subject_type_spinner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:entries="@array/subject_types"
+        android:spinnerMode="dialog"
+        style="@style/Base.Widget.AppCompat.Spinner.Underlined"
+        app:layout_constraintBottom_toBottomOf="@+id/textView2"
+        app:layout_constraintStart_toStartOf="@+id/activity_create_or_update_subject_position_spinner"
+        app:layout_constraintTop_toTopOf="@+id/textView2" />
+
     <EditText
         android:id="@+id/activity_create_or_update_subject_name_edit_text"
         android:layout_width="0dp"
@@ -58,17 +81,20 @@
 
     <Spinner
         android:id="@+id/activity_create_or_update_subject_position_spinner"
+        style="@style/Base.Widget.AppCompat.Spinner.Underlined"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginLeft="32dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
         android:entries="@array/positions"
+        android:spinnerMode="dialog"
+        app:layout_constraintBottom_toBottomOf="@+id/textView"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/activity_create_or_update_subject_teacher_edit_text" />
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/textView"
+        app:layout_constraintTop_toTopOf="@+id/textView" />
 
     <EditText
         android:id="@+id/activity_create_or_update_subject_full_name_edit_text"
@@ -85,4 +111,16 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/activity_create_or_update_subject_name_edit_text" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
+        android:text="@string/subject_number"
+        style="@style/EditSubjectLabel"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/activity_create_or_update_subject_teacher_edit_text" />
 </android.support.constraint.ConstraintLayout>

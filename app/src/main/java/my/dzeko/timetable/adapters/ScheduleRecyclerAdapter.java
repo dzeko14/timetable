@@ -169,7 +169,9 @@ public class ScheduleRecyclerAdapter extends RecyclerView.Adapter<ScheduleRecycl
                 mBodyCardViews[i].setVisibility(View.VISIBLE);
                 mNumberTextViews[i].setText(String.valueOf(subjects.get(i).getPosition()));
                 mSubjectTextViews[i].setText(subjects.get(i).getSubjectName());
-                mCabinetTextViews[i].setText(subjects.get(i).getCabinet());
+                String cabinetText = (subjects.get(i).getCabinet() + " " + isNullString(subjects.get(i).getType()))
+                        .trim();
+                mCabinetTextViews[i].setText(cabinetText);
                 mTeacherTextViews[i].setText(subjects.get(i).getTeacher());
             }
 
@@ -182,6 +184,11 @@ public class ScheduleRecyclerAdapter extends RecyclerView.Adapter<ScheduleRecycl
             } else {
                 mHeadCardView.setCardBackgroundColor(mNotCurrentDayColor);
             }
+        }
+
+        private String isNullString(String str){
+            if (str == null) return "";
+            return str;
         }
 
         private int getDate() {

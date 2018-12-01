@@ -17,7 +17,7 @@ public class CreateOrUpdateSubjectContract {
     }
 
     public interface Presenter extends IPresenter {
-        void onDataSaving(String name, String fullName, String cabinet, String teacher, int position);
+        void onDataSaving(String name, String fullName, String cabinet, String teacher, int position, String type);
         void onDataReceived(int dayId, int weekId, long subjectId);
 
         void onRestoreInstanceState(Bundle savedInstanceState);

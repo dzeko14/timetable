@@ -9,4 +9,28 @@
         <item>@string/first_week_prefs_value</item>
         <item>@string/second_week_prefs_value</item>
     </array>
+
+    <string-array name="day_of_weeks_names">
+        <item>Понеділок</item>
+        <item>Вівторок</item>
+        <item>Середа</item>
+        <item>Четвер</item>
+        <item>П\'ятниця</item>
+        <item>Субота</item>
+    </string-array>
+
+    <string-array name="positions">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+    </string-array>
+
+    <string-array name="subject_types">
+        <item>Невідомо</item>
+        <item>Лек</item>
+        <item>Прак</item>
+        <item>Лаб</item>
+    </string-array>
 </resources>

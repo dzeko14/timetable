@@ -51,7 +51,7 @@ public class Subject implements Comparable<Subject>, Parcelable {
     }
 
     public Subject (int dayId, int weekId, String group, String subjectName,
-                    String fullSubjectName, String cabinet, String teacher, int position) {
+                    String fullSubjectName, String cabinet, String teacher, int position, String type) {
         mDayId = dayId;
         mWeekId = weekId;
         mGroup = group;
@@ -60,6 +60,7 @@ public class Subject implements Comparable<Subject>, Parcelable {
         mTeacher = teacher;
         mPosition = position;
         mFullSubjectName = fullSubjectName;
+        mType = type;
     }
 
     protected Subject(Parcel in) {
