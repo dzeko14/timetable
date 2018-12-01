@@ -9,12 +9,15 @@
     </item>
     <item android:title="@string/add_schedule_navigation"
         android:orderInCategory="1"
+        android:icon="@drawable/ic_add_box"
         android:id="@+id/add_schedule_navigation"/>
     <item android:title="@string/remove_schedule_navigation"
         android:orderInCategory="2"
-        android:id="@+id/remove_schedule_navigation"/>
+        android:id="@+id/remove_schedule_navigation"
+        android:icon="@drawable/ic_delete"/>
     <item android:title="@string/settings_navigation"
         android:id="@+id/settings_navigation"
+        android:icon="@drawable/ic_settings"
         android:orderInCategory="3"/>
     <item android:title="Notification"
         android:id="@+id/noti_navigation"
