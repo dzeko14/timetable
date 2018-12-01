@@ -83,7 +83,8 @@ public class CalendarDetailActivity extends AppCompatActivity implements Calenda
             mName.setText(subject.getFullSubjectName());
 
             TextView mCabinet = v.findViewById(R.id.tv_cabinet);
-            mCabinet.setText(subject.getCabinet());
+            String cabinet = (subject.getCabinet() + " " + nullString(subject.getType())).trim();
+            mCabinet.setText(cabinet);
 
             TextView mTeacher = v.findViewById(R.id.tv_teacher);
             mTeacher.setText(subject.getTeacher());
@@ -92,6 +93,11 @@ public class CalendarDetailActivity extends AppCompatActivity implements Calenda
         for (int i = viewGroupIndex; i < 5; i++) {
             mSubjectsViewGroups[i].setVisibility(View.GONE);
         }
+    }
+
+    private String nullString(String str){
+        if (str == null) return "";
+        return str;
     }
 
     @Override
