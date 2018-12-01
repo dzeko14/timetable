@@ -30,9 +30,11 @@ public class AddSchedulePresenter implements AddScheduleContract.Presenter {
         switch (itemId) {
             case R.id.confirmGroupName_button_addGroupActivity:
                 parseGroupSchedule();
+                mView.hideKeyBoard();
                 return true;
             case R.id.createGroup_button_addGroupActivity:
                 choseCurrentWeekNumberBeforeCreating();
+                mView.hideKeyBoard();
                 return true;
         }
         return false;

@@ -6,6 +6,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 
@@ -49,6 +51,12 @@ public class CreateOrUpdateSubjectActivity extends AppCompatActivity
         mSubjectTeacherEditText = findViewById(R.id.activity_create_or_update_subject_teacher_edit_text);
         mPositionSpinner = findViewById(R.id.activity_create_or_update_subject_position_spinner);
         mTypeSpinner = findViewById(R.id.activity_create_or_update_subject_type_spinner);
+        (findViewById(R.id.submit_button)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mPresenter.onUserClick(v.getId());
+            }
+        });
     }
 
     private void getDataFromIntent() {
@@ -80,17 +88,6 @@ public class CreateOrUpdateSubjectActivity extends AppCompatActivity
         outState.putInt(SUBJECT_POSITION, mPositionSpinner.getSelectedItemPosition());
         outState.putInt(SUBJECT_TYPE, mTypeSpinner.getSelectedItemPosition());
         outState.putAll(mPresenter.saveState());
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.create_or_update_subject_activity_menu, menu);
-        return super.onCreateOptionsMenu(menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        return mPresenter.onUserClick(item.getItemId()) | super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -151,4 +148,5 @@ public class CreateOrUpdateSubjectActivity extends AppCompatActivity
 
         return 0;
     }
+
 }

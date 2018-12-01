@@ -13,6 +13,7 @@ public class AddScheduleContract {
         void notifyScheduleCreated();
         void showChoseWeekNumberDialog();
         void showParseError();
+        void hideKeyBoard();
     }
 
     public interface Presenter extends IPresenter, IScheduleObserver {

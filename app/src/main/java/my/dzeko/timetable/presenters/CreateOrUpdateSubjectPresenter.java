@@ -43,7 +43,7 @@ public class CreateOrUpdateSubjectPresenter implements CreateOrUpdateSubjectCont
     @Override
     public boolean onUserClick(int itemId) {
         switch (itemId) {
-            case R.id.create_or_update_subject_activity_menu_check:
+            case R.id.submit_button:
                 mView.saveData();
                 return true;
         }

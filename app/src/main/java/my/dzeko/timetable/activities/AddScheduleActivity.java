@@ -7,6 +7,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -74,6 +75,12 @@ public class AddScheduleActivity extends AppCompatActivity implements AddSchedul
         mProgressBar.setVisibility(View.VISIBLE);
         mInfoTV.setVisibility(View.GONE);
         mInfoIV.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void hideKeyBoard() {
+        InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(mGroupNameEditText.getWindowToken(), 0);
     }
 
     @Override

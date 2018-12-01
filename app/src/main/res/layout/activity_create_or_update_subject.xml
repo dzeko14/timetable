@@ -29,25 +29,48 @@
         app:layout_constraintStart_toStartOf="@+id/activity_create_or_update_subject_position_spinner"
         app:layout_constraintTop_toTopOf="@+id/textView2" />
 
-    <EditText
-        android:id="@+id/activity_create_or_update_subject_name_edit_text"
-        android:layout_width="0dp"
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/text_input_layout_1"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:ems="10"
-        android:hint="@string/activity_create_or_update_subject_name_hint"
-        android:inputType="text"
+        app:hintAnimationEnabled="true"
+        app:hintEnabled="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
+
+        <EditText
+            android:id="@+id/activity_create_or_update_subject_name_edit_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:ems="10"
+            android:hint="@string/activity_create_or_update_subject_name_hint"
+            android:inputType="text" />
+    </android.support.design.widget.TextInputLayout>
+
+
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/text_input_layout_2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        app:hintAnimationEnabled="true"
+        app:hintEnabled="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/text_input_layout_4" >
 
     <EditText
         android:id="@+id/activity_create_or_update_subject_cabinet_edit_text"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginLeft="8dp"
@@ -56,15 +79,24 @@
         android:layout_marginTop="8dp"
         android:ems="10"
         android:hint="@string/activity_create_or_update_subject_cabinet_hint"
-        android:inputType="text"
+        android:inputType="text" />
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/text_input_layout_3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        app:hintAnimationEnabled="true"
+        app:hintEnabled="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/activity_create_or_update_subject_full_name_edit_text" />
+        app:layout_constraintTop_toBottomOf="@+id/text_input_layout_2">
 
     <EditText
         android:id="@+id/activity_create_or_update_subject_teacher_edit_text"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginLeft="8dp"
@@ -74,18 +106,16 @@
         android:ems="10"
         android:hint="@string/activity_create_or_update_subject_teacher_hint"
         android:inputType="text"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/activity_create_or_update_subject_cabinet_edit_text" />
+ />
+    </android.support.design.widget.TextInputLayout>
 
     <Spinner
         android:id="@+id/activity_create_or_update_subject_position_spinner"
         style="@style/Base.Widget.AppCompat.Spinner.Underlined"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginLeft="32dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
         android:entries="@array/positions"
@@ -96,31 +126,54 @@
         app:layout_constraintStart_toEndOf="@+id/textView"
         app:layout_constraintTop_toTopOf="@+id/textView" />
 
-    <EditText
-        android:id="@+id/activity_create_or_update_subject_full_name_edit_text"
-        android:layout_width="0dp"
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/text_input_layout_4"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:ems="10"
-        android:hint="@string/activity_create_or_update_subject_full_name_hint"
-        android:inputType="text"
+        app:hintAnimationEnabled="true"
+        app:hintEnabled="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/activity_create_or_update_subject_name_edit_text" />
+        app:layout_constraintTop_toBottomOf="@+id/text_input_layout_1">
+        <EditText
+            android:id="@+id/activity_create_or_update_subject_full_name_edit_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:ems="10"
+            android:hint="@string/activity_create_or_update_subject_full_name_hint"
+            android:inputType="text" />
+    </android.support.design.widget.TextInputLayout>
 
     <TextView
         android:id="@+id/textView"
+        style="@style/EditSubjectLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginTop="8dp"
         android:text="@string/subject_number"
-        style="@style/EditSubjectLabel"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/activity_create_or_update_subject_teacher_edit_text" />
+        app:layout_constraintTop_toBottomOf="@+id/text_input_layout_3" />
+
+    <Button
+        android:id="@+id/submit_button"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:text="@android:string/ok"
+        android:theme="@style/ButtonStyle"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/activity_create_or_update_subject_type_spinner" />
 </android.support.constraint.ConstraintLayout>
