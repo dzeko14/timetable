@@ -59,17 +59,20 @@
     <string name="second_week_prefs_value">second_week</string>
     <string name="pick_current_week_title">Виберіть поточний тиждень</string>
     <string name="pick_current_week_msg">Якщо ваш розклад складається тільки з одного тижня - виберіть \'Перший тиждень\'</string>
-    <string name="next_subject_notify_key">next_subj_notify</string>
-    <string name="next_subject_notify_title">Оповіщення про наступний предмет</string>
+    <string name="next_subject_notify_key" translatable="false">next_subj_notify</string>
+    <string name="next_subject_notify_title">Повідомлення про предмети</string>
     <string name="next_subject_notify_summaryOff">Повідомлення не будуть приходити</string>
     <string name="next_subject_notify_summaryOn">Повідомлення будуть приходити за день до початку пар</string>
     <string name="add_schedule_info">Щоб отримати розклад групи з КПІ, натисніть кнопку \"ОК\". Для інших університетів потрібно вводити розклад вручну, натиснувши кнопку \"Створити\".</string>
+
     <string name="info_description">Важлива інформація</string>
     <string name="direction_content_desc_left">Вліво</string>
     <string name="direction_content_desc_right">Вправо</string>
+
     <string name="parsing_error">Не вдалося отримати розклад! Можливо ви ввели неправильну назву групи або відсутній інтернет.</string>
+
     <string name="activity_calendar_detail_no_data">Здається, сьогодні у вас немає пар</string>
-    <string name="fragment_schedule_detail_no_data">Здається у вас немає розкладу</string>
+    <string name="fragment_schedule_detail_no_data">Здається, у вас немає розкладу</string>
 
     <string-array name="day_of_weeks_names">
         <item>Понеділок</item>
