@@ -39,8 +39,6 @@ dependencies {
     annotationProcessor "android.arch.persistence.room:compiler:1.1.1"
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation 'com.android.support:preference-v14:27.1.1'
-    def work_version = "1.0.0-alpha11"
-    implementation "android.arch.work:work-runtime-ktx:$work_version"
 }
 repositories {
     mavenCentral()

@@ -83,6 +83,7 @@
     <string name="fragment_schedule_detail_no_data">Здається, у вас немає розкладу</string>
     <string name="subject_number">Номер предмету:</string>
     <string name="subject_type">Тип предмету:</string>
+    <string name="subject_notification_start_text">Завтрашні пари</string>
 
 
 </resources>

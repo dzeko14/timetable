@@ -2,17 +2,13 @@ package my.dzeko.timetable.presenters
 
 import android.annotation.SuppressLint
 import android.content.SharedPreferences
-import androidx.work.Constraints
-import androidx.work.OneTimeWorkRequest
-import androidx.work.OneTimeWorkRequestBuilder
-import androidx.work.WorkManager
 import io.reactivex.Completable
 import io.reactivex.schedulers.Schedulers
 import my.dzeko.timetable.R
 import my.dzeko.timetable.contracts.SettingsActivityContract
 import my.dzeko.timetable.contracts.SettingsActivityContract.View
 import my.dzeko.timetable.models.Model
-import my.dzeko.timetable.notifications.WorkManagerWrapper
+import my.dzeko.timetable.notifications.NotificationScheduler
 import my.dzeko.timetable.observers.ScheduleObservable
 import my.dzeko.timetable.utils.DateUtils
 import my.dzeko.timetable.wrappers.SharedPreferencesWrapper
@@ -50,9 +46,9 @@ class SettingsActivityPresenter(var mView: View?): SettingsActivityContract.Pres
         Completable.fromAction {
             val isNotificationOn = sharedPreferences.getBoolean(key, false)
             if (isNotificationOn){
-                WorkManagerWrapper.enqueueSubjectNotification()
+                NotificationScheduler.setSubjectNotificationSchedule(mView!!.context, 21, 0)
             } else {
-                WorkManagerWrapper.removeSubjectNotification()
+
             }
         }.subscribeOn(Schedulers.io())
                 .subscribe()

@@ -238,33 +238,29 @@ public abstract class DateUtils {
         return dates;
     }
 
-
-    public static String getNextDayString(){
+    @SuppressLint("DefaultLocale")
+    public static String getTomorrowMonthAndDay(){
         Calendar calendar = new GregorianCalendar();
         calendar.add(Calendar.DAY_OF_MONTH, 1);
-        @SuppressLint("DefaultLocale")
-        String date = String.format("%02d.%02d",
+        return  String.format("%02d.%02d",
                 calendar.get(Calendar.DAY_OF_MONTH),
                 calendar.get(Calendar.MONTH) + 1);
-        return date;
     }
 
-    public static long countNavNotificationTime(){
-        Calendar calendar = new GregorianCalendar();
-        Date currentDate = new Date();
-        calendar.setTime(currentDate);
 
-        if (calendar.get(Calendar.HOUR_OF_DAY) >= 21) {
-            calendar.add(Calendar.DAY_OF_MONTH, 1);
-            calendar.set(Calendar.HOUR_OF_DAY, 21);
-            calendar.set(Calendar.MINUTE, 0);
-            calendar.set(Calendar.SECOND, 0);
-            return calendar.getTimeInMillis() - currentDate.getTime();
-        } else {
-            calendar.set(Calendar.HOUR_OF_DAY, 21);
-            calendar.set(Calendar.MINUTE, 0);
-            calendar.set(Calendar.SECOND, 0);
-            return calendar.getTimeInMillis() - currentDate.getTime();
-        }
+    public static long getScheduleTimeInLong(int hour, int min){
+        Calendar calendar = new GregorianCalendar();
+
+        Calendar setCalendar = new GregorianCalendar();
+
+        setCalendar.set(Calendar.HOUR_OF_DAY, hour);
+
+        setCalendar.set(Calendar.MINUTE, min);
+
+        setCalendar.set(Calendar.SECOND, 0);
+
+        if(setCalendar.before(calendar)) setCalendar.add(Calendar.DATE,1);
+
+        return setCalendar.getTimeInMillis();
     }
 }
