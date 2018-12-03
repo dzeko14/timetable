@@ -52,7 +52,7 @@ object NotificationUtils {
             )
         }
 
-        val text = sb.toString()
+        val text = sb.toString().trim()
 
         val notificationBuilder = NotificationCompat
                 .Builder(context, NOTIFICATION_CHANNEL_ID)

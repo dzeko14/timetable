@@ -5,10 +5,21 @@
         android:defaultValue="@string/first_week_prefs_value"
         android:entries="@array/weeks"
         android:entryValues="@array/weeks_values"/>
-    <SwitchPreference
-        android:defaultValue="false"
-        android:key="@string/next_subject_notify_key"
-        android:title="@string/next_subject_notify_title"
-        android:summaryOff="@string/next_subject_notify_summaryOff"
-        android:summaryOn="@string/next_subject_notify_summaryOn"/>
+    <PreferenceCategory android:title="@string/notify_category">
+        <SwitchPreference
+            android:defaultValue="false"
+            android:key="@string/next_subject_notify_key"
+            android:title="@string/next_subject_notify_title"
+            android:summaryOff="@string/next_subject_notify_summaryOff"
+            android:summaryOn="@string/next_subject_notify_summaryOn" />
+
+        <ListPreference android:defaultValue="@string/schedule_notification_time_def_value"
+            android:dependency="@string/next_subject_notify_key"
+            android:entries="@array/schedule_notifications_time"
+            android:entryValues="@array/schedule_notifications_time_values"
+            android:key="@string/next_subject_time_key"
+            android:summary="@string/next_subject_time_summary"
+            android:title="@string/next_subject_time_title" />
+    </PreferenceCategory>
+
 </PreferenceScreen>

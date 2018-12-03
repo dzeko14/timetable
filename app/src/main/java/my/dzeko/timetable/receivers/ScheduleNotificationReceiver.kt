@@ -14,6 +14,10 @@ class ScheduleNotificationReceiver : BroadcastReceiver() {
                 NotificationUtils.cancelNotifications(context!!)
                 return
             }
+            if (intent.action == Intent.ACTION_BOOT_COMPLETED){
+                ScheduleNotificationService.enqueueJob(context!!)
+                return
+            }
         }
         ScheduleNotificationService.enqueueJob(context!!)
     }

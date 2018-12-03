@@ -248,14 +248,14 @@ public abstract class DateUtils {
     }
 
 
-    public static long getScheduleTimeInLong(int hour, int min){
+    public static long getScheduleTimeInLong(int hour){
         Calendar calendar = new GregorianCalendar();
 
         Calendar setCalendar = new GregorianCalendar();
 
         setCalendar.set(Calendar.HOUR_OF_DAY, hour);
 
-        setCalendar.set(Calendar.MINUTE, min);
+        setCalendar.set(Calendar.MINUTE, 0);
 
         setCalendar.set(Calendar.SECOND, 0);
 

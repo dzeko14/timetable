@@ -13,7 +13,7 @@
 
     <!--Notifications-->
     <string name="main_notification_channel_name">Головне</string>
-    <string name="next_subject_notif_title">Завтра пари!!!</string>
+    <string name="next_subject_notif_title">Завтра пари!</string>
     <string name="next_subject_notif_text">Перша пара: </string>
 
     <!--Main Activity-->
@@ -84,6 +84,13 @@
     <string name="subject_number">Номер предмету:</string>
     <string name="subject_type">Тип предмету:</string>
     <string name="subject_notification_start_text">Завтрашні пари</string>
+    <string name="notify_category">Повідомлення</string>
+    <string name="next_subject_time_title">Час показу повідомлення</string>
+    <string name="next_subject_time_key" translatable="false">next_subject_notify_key</string>
+    <string name="next_subject_time_disable">Показ повідомлень вимкнено</string>
+    <string name="next_subject_time_enabled">Повідомлення будуть приходити в</string>
 
+    <string name="schedule_notification_time_def_value">21</string>
+    <string name="next_subject_time_summary">Вибір часу показу повідомлення</string>
 
 </resources>

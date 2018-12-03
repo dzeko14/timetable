@@ -38,7 +38,14 @@ class SettingsActivityPresenter(var mView: View?): SettingsActivityContract.Pres
                     key!!)
             mView?.context?.getString(R.string.next_subject_notify_key)
             -> updateSubjectNotification(sharedPreferences!!, key!!)
+            mView?.context?.getString(R.string.next_subject_time_key) ->
+                updateSubjectNotificationTime()
         }
+    }
+
+    private fun updateSubjectNotificationTime() {
+        NotificationScheduler.cancelSubjectNotificationSchedule(mView?.context!!)
+        NotificationScheduler.setSubjectNotificationSchedule(mView?.context!!)
     }
 
     @SuppressLint("CheckResult")
@@ -46,9 +53,9 @@ class SettingsActivityPresenter(var mView: View?): SettingsActivityContract.Pres
         Completable.fromAction {
             val isNotificationOn = sharedPreferences.getBoolean(key, false)
             if (isNotificationOn){
-                NotificationScheduler.setSubjectNotificationSchedule(mView!!.context, 21, 0)
+                NotificationScheduler.setSubjectNotificationSchedule(mView!!.context)
             } else {
-
+                NotificationScheduler.cancelSubjectNotificationSchedule(mView?.context!!)
             }
         }.subscribeOn(Schedulers.io())
                 .subscribe()
