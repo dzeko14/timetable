@@ -1,6 +1,8 @@
 package my.dzeko.timetable.adapters
 
 import android.content.Context
+import android.os.Build
+import android.support.transition.TransitionManager
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
@@ -94,6 +96,7 @@ class EditWeekRecyclerAdapter(context :Context, private var mWeek :Week) : Recyc
                     val animation = AnimationUtils.loadAnimation(view.context, R.anim.removing_item)
                     animation.setAnimationListener(object : MyAnimationListener(){
                         override fun onAnimationEnd(animation: Animation?) {
+                            view.visibility = View.INVISIBLE
                             mChildRemoveListener?.onRemoveChildItemClick(day.subjects[i])
                         }
                     })
@@ -148,6 +151,9 @@ class EditWeekRecyclerAdapter(context :Context, private var mWeek :Week) : Recyc
         override fun onClick(v: View?) {
             v?.let {
                 if (v.id == R.id.group_items){
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                        TransitionManager.beginDelayedTransition(v.rootView as ViewGroup)
+                    }
                     if (childViewGroup.visibility == View.GONE){
                         mViewVisibilityArray[layoutPosition] = View.VISIBLE
                         childViewGroup.visibility = View.VISIBLE
