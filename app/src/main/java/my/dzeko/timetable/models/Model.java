@@ -23,6 +23,7 @@ import my.dzeko.timetable.utils.DateUtils;
 import my.dzeko.timetable.utils.ScheduleUtils;
 import my.dzeko.timetable.wrappers.DatabaseWrapper;
 import my.dzeko.timetable.wrappers.SharedPreferencesWrapper;
+import retrofit2.HttpException;
 
 public class Model implements IModel{
 //  --------------------------------------------------------
@@ -95,10 +96,13 @@ public class Model implements IModel{
             saveGroupName(groupName);
         } catch (IOException e) {
             e.printStackTrace();
-            //TODO Implement on error handling
+            ScheduleObservable.getInstance().notifySelectedScheduleChanged(null);
         } catch (ParseException e) {
             e.printStackTrace();
-            //TODO Implement on error handling
+            ScheduleObservable.getInstance().notifySelectedScheduleChanged(null);
+        } catch (HttpException e){
+            e.printStackTrace();
+            ScheduleObservable.getInstance().notifySelectedScheduleChanged(null);
         }
     }
 

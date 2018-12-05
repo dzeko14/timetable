@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.View;
 
 import java.util.ArrayList;
@@ -21,11 +22,13 @@ public class RemoveScheduleActivity extends AppCompatActivity implements RemoveS
 
     private RecyclerView mRecyclerView;
     private View mProgressBar;
+    private RemoveScheduleAdapter mAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_remove_schedule);
+        setTitle(R.string.remove_schedule_activity);
         findViews();
         setupRecyclerView();
         mPresenter.onGroupListRequest();
@@ -35,7 +38,22 @@ public class RemoveScheduleActivity extends AppCompatActivity implements RemoveS
         RecyclerView.LayoutManager manager = new LinearLayoutManager(this,
                 LinearLayoutManager.VERTICAL, false);
         mRecyclerView.setLayoutManager(manager);
-        mRecyclerView.setAdapter(new RemoveScheduleAdapter(new ArrayList<Group>(), mPresenter));
+        mAdapter = new RemoveScheduleAdapter(new ArrayList<Group>());
+        mRecyclerView.setAdapter(mAdapter);
+        ItemTouchHelper.SimpleCallback callback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
+            @Override
+            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
+                return false;
+            }
+
+            @Override
+            public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
+                long itemId =  viewHolder.getItemId();
+                mPresenter.onRemoveScheduleClick(mAdapter.getGroupName(itemId));
+                mAdapter.removeItemById(itemId);
+            }
+        };
+        new ItemTouchHelper(callback).attachToRecyclerView(mRecyclerView);
     }
 
     private void findViews() {
@@ -62,6 +80,7 @@ public class RemoveScheduleActivity extends AppCompatActivity implements RemoveS
 
     @Override
     public void setGroupList(List<Group> groups) {
-        mRecyclerView.setAdapter(new RemoveScheduleAdapter(groups, mPresenter));
+        mAdapter = new RemoveScheduleAdapter(groups);
+        mRecyclerView.setAdapter(mAdapter);
     }
 }

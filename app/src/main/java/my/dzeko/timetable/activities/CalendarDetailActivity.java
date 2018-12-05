@@ -23,6 +23,8 @@ public class CalendarDetailActivity extends AppCompatActivity implements Calenda
     ViewGroup mDayScrollView;
     ProgressBar mProgressBar;
     ViewGroup[] mSubjectsViewGroups = new ViewGroup[5];
+    View mNoScheduleIV;
+    View mNoScheduleTV;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +49,8 @@ public class CalendarDetailActivity extends AppCompatActivity implements Calenda
         mSubjectsViewGroups[2] = findViewById(R.id.subject_3_calendar_detail_activity);
         mSubjectsViewGroups[3] = findViewById(R.id.subject_4_calendar_detail_activity);
         mSubjectsViewGroups[4] = findViewById(R.id.subject_5_calendar_detail_activity);
+        mNoScheduleIV = findViewById(R.id.no_schedule_image_view);
+        mNoScheduleTV = findViewById(R.id.no_schedule_text_view);
     }
 
     @Override
@@ -79,7 +83,8 @@ public class CalendarDetailActivity extends AppCompatActivity implements Calenda
             mName.setText(subject.getFullSubjectName());
 
             TextView mCabinet = v.findViewById(R.id.tv_cabinet);
-            mCabinet.setText(subject.getCabinet());
+            String cabinet = (subject.getCabinet() + " " + nullString(subject.getType())).trim();
+            mCabinet.setText(cabinet);
 
             TextView mTeacher = v.findViewById(R.id.tv_teacher);
             mTeacher.setText(subject.getTeacher());
@@ -87,6 +92,33 @@ public class CalendarDetailActivity extends AppCompatActivity implements Calenda
 
         for (int i = viewGroupIndex; i < 5; i++) {
             mSubjectsViewGroups[i].setVisibility(View.GONE);
+        }
+    }
+
+    private String nullString(String str){
+        if (str == null) return "";
+        return str;
+    }
+
+    @Override
+    public void showEmptyScreen() {
+        mDayScrollView.setVisibility(View.GONE);
+        mNoScheduleTV.setVisibility(View.VISIBLE);
+        mNoScheduleIV.setVisibility(View.VISIBLE);
+        for (ViewGroup v :
+                mSubjectsViewGroups) {
+            v.setVisibility(View.GONE);
+        }
+    }
+
+    @Override
+    public void hideEmptyScreen() {
+        mDayScrollView.setVisibility(View.VISIBLE);
+        mNoScheduleTV.setVisibility(View.GONE);
+        mNoScheduleIV.setVisibility(View.GONE);
+        for (ViewGroup v :
+                mSubjectsViewGroups) {
+            v.setVisibility(View.VISIBLE);
         }
     }
 

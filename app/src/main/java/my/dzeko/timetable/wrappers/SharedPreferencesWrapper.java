@@ -13,6 +13,7 @@ public class SharedPreferencesWrapper {
     private static String CURRENT_WEEK_KEY;
     private static String FIRST_WEEK_VALUE;
     private static String SECOND_WEEK_VALUE;
+    private static String SUBJECT_NOTIFICATION_TIME_KEY;
 
     private static SharedPreferencesWrapper mInstance;
 
@@ -26,6 +27,7 @@ public class SharedPreferencesWrapper {
         CURRENT_WEEK_KEY = context.getString(R.string.weeks_prefs_key);
         FIRST_WEEK_VALUE = context.getString(R.string.first_week_prefs_value);
         SECOND_WEEK_VALUE = context.getString(R.string.second_week_prefs_value);
+        SUBJECT_NOTIFICATION_TIME_KEY = context.getString(R.string.next_subject_time_key);
     }
 
     public static SharedPreferencesWrapper getInstance(){
@@ -87,5 +89,9 @@ public class SharedPreferencesWrapper {
             editor.putString(CURRENT_WEEK_KEY, SECOND_WEEK_VALUE);
         }
         editor.apply();
+    }
+
+    public int getSubjectNotificationTime(){
+        return Integer.parseInt(mSharedPreferences.getString(SUBJECT_NOTIFICATION_TIME_KEY, "21"));
     }
 }

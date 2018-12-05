@@ -6,6 +6,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 
@@ -23,17 +25,20 @@ public class CreateOrUpdateSubjectActivity extends AppCompatActivity
     private EditText mSubjectCabinetEditText;
     private EditText mSubjectTeacherEditText;
     private Spinner mPositionSpinner;
+    private Spinner mTypeSpinner;
 
     private static final String SUBJECT_NAME = "subject name";
     private static final String SUBJECT_FULL_NAME = "subject full name";
     private static final String SUBJECT_CABINET = "subject cabinet";
     private static final String SUBJECT_TEACHER = "subject teacher";
     private static final String SUBJECT_POSITION = "subject position";
+    private static final String SUBJECT_TYPE = "subject type";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_or_update_subject);
+        setTitle(R.string.create_or_update_subject_activity);
         findViews();
         mPresenter.onRestoreInstanceState(savedInstanceState);
         getDataFromIntent();
@@ -46,6 +51,13 @@ public class CreateOrUpdateSubjectActivity extends AppCompatActivity
         mSubjectFullNameEditText = findViewById(R.id.activity_create_or_update_subject_full_name_edit_text);
         mSubjectTeacherEditText = findViewById(R.id.activity_create_or_update_subject_teacher_edit_text);
         mPositionSpinner = findViewById(R.id.activity_create_or_update_subject_position_spinner);
+        mTypeSpinner = findViewById(R.id.activity_create_or_update_subject_type_spinner);
+        (findViewById(R.id.submit_button)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mPresenter.onUserClick(v.getId());
+            }
+        });
     }
 
     private void getDataFromIntent() {
@@ -64,6 +76,7 @@ public class CreateOrUpdateSubjectActivity extends AppCompatActivity
         mSubjectCabinetEditText.setText(savedInstanceState.getString(SUBJECT_CABINET));
         mSubjectTeacherEditText.setText(savedInstanceState.getString(SUBJECT_TEACHER));
         mPositionSpinner.setSelection(savedInstanceState.getInt(SUBJECT_POSITION));
+        mTypeSpinner.setSelection(savedInstanceState.getInt(SUBJECT_TYPE));
     }
 
     @Override
@@ -74,18 +87,8 @@ public class CreateOrUpdateSubjectActivity extends AppCompatActivity
         outState.putString(SUBJECT_CABINET, mSubjectCabinetEditText.getText().toString());
         outState.putString(SUBJECT_TEACHER, mSubjectTeacherEditText.getText().toString());
         outState.putInt(SUBJECT_POSITION, mPositionSpinner.getSelectedItemPosition());
+        outState.putInt(SUBJECT_TYPE, mTypeSpinner.getSelectedItemPosition());
         outState.putAll(mPresenter.saveState());
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.create_or_update_subject_activity_menu, menu);
-        return super.onCreateOptionsMenu(menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        return mPresenter.onUserClick(item.getItemId()) | super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -116,8 +119,15 @@ public class CreateOrUpdateSubjectActivity extends AppCompatActivity
         String cabinet = mSubjectCabinetEditText.getText().toString();
         String teacher = mSubjectTeacherEditText.getText().toString();
         int position = mPositionSpinner.getSelectedItemPosition() + 1;
-        mPresenter.onDataSaving(name, fullName, cabinet, teacher, position);
+        String type = getTypeString(mTypeSpinner.getSelectedItemPosition());
+        mPresenter.onDataSaving(name, fullName, cabinet, teacher, position, type);
         finish();
+    }
+
+    private String getTypeString(int position) {
+        String[] types = getResources().getStringArray(R.array.subject_types);
+        if (position == 0) return null;
+        return types[position];
     }
 
     @Override
@@ -127,5 +137,17 @@ public class CreateOrUpdateSubjectActivity extends AppCompatActivity
         mSubjectTeacherEditText.setText(subject.getTeacher());
         mSubjectCabinetEditText.setText(subject.getCabinet());
         mPositionSpinner.setSelection(subject.getPosition() - 1);
+        mTypeSpinner.setSelection(getTypeInt(subject.getType()));
     }
+
+    private int getTypeInt(String type){
+        if (type == null) return 0;
+        String[] types = getResources().getStringArray(R.array.subject_types);
+        for (int i = 0; i < types.length; i++) {
+            if (type.equals(types[i])) return i;
+        }
+
+        return 0;
+    }
+
 }

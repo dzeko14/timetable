@@ -195,9 +195,9 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
 
     @Override
     public void showLoading() {
-        mFragmentLayout.setVisibility(View.GONE);
+        mFragmentLayout.setVisibility(View.INVISIBLE);
         mProgressBar.setVisibility(View.VISIBLE);
-        mBottomNavigationView.setVisibility(View.GONE);
+        mBottomNavigationView.setVisibility(View.INVISIBLE);
     }
 
     @Override

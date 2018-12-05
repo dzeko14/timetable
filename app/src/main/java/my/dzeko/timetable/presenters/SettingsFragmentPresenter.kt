@@ -15,8 +15,12 @@ class SettingsFragmentPresenter(var mView :SettingsFragmentContract.View?)
         val sharedPreferences = prefScreen.sharedPreferences
         for (i in 0 until count){
             val preference = prefScreen.getPreference(i)
-            val value = sharedPreferences.getString(preference.key, "")
-            setPreferenceSummary(preference, value)
+            when(preference){
+                is ListPreference -> {
+                    val value = sharedPreferences.getString(preference.key, "")
+                    setPreferenceSummary(preference, value)
+                }
+            }
         }
     }
 

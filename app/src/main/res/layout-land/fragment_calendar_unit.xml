@@ -5,6 +5,29 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:contentDescription="@string/direction_content_desc_right"
+        android:src="@drawable/ic_chevron"
+        app:layout_constraintBottom_toBottomOf="@+id/month_fragment_calendar_unit"
+        app:layout_constraintStart_toEndOf="@+id/month_fragment_calendar_unit"
+        app:layout_constraintTop_toTopOf="@+id/month_fragment_calendar_unit"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <ImageView
+        android:id="@+id/imageView3"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:rotation="180"
+        android:contentDescription="@string/direction_content_desc_left"
+        android:src="@drawable/ic_chevron"
+        app:layout_constraintBottom_toBottomOf="@+id/month_fragment_calendar_unit"
+        app:layout_constraintEnd_toStartOf="@+id/month_fragment_calendar_unit"
+        app:layout_constraintTop_toTopOf="@+id/month_fragment_calendar_unit"
+        app:layout_constraintVertical_bias="1.0" />
+
     <include
         android:id="@+id/calendar_day_header_1"
         layout="@layout/calendar_week_header_item"

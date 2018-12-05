@@ -53,9 +53,14 @@ public class SchedulePresenter implements ScheduleContract.Presenter {
                 .subscribeWith(new DisposableSingleObserver<Schedule>() {
                     @Override
                     public void onSuccess(Schedule schedule) {
-                        mView.updateSchedule(schedule);
+                        if (schedule.getSchedule().size() == 0){
+                            mView.showEmptyScreen();
+                        } else {
+                            mView.hideEmptyScreen();
+                            mView.updateSchedule(schedule);
+                            mView.scrollToCurrentDay();
+                        }
                         mView.hideLoading();
-                        mView.scrollToCurrentDay();
                     }
 
                     @Override
@@ -78,6 +83,11 @@ public class SchedulePresenter implements ScheduleContract.Presenter {
     @SuppressLint("CheckResult")
     @Override
     public void onSelectedScheduleChanged(final Schedule schedule) {
+        if (schedule == null) return;
+        else if (schedule.getSchedule().size() == 0) {
+            showEmptyScreenCompletable().subscribeOn(AndroidSchedulers.mainThread()).subscribe();
+            return;
+        }
         updateScheduleCompletable(schedule).subscribeOn(AndroidSchedulers.mainThread()).subscribe();
     }
 
@@ -85,9 +95,17 @@ public class SchedulePresenter implements ScheduleContract.Presenter {
         return Completable.fromAction(new Action() {
             @Override
             public void run() throws Exception {
-                mView.showLoading();
                 mView.updateSchedule(schedule);
-                mView.hideLoading();
+                mView.hideEmptyScreen();
+            }
+        });
+    }
+
+    private Completable showEmptyScreenCompletable(){
+        return Completable.fromAction(new Action() {
+            @Override
+            public void run() throws Exception {
+                mView.showEmptyScreen();
             }
         });
     }

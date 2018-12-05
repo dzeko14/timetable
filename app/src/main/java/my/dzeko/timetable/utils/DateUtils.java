@@ -219,7 +219,9 @@ public abstract class DateUtils {
         return dayList.indexOf(dayName);
     }
 
-    public static List<String> getCurrentWeekDates() {
+
+
+    static List<String> getCurrentWeekDates() {
         List<String> dates = new ArrayList<>(6);
         Calendar calendar = new GregorianCalendar();
         calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
@@ -234,5 +236,31 @@ public abstract class DateUtils {
         }
 
         return dates;
+    }
+
+    @SuppressLint("DefaultLocale")
+    public static String getTomorrowMonthAndDay(){
+        Calendar calendar = new GregorianCalendar();
+        calendar.add(Calendar.DAY_OF_MONTH, 1);
+        return  String.format("%02d.%02d",
+                calendar.get(Calendar.DAY_OF_MONTH),
+                calendar.get(Calendar.MONTH) + 1);
+    }
+
+
+    public static long getScheduleTimeInLong(int hour){
+        Calendar calendar = Calendar.getInstance();
+
+        Calendar setCalendar = Calendar.getInstance();
+
+        setCalendar.set(Calendar.HOUR_OF_DAY, hour);
+
+        setCalendar.set(Calendar.MINUTE, 0);
+
+        setCalendar.set(Calendar.SECOND, 0);
+
+        if(setCalendar.before(calendar)) setCalendar.add(Calendar.DATE,1);
+
+        return setCalendar.getTimeInMillis();
     }
 }

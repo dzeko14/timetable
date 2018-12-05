@@ -23,7 +23,7 @@ class SettingsFragment : PreferenceFragmentCompat(), SettingsFragmentContract.Vi
 
     override fun onDestroy() {
         super.onDestroy()
-        SharedPreferencesWrapper.getInstance().registerChangeListener(this)
+        SharedPreferencesWrapper.getInstance().unregisterChangeListener(this)
         mPresenter.destroy()
     }
 

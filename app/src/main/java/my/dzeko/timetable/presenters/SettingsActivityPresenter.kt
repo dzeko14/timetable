@@ -7,12 +7,12 @@ import io.reactivex.schedulers.Schedulers
 import my.dzeko.timetable.R
 import my.dzeko.timetable.contracts.SettingsActivityContract
 import my.dzeko.timetable.contracts.SettingsActivityContract.View
-import my.dzeko.timetable.entities.Schedule
-import my.dzeko.timetable.interfaces.IModel
 import my.dzeko.timetable.models.Model
+import my.dzeko.timetable.notifications.NotificationScheduler
 import my.dzeko.timetable.observers.ScheduleObservable
 import my.dzeko.timetable.utils.DateUtils
 import my.dzeko.timetable.wrappers.SharedPreferencesWrapper
+
 
 class SettingsActivityPresenter(var mView: View?): SettingsActivityContract.Presenter {
     val FIRST_WEEK_VALUE :String by lazy {
@@ -36,7 +36,29 @@ class SettingsActivityPresenter(var mView: View?): SettingsActivityContract.Pres
         when(key){
             mView?.context?.getString(R.string.weeks_prefs_key) -> updateKeyDate(sharedPreferences,
                     key!!)
+            mView?.context?.getString(R.string.next_subject_notify_key)
+            -> updateSubjectNotification(sharedPreferences!!, key!!)
+            mView?.context?.getString(R.string.next_subject_time_key) ->
+                updateSubjectNotificationTime()
         }
+    }
+
+    private fun updateSubjectNotificationTime() {
+        NotificationScheduler.cancelSubjectNotificationSchedule(mView?.context!!)
+        NotificationScheduler.setSubjectNotificationSchedule(mView?.context!!)
+    }
+
+    @SuppressLint("CheckResult")
+    private fun updateSubjectNotification(sharedPreferences: SharedPreferences, key: String) {
+        Completable.fromAction {
+            val isNotificationOn = sharedPreferences.getBoolean(key, false)
+            if (isNotificationOn){
+                NotificationScheduler.setSubjectNotificationSchedule(mView!!.context)
+            } else {
+                NotificationScheduler.cancelSubjectNotificationSchedule(mView?.context!!)
+            }
+        }.subscribeOn(Schedulers.io())
+                .subscribe()
     }
 
     @SuppressLint("CheckResult")

@@ -12,15 +12,16 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
-        android:layout_marginTop="128dp"
+        android:layout_marginTop="32dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
         android:ems="10"
         android:hint="@string/groupName_editText_hint_addScheduleActivity"
         android:inputType="textPersonName"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/add_schedule_info_text_view" />
 
     <Button
         android:id="@+id/confirmGroupName_button_addGroupActivity"
@@ -29,6 +30,7 @@
         android:layout_marginTop="16dp"
         android:onClick="onClick"
         android:text="@string/confirmGroupName_button_text_addGroupActivity"
+        android:theme="@style/ButtonStyle"
         app:layout_constraintEnd_toStartOf="@+id/createGroup_button_addGroupActivity"
         app:layout_constraintStart_toStartOf="@+id/groupName_editText_addScheduleActivity"
         app:layout_constraintTop_toBottomOf="@+id/groupName_editText_addScheduleActivity" />
@@ -39,6 +41,7 @@
         android:layout_height="wrap_content"
         android:onClick="onClick"
         android:text="@string/createGroup_button_text_addGroupActivity"
+        android:theme="@style/ButtonStyle"
         app:layout_constraintEnd_toEndOf="@+id/groupName_editText_addScheduleActivity"
         app:layout_constraintStart_toEndOf="@+id/confirmGroupName_button_addGroupActivity"
         app:layout_constraintTop_toTopOf="@+id/confirmGroupName_button_addGroupActivity" />
@@ -60,4 +63,31 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.35000002" />
+
+    <TextView
+        android:id="@+id/add_schedule_info_text_view"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:layout_marginLeft="4dp"
+        android:layout_marginEnd="4dp"
+        android:layout_marginRight="4dp"
+        android:text="@string/add_schedule_info"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/add_schedule_info_image_view"
+        app:layout_constraintTop_toTopOf="@+id/add_schedule_info_image_view" />
+
+    <ImageView
+        android:id="@+id/add_schedule_info_image_view"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
+        android:src="@drawable/ic_info"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:contentDescription="@string/info_description"/>
 </android.support.constraint.ConstraintLayout>

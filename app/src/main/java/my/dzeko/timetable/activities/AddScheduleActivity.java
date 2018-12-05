@@ -7,6 +7,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -22,6 +23,8 @@ public class AddScheduleActivity extends AppCompatActivity implements AddSchedul
     private View mConfirmGroupNameButton;
     private View mCreateGroupScheduleButton;
     private View mProgressBar;
+    private View mInfoTV;
+    private View mInfoIV;
 
     private static final String GROUP_NAME = "group name";
 
@@ -29,7 +32,7 @@ public class AddScheduleActivity extends AppCompatActivity implements AddSchedul
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_schedule);
-
+        setTitle(R.string.add_schedule_activity);
         initializeViewComponent();
     }
 
@@ -38,6 +41,8 @@ public class AddScheduleActivity extends AppCompatActivity implements AddSchedul
         mConfirmGroupNameButton = findViewById(R.id.confirmGroupName_button_addGroupActivity);
         mCreateGroupScheduleButton = findViewById(R.id.createGroup_button_addGroupActivity);
         mProgressBar = findViewById(R.id.loading_progressBar_addScheduleActivity);
+        mInfoIV = findViewById(R.id.add_schedule_info_image_view);
+        mInfoTV = findViewById(R.id.add_schedule_info_text_view);
     }
 
     @Override
@@ -64,10 +69,18 @@ public class AddScheduleActivity extends AppCompatActivity implements AddSchedul
 
     @Override
     public void showLoading() {
-        mGroupNameEditText.setVisibility(View.INVISIBLE);
-        mConfirmGroupNameButton.setVisibility(View.INVISIBLE);
-        mCreateGroupScheduleButton.setVisibility(View.INVISIBLE);
+        mGroupNameEditText.setVisibility(View.GONE);
+        mConfirmGroupNameButton.setVisibility(View.GONE);
+        mCreateGroupScheduleButton.setVisibility(View.GONE);
         mProgressBar.setVisibility(View.VISIBLE);
+        mInfoTV.setVisibility(View.GONE);
+        mInfoIV.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void hideKeyBoard() {
+        InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(mGroupNameEditText.getWindowToken(), 0);
     }
 
     @Override
@@ -76,6 +89,8 @@ public class AddScheduleActivity extends AppCompatActivity implements AddSchedul
         mConfirmGroupNameButton.setVisibility(View.VISIBLE);
         mCreateGroupScheduleButton.setVisibility(View.VISIBLE);
         mProgressBar.setVisibility(View.INVISIBLE);
+        mInfoTV.setVisibility(View.VISIBLE);
+        mInfoIV.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -128,6 +143,11 @@ public class AddScheduleActivity extends AppCompatActivity implements AddSchedul
                 .setNegativeButton(android.R.string.cancel, new EmptyClickListener())
                 .create()
                 .show();
+    }
+
+    @Override
+    public void showParseError() {
+        Toast.makeText(this, getString(R.string.parsing_error), Toast.LENGTH_LONG).show();
     }
 
     private class EmptyClickListener implements DialogInterface.OnClickListener{

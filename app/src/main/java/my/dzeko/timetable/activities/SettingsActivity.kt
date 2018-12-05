@@ -16,6 +16,7 @@ SharedPreferences.OnSharedPreferenceChangeListener{
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_settings)
+        setTitle(R.string.settings_activity_name)
         SharedPreferencesWrapper.getInstance().registerChangeListener(this)
     }
 

@@ -1,6 +1,7 @@
 package my.dzeko.timetable.presenters;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 
 import java.util.ArrayList;
@@ -25,10 +26,13 @@ import my.dzeko.timetable.activities.SettingsActivity;
 import my.dzeko.timetable.adapters.RemoveScheduleAdapter;
 import my.dzeko.timetable.contracts.MainContract;
 import my.dzeko.timetable.contracts.RemoveScheduleContract;
+import my.dzeko.timetable.entities.Day;
 import my.dzeko.timetable.entities.Group;
 import my.dzeko.timetable.interfaces.IModel;
 import my.dzeko.timetable.models.Model;
 import my.dzeko.timetable.observers.GroupObservable;
+import my.dzeko.timetable.receivers.ScheduleNotificationReceiver;
+import my.dzeko.timetable.utils.NotificationUtils;
 import my.dzeko.timetable.wrappers.DatabaseWrapper;
 import my.dzeko.timetable.wrappers.SharedPreferencesWrapper;
 
@@ -141,6 +145,7 @@ public class MainPresenter implements MainContract.Presenter {
                     int newSelectedGroupNameId = mGroupIds.get(newSelectedGroupName);
                     mView.setCheckedGroupNameNavigationView(newSelectedGroupNameId, true);
                     mPreviousGroupNameNavigationItemId = newSelectedGroupNameId;
+                    mView.setTitle(newSelectedGroupName);
                 }
                 mView.removeGroupNameNavigationDrawer(thisGroupNameId);
                 mGroupIds.remove(deletedGroupName);
@@ -244,6 +249,7 @@ public class MainPresenter implements MainContract.Presenter {
                 case R.id.settings_navigation:
                     mView.startActivity(SettingsActivity.class);
                     mView.closeDrawer();
+                    return true;
             }
         }
         return false;

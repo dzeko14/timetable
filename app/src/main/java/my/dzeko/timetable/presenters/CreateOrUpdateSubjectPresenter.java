@@ -43,7 +43,7 @@ public class CreateOrUpdateSubjectPresenter implements CreateOrUpdateSubjectCont
     @Override
     public boolean onUserClick(int itemId) {
         switch (itemId) {
-            case R.id.create_or_update_subject_activity_menu_check:
+            case R.id.submit_button:
                 mView.saveData();
                 return true;
         }
@@ -79,19 +79,20 @@ public class CreateOrUpdateSubjectPresenter implements CreateOrUpdateSubjectCont
     }
 
     @Override
-    public void onDataSaving(String name, String fullName, String cabinet, String teacher, int position) {
+    public void onDataSaving(String name, String fullName, String cabinet, String teacher,
+                             int position, String type) {
         if (TextUtils.isEmpty(name)) return;
 
         if (mSubject == null) {
-            createSubject(name, fullName, cabinet, teacher, position);
+            createSubject(name, fullName, cabinet, teacher, position, type);
         } else {
-            updateSubject(name, fullName, cabinet, teacher, position);
+            updateSubject(name, fullName, cabinet, teacher, position, type);
         }
     }
 
     @SuppressLint("CheckResult")
     private void updateSubject(final String name, final String fullName, final String cabinet,
-                               final String teacher, final int position) {
+                               final String teacher, final int position, final String type) {
         Completable.fromAction(new Action() {
             @Override
             public void run() throws Exception {
@@ -103,6 +104,8 @@ public class CreateOrUpdateSubjectPresenter implements CreateOrUpdateSubjectCont
                 if (!TextUtils.isEmpty(cabinet)) mSubject.setCabinet(cabinet);
 
                 if (!TextUtils.isEmpty(teacher)) mSubject.setTeacher(teacher);
+
+                mSubject.setType(type);
 
                 mSubject.setPosition(position);
                 mModel.saveSubject(mSubject);
@@ -119,7 +122,7 @@ public class CreateOrUpdateSubjectPresenter implements CreateOrUpdateSubjectCont
 
     @SuppressLint("CheckResult")
     private void createSubject(final String name, final String fullName, final String cabinet,
-                               final String teacher, final int position) {
+                               final String teacher, final int position, final String type) {
         Completable.fromAction(new Action() {
             @Override
             public void run() throws Exception {
@@ -131,7 +134,8 @@ public class CreateOrUpdateSubjectPresenter implements CreateOrUpdateSubjectCont
                         (TextUtils.isEmpty(fullName) ? name : fullName),
                         cabinet,
                         teacher,
-                        position
+                        position,
+                        type
                 );
                 mModel.saveSubject(subject);
             }

@@ -1,8 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="my.dzeko.timetable">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK"/>
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
 
     <application
         android:allowBackup="true"
@@ -11,7 +15,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        android:usesCleartextTraffic="true">
+        android:usesCleartextTraffic="true"
+        tools:ignore="GoogleAppIndexingWarning">
         <activity
             android:name=".activities.MainActivity"
             android:launchMode="singleTop"
@@ -34,12 +39,27 @@
         <activity
             android:name=".activities.CalendarDetailActivity"
             android:parentActivityName=".activities.MainActivity" />
-        <activity android:name=".activities.CreateOrUpdateSubjectActivity" />
+        <activity
+            android:name=".activities.CreateOrUpdateSubjectActivity"
+            android:parentActivityName=".activities.MainActivity" />
         <activity
             android:name=".activities.RemoveScheduleActivity"
             android:parentActivityName=".activities.MainActivity" />
-        <activity android:name=".activities.SettingsActivity"
-            android:parentActivityName=".activities.MainActivity"/>
+        <activity
+            android:name=".activities.SettingsActivity"
+            android:parentActivityName=".activities.MainActivity" />
+
+        <receiver android:name="my.dzeko.timetable.receivers.ScheduleNotificationReceiver"
+            android:enabled="true">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.QUICKBOOT_POWERON" />
+            </intent-filter>
+        </receiver>
+
+        <service android:name=".services.ScheduleNotificationService"
+            android:permission="android.permission.BIND_JOB_SERVICE"
+            android:exported="true"/>
     </application>
 
 </manifest>
