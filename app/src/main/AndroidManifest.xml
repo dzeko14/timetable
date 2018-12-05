@@ -50,9 +50,10 @@
             android:parentActivityName=".activities.MainActivity" />
 
         <receiver android:name="my.dzeko.timetable.receivers.ScheduleNotificationReceiver"
-            android:enabled="false">
+            android:enabled="true">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.QUICKBOOT_POWERON" />
             </intent-filter>
         </receiver>
 

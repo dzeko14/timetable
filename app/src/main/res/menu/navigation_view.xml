@@ -19,7 +19,4 @@
         android:id="@+id/settings_navigation"
         android:icon="@drawable/ic_settings"
         android:orderInCategory="3"/>
-    <item android:title="Notification"
-        android:id="@+id/noti_navigation"
-        android:orderInCategory="4"/>
 </menu>

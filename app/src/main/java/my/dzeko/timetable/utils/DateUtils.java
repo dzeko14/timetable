@@ -249,9 +249,9 @@ public abstract class DateUtils {
 
 
     public static long getScheduleTimeInLong(int hour){
-        Calendar calendar = new GregorianCalendar();
+        Calendar calendar = Calendar.getInstance();
 
-        Calendar setCalendar = new GregorianCalendar();
+        Calendar setCalendar = Calendar.getInstance();
 
         setCalendar.set(Calendar.HOUR_OF_DAY, hour);
 

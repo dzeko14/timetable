@@ -250,9 +250,6 @@ public class MainPresenter implements MainContract.Presenter {
                     mView.startActivity(SettingsActivity.class);
                     mView.closeDrawer();
                     return true;
-                case R.id.noti_navigation:
-                    mView.getContext().sendBroadcast(new Intent(mView.getContext(), ScheduleNotificationReceiver.class));
-                    return true;
             }
         }
         return false;
