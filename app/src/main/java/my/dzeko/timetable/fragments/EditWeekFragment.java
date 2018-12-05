@@ -1,20 +1,20 @@
 package my.dzeko.timetable.fragments;
 
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseExpandableListAdapter;
-import android.widget.ExpandableListView;
-import android.widget.TextView;
 
 import my.dzeko.timetable.R;
-import my.dzeko.timetable.adapters.EditWeekExpandableListAdapter;
+import my.dzeko.timetable.adapters.EditWeekRecyclerAdapter;
 import my.dzeko.timetable.contracts.CreateOrUpdateSubjectContract;
 import my.dzeko.timetable.contracts.EditWeekContract;
 import my.dzeko.timetable.entities.Week;
@@ -22,8 +22,7 @@ import my.dzeko.timetable.presenters.EditWeekPresenter;
 
 public class EditWeekFragment extends Fragment implements EditWeekContract.View {
     private EditWeekContract.Presenter mPresenter = new EditWeekPresenter(this);
-    private ExpandableListView mExpandableListView;
-
+    private RecyclerView mRecyclerView;
     public static final String WEEK = "week";
 
     public EditWeekFragment() {
@@ -51,8 +50,14 @@ public class EditWeekFragment extends Fragment implements EditWeekContract.View 
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_edit_week, container, false);
         findViews(rootView);
+        setupRecyclerView(rootView.getContext());
         mPresenter.onViewInitialized();
         return rootView;
+    }
+
+    private void setupRecyclerView(Context context) {
+        LinearLayoutManager llmanager = new LinearLayoutManager(context);
+        mRecyclerView.setLayoutManager(llmanager);
     }
 
     @Override
@@ -62,7 +67,7 @@ public class EditWeekFragment extends Fragment implements EditWeekContract.View 
     }
 
     private void findViews(View rootView) {
-        mExpandableListView = rootView.findViewById(R.id.edit_week_fragment_expandable_list_view);
+        mRecyclerView = rootView.findViewById(R.id.recycler_view);
     }
 
     @Override
@@ -77,18 +82,17 @@ public class EditWeekFragment extends Fragment implements EditWeekContract.View 
 
     @Override
     public void updateAdapter() {
-        ((EditWeekExpandableListAdapter)mExpandableListView.getExpandableListAdapter()).notifyDataSetChanged();
+        ((EditWeekRecyclerAdapter) mRecyclerView.getAdapter()).notifyDataSetChanged();
     }
 
     @Override
     public void updateAdapter(Week week) {
-        ((EditWeekExpandableListAdapter)mExpandableListView.getExpandableListAdapter())
-                .updateData(week);
+        ((EditWeekRecyclerAdapter) mRecyclerView.getAdapter()).updateData(week);
     }
 
     @Override
-    public void setAdapter(BaseExpandableListAdapter adapter) {
-        mExpandableListView.setAdapter(adapter);
+    public void setAdapter(RecyclerView.Adapter adapter) {
+        mRecyclerView.setAdapter(adapter);
     }
 
     @Override

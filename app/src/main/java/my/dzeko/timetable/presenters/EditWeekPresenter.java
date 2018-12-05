@@ -3,17 +3,14 @@ package my.dzeko.timetable.presenters;
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 
-import java.util.List;
-
 import io.reactivex.Completable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.functions.Action;
 import io.reactivex.observers.DisposableCompletableObserver;
 import io.reactivex.schedulers.Schedulers;
-import my.dzeko.timetable.R;
 import my.dzeko.timetable.activities.CreateOrUpdateSubjectActivity;
-import my.dzeko.timetable.adapters.EditWeekExpandableListAdapter;
+import my.dzeko.timetable.adapters.EditWeekRecyclerAdapter;
 import my.dzeko.timetable.contracts.CreateOrUpdateSubjectContract;
 import my.dzeko.timetable.contracts.EditWeekContract;
 import my.dzeko.timetable.entities.Day;
@@ -100,16 +97,12 @@ public class EditWeekPresenter implements EditWeekContract.Presenter {
         mWeek = week;
     }
 
-    private EditWeekExpandableListAdapter getAdapterFromSchedule(List<Day> schedule) {
-        return new EditWeekExpandableListAdapter(mView.getContext(), new Week(schedule, mWeek.getId()));
-    }
-
     @Override
     public void onViewInitialized() {
-        EditWeekExpandableListAdapter adapter = getAdapterFromSchedule(mWeek.getDaysList());
-        adapter.setEditChildItemListener(this);
-        adapter.setRemoveChildItemListener(this);
-        adapter.setAddGroupItemListener(this);
+        EditWeekRecyclerAdapter adapter = new EditWeekRecyclerAdapter(mView.getContext(), mWeek);
+        adapter.setGroupAddListener(this);
+        adapter.setChildEditListener(this);
+        adapter.setChildRemoveListener(this);
         mView.setAdapter(adapter);
     }
 
