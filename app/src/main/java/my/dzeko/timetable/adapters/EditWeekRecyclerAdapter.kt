@@ -11,9 +11,9 @@ import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.ImageView
 import android.widget.TextView
-import kotlinx.android.synthetic.main.editing_expandable_list_child_item.view.*
-import kotlinx.android.synthetic.main.editing_expandable_list_group_item.view.*
 import my.dzeko.timetable.R
+import my.dzeko.timetable.databinding.EditingExpandableListChildItemBinding
+import my.dzeko.timetable.databinding.EditingExpandableListGroupBinding
 import my.dzeko.timetable.entities.Day
 import my.dzeko.timetable.entities.Subject
 import my.dzeko.timetable.entities.Week
@@ -21,45 +21,57 @@ import my.dzeko.timetable.utils.WeekUtils
 
 private const val PARENT_ITEMS_COUNT = 6
 
-class EditWeekRecyclerAdapter(context :Context, private var mWeek :Week) : RecyclerView.Adapter<EditWeekRecyclerAdapter.EditWeekViewHolder>() {
+class EditWeekRecyclerAdapter(context: Context, private var mWeek: Week) :
+    RecyclerView.Adapter<EditWeekRecyclerAdapter.EditWeekViewHolder>() {
 
-    private val mViewVisibilityArray = arrayOf(View.GONE, View.GONE, View.GONE, View.GONE, View.GONE, View.GONE)
+    private val mViewVisibilityArray =
+        arrayOf(View.GONE, View.GONE, View.GONE, View.GONE, View.GONE, View.GONE)
 
-    private var mGroupAddListener :OnAddExpandableListViewGroupItemListener? = null
-    private var mChildEditListener :OnEditExpandableListViewChildItemListener? = null
-    private var mChildRemoveListener :OnRemoveExpandableListViewChildItemListener? = null
+    private var mGroupAddListener: OnAddExpandableListViewGroupItemListener? = null
+    private var mChildEditListener: OnEditExpandableListViewChildItemListener? = null
+    private var mChildRemoveListener: OnRemoveExpandableListViewChildItemListener? = null
 
-    var groupAddListener :OnAddExpandableListViewGroupItemListener?
+    var groupAddListener: OnAddExpandableListViewGroupItemListener?
         get() = mGroupAddListener
-        set(value) {mGroupAddListener = value}
+        set(value) {
+            mGroupAddListener = value
+        }
 
-    var childEditListener :OnEditExpandableListViewChildItemListener?
+    var childEditListener: OnEditExpandableListViewChildItemListener?
         get() = mChildEditListener
-        set(value) {mChildEditListener = value}
+        set(value) {
+            mChildEditListener = value
+        }
 
-    var childRemoveListener :OnRemoveExpandableListViewChildItemListener?
+    var childRemoveListener: OnRemoveExpandableListViewChildItemListener?
         get() = mChildRemoveListener
-        set(value) {mChildRemoveListener = value}
+        set(value) {
+            mChildRemoveListener = value
+        }
 
     init {
         val emptyWeek = WeekUtils.createWeek(context, mWeek.id)
-        for (day in mWeek.daysList){
+        for (day in mWeek.daysList) {
             emptyWeek.daysList[day.id - 1] = day
         }
         mWeek = emptyWeek
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): EditWeekViewHolder {
-        val view = LayoutInflater.from(parent.context)
-                .inflate(R.layout.editing_expandable_list_group_item, parent, false)
-        return EditWeekViewHolder(view)
+        return EditWeekViewHolder(
+            EditingExpandableListGroupBinding.inflate(
+                LayoutInflater.from(parent.context),
+                parent,
+                false
+            )
+        )
     }
 
     override fun getItemCount(): Int {
         return PARENT_ITEMS_COUNT
     }
 
-    fun updateData(week :Week) {
+    fun updateData(week: Week) {
         WeekUtils.updateWeek(mWeek, week)
         notifyDataSetChanged()
     }
@@ -78,7 +90,7 @@ class EditWeekRecyclerAdapter(context :Context, private var mWeek :Week) : Recyc
 
         holder.childViewGroup.visibility = mViewVisibilityArray[position]
 
-        if(day.subjects.size >= 5){
+        if (day.subjects.size >= 5) {
             holder.addGroupButton.isEnabled = false
         } else {
             holder.addGroupButton.isEnabled = true
@@ -89,12 +101,14 @@ class EditWeekRecyclerAdapter(context :Context, private var mWeek :Week) : Recyc
 
         for (i in 0 until subjectCount) {
             holder.childViewGroup.getChildAt(i).apply {
+                val childViewBinding = EditingExpandableListChildItemBinding.bind(this)
+
                 visibility = View.VISIBLE
 
-                editing_expandable_list_child_item_delete_button.setOnClickListener {
+                childViewBinding.editingExpandableListChildItemDeleteButton.setOnClickListener {
                     val view = it.parent as View
                     val animation = AnimationUtils.loadAnimation(view.context, R.anim.removing_item)
-                    animation.setAnimationListener(object : MyAnimationListener(){
+                    animation.setAnimationListener(object : MyAnimationListener() {
                         override fun onAnimationEnd(animation: Animation?) {
                             view.visibility = View.INVISIBLE
                             mChildRemoveListener?.onRemoveChildItemClick(day.subjects[i])
@@ -103,22 +117,22 @@ class EditWeekRecyclerAdapter(context :Context, private var mWeek :Week) : Recyc
                     view.startAnimation(animation)
                 }
 
-                editing_expandable_list_child_item_edit_button.setOnClickListener {
+                childViewBinding.editingExpandableListChildItemEditButton.setOnClickListener {
                     mChildEditListener?.onEditChildItemClick(day.subjects[i])
                 }
 
-                editing_expandable_list_child_item_subject_name_text_view.apply {
+                childViewBinding.editingExpandableListChildItemSubjectNameTextView.apply {
                     text = day.subjects[i].subjectName
                 }
 
-                editing_expandable_list_child_item_subject_number_text_view.apply {
+                childViewBinding.editingExpandableListChildItemSubjectNumberTextView.apply {
                     text = day.subjects[i].position.toString()
                 }
             }
         }
     }
 
-    private abstract class MyAnimationListener : Animation.AnimationListener{
+    private abstract class MyAnimationListener : Animation.AnimationListener {
         override fun onAnimationRepeat(animation: Animation?) {
             //Empty
         }
@@ -128,33 +142,35 @@ class EditWeekRecyclerAdapter(context :Context, private var mWeek :Week) : Recyc
         }
     }
 
-    inner class EditWeekViewHolder(view : View) : RecyclerView.ViewHolder(view), View.OnClickListener{
-        val name :TextView = view.editing_expandable_list_group_item_day_name_text_view
-        val childViewGroup :ViewGroup = view.child_items
-        val addGroupButton: ImageView = view.editing_expandable_list_group_item_add_button
+    inner class EditWeekViewHolder(
+        viewBinding: EditingExpandableListGroupBinding
+    ) : RecyclerView.ViewHolder(viewBinding.root), View.OnClickListener {
+        val name: TextView = viewBinding.editingExpandableListGroupItemDayNameTextView
+        val childViewGroup: ViewGroup = viewBinding.childItems
+        val addGroupButton: ImageView = viewBinding.editingExpandableListGroupItemAddButton
 
         init {
-            val inflater = LayoutInflater.from(view.context)
-            for (i in 0 until 5){
+            val inflater = LayoutInflater.from(viewBinding.root.context)
+            for (i in 0 until 5) {
                 childViewGroup.addView(
-                        inflater.inflate(
-                                R.layout.editing_expandable_list_child_item,
-                                childViewGroup,
-                                false
-                        )
+                    inflater.inflate(
+                        R.layout.editing_expandable_list_child_item,
+                        childViewGroup,
+                        false
+                    )
                 )
             }
 
-            (view as ViewGroup).getChildAt(0).setOnClickListener(this)
+            (viewBinding.root as ViewGroup).getChildAt(0).setOnClickListener(this)
         }
 
         override fun onClick(v: View?) {
             v?.let {
-                if (v.id == R.id.group_items){
+                if (v.id == R.id.group_items) {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
                         TransitionManager.beginDelayedTransition(v.rootView as ViewGroup)
                     }
-                    if (childViewGroup.visibility == View.GONE){
+                    if (childViewGroup.visibility == View.GONE) {
                         mViewVisibilityArray[layoutPosition] = View.VISIBLE
                         childViewGroup.visibility = View.VISIBLE
                     } else {

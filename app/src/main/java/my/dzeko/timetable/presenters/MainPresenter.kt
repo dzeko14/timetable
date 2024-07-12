@@ -1,406 +1,345 @@
-package my.dzeko.timetable.presenters;
+package my.dzeko.timetable.presenters
 
-import android.annotation.SuppressLint;
-import android.content.Intent;
-import android.os.Bundle;
+import android.annotation.SuppressLint
+import android.os.Bundle
+import io.reactivex.Completable
+import io.reactivex.Observable
+import io.reactivex.Single
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.functions.Function
+import io.reactivex.observers.DisposableObserver
+import io.reactivex.observers.DisposableSingleObserver
+import io.reactivex.schedulers.Schedulers
+import my.dzeko.timetable.R
+import my.dzeko.timetable.activities.AddScheduleActivity
+import my.dzeko.timetable.activities.RemoveScheduleActivity
+import my.dzeko.timetable.activities.SettingsActivity
+import my.dzeko.timetable.contracts.MainContract
+import my.dzeko.timetable.entities.Group
+import my.dzeko.timetable.interfaces.IModel
+import my.dzeko.timetable.models.Model
+import my.dzeko.timetable.observers.GroupObservable
+import my.dzeko.timetable.wrappers.DatabaseWrapper
+import my.dzeko.timetable.wrappers.SharedPreferencesWrapper
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+class MainPresenter(private var mView: MainContract.View?) : MainContract.Presenter {
+    private val mModel: IModel = Model.getInstance()
 
-import io.reactivex.Completable;
-import io.reactivex.Observable;
-import io.reactivex.Single;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.CompositeDisposable;
-import io.reactivex.functions.Action;
-import io.reactivex.functions.Function;
-import io.reactivex.observers.DisposableObserver;
-import io.reactivex.observers.DisposableSingleObserver;
-import io.reactivex.schedulers.Schedulers;
-import my.dzeko.timetable.R;
-import my.dzeko.timetable.activities.AddScheduleActivity;
-import my.dzeko.timetable.activities.RemoveScheduleActivity;
-import my.dzeko.timetable.activities.SettingsActivity;
-import my.dzeko.timetable.adapters.RemoveScheduleAdapter;
-import my.dzeko.timetable.contracts.MainContract;
-import my.dzeko.timetable.contracts.RemoveScheduleContract;
-import my.dzeko.timetable.entities.Day;
-import my.dzeko.timetable.entities.Group;
-import my.dzeko.timetable.interfaces.IModel;
-import my.dzeko.timetable.models.Model;
-import my.dzeko.timetable.observers.GroupObservable;
-import my.dzeko.timetable.receivers.ScheduleNotificationReceiver;
-import my.dzeko.timetable.utils.NotificationUtils;
-import my.dzeko.timetable.wrappers.DatabaseWrapper;
-import my.dzeko.timetable.wrappers.SharedPreferencesWrapper;
+    private var mPreviousBottomNavigationItemId = -1
+    private var mPreviousGroupNameNavigationItemId = -1
 
-public class MainPresenter implements MainContract.Presenter {
-    private MainContract.View mView;
-    private IModel mModel;
+    private val mGroupIds: MutableMap<String, Int> = HashMap()
+    private var mGroupIdCounter = 0
 
-    private int mPreviousBottomNavigationItemId = -1;
-    private int mPreviousGroupNameNavigationItemId = -1;
+    private val mCompositeDisposable = CompositeDisposable()
 
-    private Map<String, Integer> mGroupIds = new HashMap<>();
-    private int mGroupIdCounter = 0;
+    private var mIsCreatedFragment: BooleanArray? = booleanArrayOf(false, false, false)
+    private var mActiveBottomNavigationFragmentId = -1
 
-    private CompositeDisposable mCompositeDisposable = new CompositeDisposable();
+    private var mIsRestoredState = false
 
-    private boolean[] mIsCreatedFragment = {false, false, false};
-    private int mActiveBottomNavigationFragmentId = -1;
-
-    private boolean mIsRestoredState = false;
-
-    private static final String PREV_BOT_NAV_ITEM_ID = "mPreviousBottomNavigationItemId";
-    private static final String CREATED_FRAGMENTS = "mIsCreatedFragment";
-    private static final String ACTIVE_BOT_NAV_FRAGMENT_ID = "mActiveBottomNavigationFragmentId";
-
-    public MainPresenter(MainContract.View view) {
-        mView = view;
-        mModel = Model.getInstance();
-        GroupObservable.getInstance().registerObserver(this);
+    init {
+        GroupObservable.getInstance().registerObserver(this)
 
         //Initialize DB
-        DatabaseWrapper.initialize(mView.getContext());
+        DatabaseWrapper.initialize(mView!!.context)
 
         //Initialize SharedPrefs
-        SharedPreferencesWrapper.initialize(mView.getContext());
+        SharedPreferencesWrapper.initialize(mView!!.context)
     }
 
-    @Override
-    public void onRestoreState(Bundle savedInstanceState) {
-        if (savedInstanceState == null) return;
+    override fun onRestoreState(savedInstanceState: Bundle?) {
+        if (savedInstanceState == null) return
 
-        mIsRestoredState = true;
+        mIsRestoredState = true
 
-        mPreviousBottomNavigationItemId = savedInstanceState.getInt(PREV_BOT_NAV_ITEM_ID);
-        mIsCreatedFragment = savedInstanceState.getBooleanArray(CREATED_FRAGMENTS);
-        mActiveBottomNavigationFragmentId = savedInstanceState.getInt(ACTIVE_BOT_NAV_FRAGMENT_ID);
+        mPreviousBottomNavigationItemId = savedInstanceState.getInt(PREV_BOT_NAV_ITEM_ID)
+        mIsCreatedFragment = savedInstanceState.getBooleanArray(CREATED_FRAGMENTS)
+        mActiveBottomNavigationFragmentId = savedInstanceState.getInt(ACTIVE_BOT_NAV_FRAGMENT_ID)
     }
 
-    @Override
-    public Bundle saveState() {
-        Bundle bundle = new Bundle();
-        bundle.putInt(PREV_BOT_NAV_ITEM_ID, mPreviousBottomNavigationItemId);
-        bundle.putBooleanArray(CREATED_FRAGMENTS, mIsCreatedFragment);
-        bundle.putInt(ACTIVE_BOT_NAV_FRAGMENT_ID, mActiveBottomNavigationFragmentId);
-        return bundle;
+    override fun saveState(): Bundle {
+        val bundle = Bundle()
+        bundle.putInt(PREV_BOT_NAV_ITEM_ID, mPreviousBottomNavigationItemId)
+        bundle.putBooleanArray(CREATED_FRAGMENTS, mIsCreatedFragment)
+        bundle.putInt(ACTIVE_BOT_NAV_FRAGMENT_ID, mActiveBottomNavigationFragmentId)
+        return bundle
     }
 
-    @Override
-    public boolean onUserClick(int itemId) {
-        switch (itemId) {
-            case android.R.id.home:
-                mView.openDrawer();
-                return true;
-        }
-        return false;
-    }
-
-    @Override
-    public void destroy() {
-        mView = null;
-        GroupObservable.getInstance().unregisterObserver(this);
-        mCompositeDisposable.dispose();
-    }
-
-    @SuppressLint("CheckResult")
-    @Override
-    public void onGroupAdded(final String groupName) {
-        mCompositeDisposable.add(
-                Completable.fromAction(new Action() {
-                    @Override
-                    public void run() throws Exception {
-                    int id = mGroupIdCounter++;
-                    mGroupIds.put(groupName, id);
-
-                    mView.addGroupNameNavigationDrawer(groupName, id);
-                    if(mPreviousGroupNameNavigationItemId != -1) {
-                        mView.setCheckedGroupNameNavigationView(mPreviousGroupNameNavigationItemId, false);
-                    }
-                    mView.setCheckedGroupNameNavigationView(id, true);
-                    mPreviousGroupNameNavigationItemId = id;
-
-                    mView.setTitle(groupName);
-                }
-            })
-            .subscribeOn(AndroidSchedulers.mainThread())
-            .subscribe()
-        );
-    }
-
-    @SuppressLint("CheckResult")
-    @Override
-    public void onGroupRemoved(final String deletedGroupName, final String newSelectedGroupName) {
-
-        mCompositeDisposable.add(
-        Completable.fromAction(new Action() {
-            @Override
-            public void run() throws Exception {
-                mView.showLoading();
-                int thisGroupNameId = mGroupIds.get(deletedGroupName);
-                if (newSelectedGroupName != null) {
-                    int newSelectedGroupNameId = mGroupIds.get(newSelectedGroupName);
-                    mView.setCheckedGroupNameNavigationView(newSelectedGroupNameId, true);
-                    mPreviousGroupNameNavigationItemId = newSelectedGroupNameId;
-                    mView.setTitle(newSelectedGroupName);
-                }
-                mView.removeGroupNameNavigationDrawer(thisGroupNameId);
-                mGroupIds.remove(deletedGroupName);
-                mView.hideLoading();
+    override fun onUserClick(itemId: Int): Boolean {
+        when (itemId) {
+            android.R.id.home -> {
+                mView!!.openDrawer()
+                return true
             }
-        })
+        }
+        return false
+    }
+
+    override fun destroy() {
+        mView = null
+        GroupObservable.getInstance().unregisterObserver(this)
+        mCompositeDisposable.dispose()
+    }
+
+    @SuppressLint("CheckResult")
+    override fun onGroupAdded(groupName: String) {
+        mCompositeDisposable.add(
+            Completable.fromAction {
+                val id = mGroupIdCounter++
+                mGroupIds[groupName] = id
+
+                mView!!.addGroupNameNavigationDrawer(groupName, id)
+                if (mPreviousGroupNameNavigationItemId != -1) {
+                    mView!!.setCheckedGroupNameNavigationView(
+                        mPreviousGroupNameNavigationItemId,
+                        false
+                    )
+                }
+                mView!!.setCheckedGroupNameNavigationView(id, true)
+                mPreviousGroupNameNavigationItemId = id
+                mView!!.setTitle(groupName)
+            }
                 .subscribeOn(AndroidSchedulers.mainThread())
                 .subscribe()
-        );
-    }
-
-    @Override
-    public boolean onBottomNavigationItemSelected(int itemId) {
-        if(itemId == mPreviousBottomNavigationItemId) return false;
-
-        mPreviousBottomNavigationItemId = itemId;
-
-        switch (itemId) {
-            case R.id.schedule_bottom_navigation_main:
-                updateFragment(MainContract.SCHEDULE_FRAGMENT_ID);
-                mActiveBottomNavigationFragmentId = MainContract.SCHEDULE_FRAGMENT_ID;
-                saveSelectedFragmentId();
-                return true;
-            case R.id.calendar_bottom_navigation_main:
-                updateFragment(MainContract.CALENDAR_FRAGMENT_ID);
-                mActiveBottomNavigationFragmentId = MainContract.CALENDAR_FRAGMENT_ID;
-                saveSelectedFragmentId();
-                return true;
-            case R.id.editing_bottom_navigation_main:
-                updateFragment(MainContract.EDITING_FRAGMENT_ID);
-                mActiveBottomNavigationFragmentId = MainContract.EDITING_FRAGMENT_ID;
-                saveSelectedFragmentId();
-                return true;
-        }
-        return false;
+        )
     }
 
     @SuppressLint("CheckResult")
-    private void saveSelectedFragmentId() {
-        Completable.fromAction(new Action() {
-            @Override
-            public void run() throws Exception {
-                mModel.saveCurrentBottomNavigationFragment(mActiveBottomNavigationFragmentId);
+    override fun onGroupRemoved(deletedGroupName: String, newSelectedGroupName: String) {
+        mCompositeDisposable.add(
+            Completable.fromAction {
+                mView!!.showLoading()
+                val thisGroupNameId = mGroupIds[deletedGroupName]!!
+                if (newSelectedGroupName != null) {
+                    val newSelectedGroupNameId = mGroupIds[newSelectedGroupName]!!
+                    mView!!.setCheckedGroupNameNavigationView(newSelectedGroupNameId, true)
+                    mPreviousGroupNameNavigationItemId = newSelectedGroupNameId
+                    mView!!.setTitle(newSelectedGroupName)
+                }
+                mView!!.removeGroupNameNavigationDrawer(thisGroupNameId)
+                mGroupIds.remove(deletedGroupName)
+                mView!!.hideLoading()
             }
-        })
-        .subscribeOn(Schedulers.io())
-        .subscribe();
+                .subscribeOn(AndroidSchedulers.mainThread())
+                .subscribe()
+        )
     }
 
-    private void updateFragment(int fragmentId) {
-        if(mIsCreatedFragment[fragmentId]) {
-            mView.updateFragment(fragmentId, mActiveBottomNavigationFragmentId);
+    override fun onBottomNavigationItemSelected(itemId: Int): Boolean {
+        if (itemId == mPreviousBottomNavigationItemId) return false
+
+        mPreviousBottomNavigationItemId = itemId
+
+        when (itemId) {
+            R.id.schedule_bottom_navigation_main -> {
+                updateFragment(MainContract.SCHEDULE_FRAGMENT_ID)
+                mActiveBottomNavigationFragmentId = MainContract.SCHEDULE_FRAGMENT_ID
+                saveSelectedFragmentId()
+                return true
+            }
+
+            R.id.calendar_bottom_navigation_main -> {
+                updateFragment(MainContract.CALENDAR_FRAGMENT_ID)
+                mActiveBottomNavigationFragmentId = MainContract.CALENDAR_FRAGMENT_ID
+                saveSelectedFragmentId()
+                return true
+            }
+
+            R.id.editing_bottom_navigation_main -> {
+                updateFragment(MainContract.EDITING_FRAGMENT_ID)
+                mActiveBottomNavigationFragmentId = MainContract.EDITING_FRAGMENT_ID
+                saveSelectedFragmentId()
+                return true
+            }
+        }
+        return false
+    }
+
+    @SuppressLint("CheckResult")
+    private fun saveSelectedFragmentId() {
+        Completable.fromAction {
+            mModel.saveCurrentBottomNavigationFragment(
+                mActiveBottomNavigationFragmentId
+            )
+        }
+            .subscribeOn(Schedulers.io())
+            .subscribe()
+    }
+
+    private fun updateFragment(fragmentId: Int) {
+        if (mIsCreatedFragment!![fragmentId]) {
+            mView!!.updateFragment(fragmentId, mActiveBottomNavigationFragmentId)
         } else {
-            mIsCreatedFragment[fragmentId] = true;
-            if(mActiveBottomNavigationFragmentId == -1) {
-                mView.createFragment(fragmentId);
+            mIsCreatedFragment!![fragmentId] = true
+            if (mActiveBottomNavigationFragmentId == -1) {
+                mView!!.createFragment(fragmentId)
             } else {
-                mView.createFragment(fragmentId, mActiveBottomNavigationFragmentId);
+                mView!!.createFragment(fragmentId, mActiveBottomNavigationFragmentId)
             }
         }
     }
 
-    @Override
-    public boolean onNavigationItemSelected(int itemId, String itemName) {
-        if(mGroupIds.containsKey(itemName)) {
-            if (itemId == mPreviousGroupNameNavigationItemId) return false;
+    override fun onNavigationItemSelected(itemId: Int, itemName: String): Boolean {
+        if (mGroupIds.containsKey(itemName)) {
+            if (itemId == mPreviousGroupNameNavigationItemId) return false
 
-            mView.showLoading();
+            mView!!.showLoading()
 
-            mView.setTitle(itemName);
+            mView!!.setTitle(itemName)
 
             mCompositeDisposable.add(
-                    selectSchedule(itemName)
-                            .subscribeOn(Schedulers.io())
-                            .observeOn(AndroidSchedulers.mainThread())
-                            .subscribe(new Action() {
-                                @Override
-                                public void run() throws Exception {
-                                    mView.hideLoading();
-                                }
-                            })
-            );
+                selectSchedule(itemName)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe { mView!!.hideLoading() }
+            )
 
-            if(mPreviousGroupNameNavigationItemId != -1) {
-                mView.setCheckedGroupNameNavigationView(mPreviousGroupNameNavigationItemId, false);
+            if (mPreviousGroupNameNavigationItemId != -1) {
+                mView!!.setCheckedGroupNameNavigationView(mPreviousGroupNameNavigationItemId, false)
             }
-            mView.setCheckedGroupNameNavigationView(itemId, true);
-            mPreviousGroupNameNavigationItemId = itemId;
-            mView.closeDrawer();
-            return true;
+            mView!!.setCheckedGroupNameNavigationView(itemId, true)
+            mPreviousGroupNameNavigationItemId = itemId
+            mView!!.closeDrawer()
+            return true
         } else {
-            switch (itemId) {
-                case R.id.add_schedule_navigation:
-                    mView.startActivity(AddScheduleActivity.class);
-                    mView.closeDrawer();
-                    return true;
-                case R.id.remove_schedule_navigation:
-                    mView.startActivity(RemoveScheduleActivity.class);
-                    mView.closeDrawer();
-                    return true;
-                case R.id.settings_navigation:
-                    mView.startActivity(SettingsActivity.class);
-                    mView.closeDrawer();
-                    return true;
+            when (itemId) {
+                R.id.add_schedule_navigation -> {
+                    mView!!.startActivity(AddScheduleActivity::class.java)
+                    mView!!.closeDrawer()
+                    return true
+                }
+
+                R.id.remove_schedule_navigation -> {
+                    mView!!.startActivity(RemoveScheduleActivity::class.java)
+                    mView!!.closeDrawer()
+                    return true
+                }
+
+                R.id.settings_navigation -> {
+                    mView!!.startActivity(SettingsActivity::class.java)
+                    mView!!.closeDrawer()
+                    return true
+                }
             }
         }
-        return false;
+        return false
     }
 
-    private Completable selectSchedule(final String itemname) {
-        return Completable.fromAction(new Action() {
-            @Override
-            public void run() throws Exception {
-                mModel.selectSchedule(itemname);
-            }
-        });
+    private fun selectSchedule(itemname: String): Completable {
+        return Completable.fromAction { mModel.selectSchedule(itemname) }
     }
 
     @SuppressLint("CheckResult")
-    @Override
-    public void onGroupsFirstLoad() {
-        mView.showLoading();
+    override fun onGroupsFirstLoad() {
+        mView!!.showLoading()
 
         mCompositeDisposable.add(
-                Observable.just(mModel).subscribeOn(Schedulers.io())
-                .flatMap(new Function<IModel, Observable<Group>>() {
-                    @Override
-                    public Observable<Group> apply(IModel model) throws Exception {
-                        List<Group> groups = mModel.getGroupList();
-                        if(groups.size() == 0) throw new Exception();
+            Observable.just(mModel).subscribeOn(Schedulers.io())
+                .flatMap {
+                    val groups = mModel.groupList
+                    if (groups.size == 0) throw Exception()
 
-                        return Observable.fromIterable(groups);
-                    }
-                })
-                .map(new Function<Group, Group>() {
-                    @Override
-                    public Group apply(Group group) throws Exception {
-                        mGroupIds.put(group.getName(), mGroupIdCounter++);
-                        return group;
-                    }
-                })
+                    Observable.fromIterable(groups)
+                }
+                .map { group ->
+                    mGroupIds[group.name] = mGroupIdCounter++
+                    group
+                }
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribeWith(new DisposableObserver<Group>() {
-                    @Override
-                    public void onNext(Group group) {
-                        String groupName = group.getName();
-                        mView.addGroupNameNavigationDrawer(groupName, mGroupIds.get(groupName));
+                .subscribeWith(object : DisposableObserver<Group?>() {
+                    override fun onNext(group: Group) {
+                        val groupName = group.name
+                        mView!!.addGroupNameNavigationDrawer(groupName, mGroupIds[groupName]!!)
                     }
 
-                    @Override
-                    public void onError(Throwable e) {
-                        mView.hideLoading();
-                        mView.startActivity(AddScheduleActivity.class);
+                    override fun onError(e: Throwable) {
+                        mView!!.hideLoading()
+                        mView!!.startActivity(AddScheduleActivity::class.java)
                     }
 
-                    @Override
-                    public void onComplete() {
-                        setSelectedSchedule();
+                    override fun onComplete() {
+                        setSelectedSchedule()
                     }
                 })
-        );
+        )
     }
 
     @SuppressLint("CheckResult")
-    private void setSelectedSchedule() {
+    private fun setSelectedSchedule() {
         mCompositeDisposable.add(
-                Single.just(mModel).subscribeOn(Schedulers.io())
-                .map(new Function<IModel, String>() {
-                    @Override
-                    public String apply(IModel model) throws Exception {
-                        return mModel.getSelectedScheduleGroupName();
-                    }
-                })
+            Single.just(mModel).subscribeOn(Schedulers.io())
+                .map { mModel.selectedScheduleGroupName }
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribeWith(new DisposableSingleObserver<String>() {
-                    @Override
-                    public void onSuccess(String selectedGroup) {
-                        int id = mGroupIds.get(selectedGroup);
-                        mView.setCheckedGroupNameNavigationView(id, true);
-                        mPreviousGroupNameNavigationItemId = id;
-                        mView.setTitle(selectedGroup);
-                        mView.hideLoading();
+                .subscribeWith(object : DisposableSingleObserver<String?>() {
+                    override fun onSuccess(selectedGroup: String) {
+                        val id = mGroupIds[selectedGroup]!!
+                        mView!!.setCheckedGroupNameNavigationView(id, true)
+                        mPreviousGroupNameNavigationItemId = id
+                        mView!!.setTitle(selectedGroup)
+                        mView!!.hideLoading()
                     }
 
-                    @Override
-                    public void onError(Throwable e) {
-
+                    override fun onError(e: Throwable) {
                     }
                 })
-        );
+        )
     }
 
     @SuppressLint("CheckResult")
-    @Override
-    public void onFragmentInitialization() {
-        if (mIsRestoredState) return;
+    override fun onFragmentInitialization() {
+        if (mIsRestoredState) return
 
         mCompositeDisposable.add(
             Single.just(mModel)
-                .map(new Function<IModel, Integer>() {
-                    @Override
-                    public Integer apply(IModel model) throws Exception {
-                        return model.getCurrentBottomNavigationFragment();
-                    }
-                })
+                .map { model -> model.currentBottomNavigationFragment }
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribeWith(new DisposableSingleObserver<Integer>() {
-                    @Override
-                    public void onSuccess(Integer fragmentId) {
-                        if(fragmentId == -1) {
-                            fragmentId = MainContract.SCHEDULE_FRAGMENT_ID;
+                .subscribeWith(object : DisposableSingleObserver<Int?>() {
+                    override fun onSuccess(fragmentId: Int) {
+                        var fragmentId = fragmentId
+                        if (fragmentId == -1) {
+                            fragmentId = MainContract.SCHEDULE_FRAGMENT_ID
                         }
-                        mView.createFragment(fragmentId);
-                        mPreviousBottomNavigationItemId = getBottomNavigationItemIdFromFragmentId(fragmentId);
-                        mView.setBottomNavigationItem(mPreviousBottomNavigationItemId);
-                        mIsCreatedFragment[fragmentId] = true;
-                        mActiveBottomNavigationFragmentId = fragmentId;
+                        mView!!.createFragment(fragmentId)
+                        mPreviousBottomNavigationItemId =
+                            getBottomNavigationItemIdFromFragmentId(fragmentId)
+                        mView!!.setBottomNavigationItem(mPreviousBottomNavigationItemId)
+                        mIsCreatedFragment!![fragmentId] = true
+                        mActiveBottomNavigationFragmentId = fragmentId
                     }
 
-                    @Override
-                    public void onError(Throwable e) {
-                        e.printStackTrace();
+                    override fun onError(e: Throwable) {
+                        e.printStackTrace()
                     }
                 })
-        );
+        )
     }
 
-    private int getBottomNavigationItemIdFromFragmentId(Integer fragmentId) {
-        switch (fragmentId) {
-            case MainContract.SCHEDULE_FRAGMENT_ID:
-                return R.id.schedule_bottom_navigation_main;
-            case MainContract.CALENDAR_FRAGMENT_ID:
-                return R.id.calendar_bottom_navigation_main;
-            case MainContract.EDITING_FRAGMENT_ID:
-                return R.id.editing_bottom_navigation_main;
+    private fun getBottomNavigationItemIdFromFragmentId(fragmentId: Int): Int {
+        when (fragmentId) {
+            MainContract.SCHEDULE_FRAGMENT_ID -> return R.id.schedule_bottom_navigation_main
+            MainContract.CALENDAR_FRAGMENT_ID -> return R.id.calendar_bottom_navigation_main
+            MainContract.EDITING_FRAGMENT_ID -> return R.id.editing_bottom_navigation_main
         }
-        return 0;
+        return 0
     }
 
-    @Override
-    public void onManuallyScheduleCreated() {
+    override fun onManuallyScheduleCreated() {
         //onBottomNavigationItemSelected(R.id.editing_bottom_navigation_main);
-        mView.showManuallyCreationHint();
+        mView!!.showManuallyCreationHint()
     }
 
     @SuppressLint("CheckResult")
-    @Override
-    public void onCurrentWeekChecking() {
-        Completable.fromAction(new Action() {
-            @Override
-            public void run() throws Exception {
-                mModel.checkCurrentWeek();
-            }
-        }).subscribeOn(Schedulers.io())
-                .subscribe();
+    override fun onCurrentWeekChecking() {
+        Completable.fromAction { mModel.checkCurrentWeek() }.subscribeOn(Schedulers.io())
+            .subscribe()
+    }
+
+    companion object {
+        private const val PREV_BOT_NAV_ITEM_ID = "mPreviousBottomNavigationItemId"
+        private const val CREATED_FRAGMENTS = "mIsCreatedFragment"
+        private const val ACTIVE_BOT_NAV_FRAGMENT_ID = "mActiveBottomNavigationFragmentId"
     }
 }

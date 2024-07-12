@@ -1,113 +1,95 @@
-package my.dzeko.timetable.presenters;
+package my.dzeko.timetable.presenters
 
-import android.annotation.SuppressLint;
-import android.text.TextUtils;
+import android.annotation.SuppressLint
+import android.text.TextUtils
+import io.reactivex.Completable
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
+import my.dzeko.timetable.R
+import my.dzeko.timetable.contracts.AddScheduleContract
+import my.dzeko.timetable.entities.Schedule
+import my.dzeko.timetable.interfaces.IModel
+import my.dzeko.timetable.models.Model
+import my.dzeko.timetable.observers.ScheduleObservable
+import my.dzeko.timetable.services.ParseScheduleService
+import java.util.*
 
-import io.reactivex.Completable;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.functions.Action;
-import io.reactivex.schedulers.Schedulers;
-import my.dzeko.timetable.R;
-import my.dzeko.timetable.contracts.AddScheduleContract;
-import my.dzeko.timetable.interfaces.IModel;
-import my.dzeko.timetable.entities.Schedule;
-import my.dzeko.timetable.models.Model;
-import my.dzeko.timetable.observers.ScheduleObservable;
-import my.dzeko.timetable.services.ParseScheduleService;
+class AddSchedulePresenter(private var mView: AddScheduleContract.View?) :
+    AddScheduleContract.Presenter {
+    private val mModel: IModel = Model.getInstance()
 
-public class AddSchedulePresenter implements AddScheduleContract.Presenter {
-    private AddScheduleContract.View mView;
-    private IModel mModel;
-
-    public AddSchedulePresenter(AddScheduleContract.View view) {
-        this.mView = view;
-        mModel = Model.getInstance();
-        ScheduleObservable.getInstance().registerObserver(this);
+    init {
+        ScheduleObservable.getInstance().registerObserver(this)
     }
 
-    @Override
-    public boolean onUserClick(int itemId) {
-        switch (itemId) {
-            case R.id.confirmGroupName_button_addGroupActivity:
-                parseGroupSchedule();
-                mView.hideKeyBoard();
-                return true;
-            case R.id.createGroup_button_addGroupActivity:
-                choseCurrentWeekNumberBeforeCreating();
-                mView.hideKeyBoard();
-                return true;
-        }
-        return false;
-    }
-
-    private void parseGroupSchedule() {
-        String groupName = mView.getGroupName().toUpperCase();
-        if(TextUtils.isEmpty(groupName)) {
-            mView.showEmptyGroupName();
-            return;
-        }
-        mView.showLoading();
-        mView.startService(groupName, ParseScheduleService.class);
-    }
-
-    private void choseCurrentWeekNumberBeforeCreating(){
-        final String groupName = mView.getGroupName().toUpperCase();
-        if(TextUtils.isEmpty(groupName)) {
-            mView.showEmptyGroupName();
-            return;
-        }
-
-        mView.showChoseWeekNumberDialog();
-    }
-
-    @Override
-    @SuppressLint("CheckResult")
-    public void createGroupSchedule() {
-        final String groupName = mView.getGroupName().toUpperCase();
-        Completable.fromAction(new Action() {
-            @Override
-            public void run() throws Exception {
-                mModel.saveGroup(groupName);
+    override fun onUserClick(itemId: Int): Boolean {
+        when (itemId) {
+            R.id.confirmGroupName_button_addGroupActivity -> {
+                parseGroupSchedule()
+                mView!!.hideKeyBoard()
+                return true
             }
-        })
-                .subscribeOn(Schedulers.io())
-                .subscribe();
-        mView.notifyScheduleCreated();
-    }
 
-    @Override
-    public void destroy() {
-        mView = null;
-        ScheduleObservable.getInstance().unregisterObserver(this);
-    }
-
-    @SuppressLint("CheckResult")
-    @Override
-    public void onSelectedScheduleChanged(Schedule schedule) {
-        if (schedule == null){
-            Completable.fromAction(new Action() {
-                @Override
-                public void run() throws Exception {
-                    mView.showParseError();
-                    mView.hideLoading();
-                }
-            }).subscribeOn(AndroidSchedulers.mainThread())
-                    .subscribe();
-            return;
-        }
-        mView.close();
-    }
-
-    @SuppressLint("CheckResult")
-    @Override
-    public void setCurrentWeek(final int which) {
-        Completable.fromAction(new Action() {
-            @Override
-            public void run() throws Exception {
-                mModel.setCurrentWeek(which == 0);
+            R.id.createGroup_button_addGroupActivity -> {
+                choseCurrentWeekNumberBeforeCreating()
+                mView!!.hideKeyBoard()
+                return true
             }
-        })
-                .subscribeOn(Schedulers.io())
-                .subscribe();
+        }
+        return false
+    }
+
+    private fun parseGroupSchedule() {
+        val groupName = mView!!.groupName.uppercase(Locale.getDefault())
+        if (TextUtils.isEmpty(groupName)) {
+            mView!!.showEmptyGroupName()
+            return
+        }
+        mView!!.showLoading()
+        mView!!.startService(groupName, ParseScheduleService::class.java)
+    }
+
+    private fun choseCurrentWeekNumberBeforeCreating() {
+        val groupName = mView!!.groupName.uppercase(Locale.getDefault())
+        if (TextUtils.isEmpty(groupName)) {
+            mView!!.showEmptyGroupName()
+            return
+        }
+
+        mView!!.showChoseWeekNumberDialog()
+    }
+
+    @SuppressLint("CheckResult")
+    override fun createGroupSchedule() {
+        val groupName = mView!!.groupName.uppercase(Locale.getDefault())
+        Completable.fromAction { mModel.saveGroup(groupName) }
+            .subscribeOn(Schedulers.io())
+            .subscribe()
+        mView!!.notifyScheduleCreated()
+    }
+
+    override fun destroy() {
+        mView = null
+        ScheduleObservable.getInstance().unregisterObserver(this)
+    }
+
+    @SuppressLint("CheckResult")
+    override fun onSelectedScheduleChanged(schedule: Schedule) {
+        if (schedule == null) {
+            Completable.fromAction {
+                mView!!.showParseError()
+                mView!!.hideLoading()
+            }.subscribeOn(AndroidSchedulers.mainThread())
+                .subscribe()
+            return
+        }
+        mView!!.close()
+    }
+
+    @SuppressLint("CheckResult")
+    override fun setCurrentWeek(which: Int) {
+        Completable.fromAction { mModel.setCurrentWeek(which == 0) }
+            .subscribeOn(Schedulers.io())
+            .subscribe()
     }
 }

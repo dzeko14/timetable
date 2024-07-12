@@ -1,202 +1,181 @@
-package my.dzeko.timetable.presenters;
+package my.dzeko.timetable.presenters
 
-import android.annotation.SuppressLint;
-import android.os.Bundle;
-import android.os.Parcelable;
-import android.text.TextUtils;
+import android.annotation.SuppressLint
+import android.os.Bundle
+import android.os.Parcelable
+import android.text.TextUtils
+import io.reactivex.Completable
+import io.reactivex.CompletableObserver
+import io.reactivex.Single
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.Disposable
+import io.reactivex.observers.DisposableSingleObserver
+import io.reactivex.schedulers.Schedulers
+import my.dzeko.timetable.R
+import my.dzeko.timetable.contracts.CreateOrUpdateSubjectContract
+import my.dzeko.timetable.entities.Subject
+import my.dzeko.timetable.interfaces.IModel
+import my.dzeko.timetable.models.Model
 
-import io.reactivex.Completable;
-import io.reactivex.CompletableObserver;
-import io.reactivex.Single;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Action;
-import io.reactivex.functions.Function;
-import io.reactivex.observers.DisposableSingleObserver;
-import io.reactivex.schedulers.Schedulers;
-import my.dzeko.timetable.R;
-import my.dzeko.timetable.contracts.CreateOrUpdateSubjectContract;
-import my.dzeko.timetable.entities.Subject;
-import my.dzeko.timetable.interfaces.IModel;
-import my.dzeko.timetable.models.Model;
+class CreateOrUpdateSubjectPresenter(private var mView: CreateOrUpdateSubjectContract.View?) :
+    CreateOrUpdateSubjectContract.Presenter {
+    private val mModel: IModel = Model.getInstance()
 
-public class CreateOrUpdateSubjectPresenter implements CreateOrUpdateSubjectContract.Presenter {
-    private CreateOrUpdateSubjectContract.View mView;
-    private IModel mModel = Model.getInstance();
+    private var mGetScheduleFromDBDisposable: Disposable? = null
 
-    private Disposable mGetScheduleFromDBDisposable;
+    private var mSubject: Subject? = null
+    private var mDayId = 0
+    private var mWeekId = 0
 
-    private Subject mSubject;
-    private int mDayId;
-    private int mWeekId;
+    private var mIsStateRestored = false
 
-    private boolean mIsStateRestored = false;
-
-    private static final String SUBJECT_IN_PRESENTER = "subject in presenter";
-    private static final String DAY_ID = "day id";
-    private static final String WEEK_ID = "week id";
-
-    public CreateOrUpdateSubjectPresenter(CreateOrUpdateSubjectContract.View view) {
-        mView = view;
-    }
-
-    @Override
-    public boolean onUserClick(int itemId) {
-        switch (itemId) {
-            case R.id.submit_button:
-                mView.saveData();
-                return true;
+    override fun onUserClick(itemId: Int): Boolean {
+        when (itemId) {
+            R.id.submit_button -> {
+                mView!!.saveData()
+                return true
+            }
         }
-        return false;
+        return false
     }
 
-    @Override
-    public void onRestoreInstanceState(Bundle savedInstanceState) {
-        if (savedInstanceState == null) return;
+    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
+        if (savedInstanceState == null) return
 
-        mIsStateRestored = true;
+        mIsStateRestored = true
 
-        mSubject = savedInstanceState.getParcelable(SUBJECT_IN_PRESENTER);
-        mDayId = savedInstanceState.getInt(DAY_ID);
-        mWeekId = savedInstanceState.getInt(WEEK_ID);
+        mSubject = savedInstanceState.getParcelable(SUBJECT_IN_PRESENTER)
+        mDayId = savedInstanceState.getInt(DAY_ID)
+        mWeekId = savedInstanceState.getInt(WEEK_ID)
     }
 
-    @Override
-    public Bundle saveState() {
-        Bundle bundle = new Bundle();
-        bundle.putParcelable(SUBJECT_IN_PRESENTER, (Parcelable) mSubject);
-        bundle.putInt(DAY_ID, mDayId);
-        bundle.putInt(WEEK_ID, mWeekId);
-        return bundle;
+    override fun saveState(): Bundle {
+        val bundle = Bundle()
+        bundle.putParcelable(SUBJECT_IN_PRESENTER, mSubject as Parcelable?)
+        bundle.putInt(DAY_ID, mDayId)
+        bundle.putInt(WEEK_ID, mWeekId)
+        return bundle
     }
 
-    @Override
-    public void destroy() {
-        mView = null;
+    override fun destroy() {
+        mView = null
         if (mGetScheduleFromDBDisposable != null) {
-            mGetScheduleFromDBDisposable.dispose();
+            mGetScheduleFromDBDisposable!!.dispose()
         }
     }
 
-    @Override
-    public void onDataSaving(String name, String fullName, String cabinet, String teacher,
-                             int position, String type) {
-        if (TextUtils.isEmpty(name)) return;
+    override fun onDataSaving(
+        name: String, fullName: String, cabinet: String, teacher: String,
+        position: Int, type: String
+    ) {
+        if (TextUtils.isEmpty(name)) return
 
         if (mSubject == null) {
-            createSubject(name, fullName, cabinet, teacher, position, type);
+            createSubject(name, fullName, cabinet, teacher, position, type)
         } else {
-            updateSubject(name, fullName, cabinet, teacher, position, type);
+            updateSubject(name, fullName, cabinet, teacher, position, type)
         }
     }
 
     @SuppressLint("CheckResult")
-    private void updateSubject(final String name, final String fullName, final String cabinet,
-                               final String teacher, final int position, final String type) {
-        Completable.fromAction(new Action() {
-            @Override
-            public void run() throws Exception {
-                mSubject.setSubjectName(name);
+    private fun updateSubject(
+        name: String, fullName: String, cabinet: String,
+        teacher: String, position: Int, type: String
+    ) {
+        Completable.fromAction {
+            mSubject!!.subjectName = name
+            if (!TextUtils.isEmpty(fullName)) mSubject!!.fullSubjectName = fullName
+            else mSubject!!.fullSubjectName = name
 
-                if (!TextUtils.isEmpty(fullName)) mSubject.setFullSubjectName(fullName);
-                else mSubject.setFullSubjectName(name);
+            if (!TextUtils.isEmpty(cabinet)) mSubject!!.cabinet = cabinet
 
-                if (!TextUtils.isEmpty(cabinet)) mSubject.setCabinet(cabinet);
+            if (!TextUtils.isEmpty(teacher)) mSubject!!.teacher = teacher
 
-                if (!TextUtils.isEmpty(teacher)) mSubject.setTeacher(teacher);
+            mSubject!!.type = type
 
-                mSubject.setType(type);
-
-                mSubject.setPosition(position);
-                mModel.saveSubject(mSubject);
-            }
-        })
-                .subscribeOn(Schedulers.io())
-                .subscribe(new DBSavingObserver(){
-                    @Override
-                    public void onError(Throwable e) {
-                        //TODO: Implement onError
-                    }
-                });
+            mSubject!!.position = position
+            mModel.saveSubject(mSubject)
+        }
+            .subscribeOn(Schedulers.io())
+            .subscribe(object : DBSavingObserver() {
+                override fun onError(e: Throwable) {
+                    //TODO: Implement onError
+                }
+            })
     }
 
     @SuppressLint("CheckResult")
-    private void createSubject(final String name, final String fullName, final String cabinet,
-                               final String teacher, final int position, final String type) {
-        Completable.fromAction(new Action() {
-            @Override
-            public void run() throws Exception {
-                Subject subject = new Subject(
-                        mDayId,
-                        mWeekId,
-                        mModel.getSelectedScheduleGroupName(),
-                        name,
-                        (TextUtils.isEmpty(fullName) ? name : fullName),
-                        cabinet,
-                        teacher,
-                        position,
-                        type
-                );
-                mModel.saveSubject(subject);
-            }
-        })
-                .subscribeOn(Schedulers.io())
-                .subscribe(new DBSavingObserver(){
-                    @Override
-                    public void onError(Throwable e) {
-                        //TODO: Implement onError
-                    }
-                });
+    private fun createSubject(
+        name: String, fullName: String, cabinet: String,
+        teacher: String, position: Int, type: String
+    ) {
+        Completable.fromAction {
+            val subject = Subject(
+                mDayId,
+                mWeekId,
+                mModel.selectedScheduleGroupName,
+                name,
+                (if (TextUtils.isEmpty(fullName)) name else fullName),
+                cabinet,
+                teacher,
+                position,
+                type
+            )
+            mModel.saveSubject(subject)
+        }
+            .subscribeOn(Schedulers.io())
+            .subscribe(object : DBSavingObserver() {
+                override fun onError(e: Throwable) {
+                    //TODO: Implement onError
+                }
+            })
     }
 
     @SuppressLint("CheckResult")
-    @Override
-    public void onDataReceived(int dayId, int weekId, long subjectId) {
-        if (mIsStateRestored) return;
-        mDayId = dayId;
-        mWeekId = weekId;
+    override fun onDataReceived(dayId: Int, weekId: Int, subjectId: Long) {
+        if (mIsStateRestored) return
+        mDayId = dayId
+        mWeekId = weekId
 
-        if (subjectId != -1) {
-            mView.showLoading();
-            loadSubjectFromDB(subjectId);
+        if (subjectId != -1L) {
+            mView!!.showLoading()
+            loadSubjectFromDB(subjectId)
         }
     }
 
-    private void loadSubjectFromDB(final long subjectId) {
+    private fun loadSubjectFromDB(subjectId: Long) {
         mGetScheduleFromDBDisposable = Single.just(mModel)
-                .map(new Function<IModel, Subject>() {
-                    @Override
-                    public Subject apply(IModel model) throws Exception {
-                        mSubject = model.getSubject(subjectId);
-                        return mSubject;
-                    }
-                })
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeWith(new DisposableSingleObserver<Subject>() {
-                    @Override
-                    public void onSuccess(Subject subject) {
-                        mView.setSubject(subject);
-                        mView.hideLoading();
-                    }
+            .map { model ->
+                mSubject = model.getSubject(subjectId)
+                mSubject
+            }
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeWith(object : DisposableSingleObserver<Subject?>() {
+                override fun onSuccess(subject: Subject) {
+                    mView!!.setSubject(subject)
+                    mView!!.hideLoading()
+                }
 
-                    @Override
-                    public void onError(Throwable e) {
-                        mView.hideLoading();
-                    }
-                });
+                override fun onError(e: Throwable) {
+                    mView!!.hideLoading()
+                }
+            })
     }
 
-    private static abstract class DBSavingObserver implements CompletableObserver {
-
-        @Override
-        public void onSubscribe(Disposable d) {
+    private abstract class DBSavingObserver : CompletableObserver {
+        override fun onSubscribe(d: Disposable) {
             //not uses
         }
 
-        @Override
-        public void onComplete() {
+        override fun onComplete() {
             //not uses
         }
+    }
+
+    companion object {
+        private const val SUBJECT_IN_PRESENTER = "subject in presenter"
+        private const val DAY_ID = "day id"
+        private const val WEEK_ID = "week id"
     }
 }

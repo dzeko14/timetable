@@ -18,7 +18,9 @@ class SettingsFragmentPresenter(var mView :SettingsFragmentContract.View?)
             when(preference){
                 is ListPreference -> {
                     val value = sharedPreferences.getString(preference.key, "")
-                    setPreferenceSummary(preference, value)
+                    if (value != null) {
+                        setPreferenceSummary(preference, value)
+                    }
                 }
             }
         }
